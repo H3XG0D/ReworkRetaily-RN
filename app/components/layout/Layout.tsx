@@ -1,17 +1,15 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 
+import styled from 'styled-components';
+
 interface ILayout {
   children: React.ReactNode;
   isScrollView?: boolean;
 }
 
-const Layout = () => {
-  return (
-    <View>
-      <Text>Layout</Text>
-    </View>
-  );
+export const Layout: React.FC<ILayout> = ({children, isScrollView = true}) => {
+  return <View>{children}</View>;
 };
 
 export default Layout;

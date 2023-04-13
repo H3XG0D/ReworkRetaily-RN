@@ -1,13 +1,17 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 
-import Login from './app/components/pages/Login/screens/login/Login';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {LogBox} from 'react-native/types';
+
+import LoginPage from './app/components/pages/Login/screens/login/Login';
 
 const App = () => {
+  LogBox.ignoreAllLogs();
+
   return (
-    <View>
-      <Login />
-    </View>
+    <SafeAreaProvider>
+      <LoginPage />
+    </SafeAreaProvider>
   );
 };
 

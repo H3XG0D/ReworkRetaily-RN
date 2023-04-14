@@ -52,8 +52,8 @@ const Forget = () => {
         setNumberError('Этого номера не существует!');
       } else {
         setNumberError(true);
-        navigation.navigate('ForgetCode');
-        GetSms(userPhone, 'phone');
+        navigation.navigate('ForgetCode', {userPhone});
+        // GetSms(userPhone, 'phone');
       }
     }
     setLoad(false);

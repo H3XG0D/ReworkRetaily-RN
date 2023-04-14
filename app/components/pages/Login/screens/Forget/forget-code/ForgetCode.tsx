@@ -26,7 +26,8 @@ const Code = () => {
   }, [navigation]);
 
   const route = useRoute();
-  const {realPhone}: any = route.params;
+  const {userPhone}: any = route.params;
+  const realPhone = 8 + String(userPhone);
 
   const firstInput = useRef<any>();
   const secondInput = useRef<any>();
@@ -36,8 +37,6 @@ const Code = () => {
   const [otp, setOtp] = useState<any>({1: '', 2: '', 3: '', 4: ''});
 
   const [load, setLoad] = React.useState<boolean>(false);
-  const [change, setChange] = React.useState<boolean>(false);
-
   const [error, setError] = React.useState<string>();
   const [counter, setCounter] = React.useState<number>(100);
 
@@ -50,7 +49,7 @@ const Code = () => {
   const registerCode = async () => {
     setLoad(true);
     let result = await getPhoneVerify(
-      realPhone,
+      userPhone,
       otp['1'] + otp['2'] + otp['3'] + otp['4'],
       'phone',
     );
@@ -58,7 +57,7 @@ const Code = () => {
     let otpCode = otp['1'] + otp['2'] + otp['3'] + otp['4'];
 
     if (result && result.is_verify) {
-      navigation.navigate('ResetPassword', {realPhone, otpCode});
+      navigation.navigate('ResetPassword', {userPhone, otpCode});
     } else {
       const err = 'Вы ввели неправильный код';
       setError(err);
@@ -148,7 +147,7 @@ const Code = () => {
         </CodeContent>
 
         {counter == 0 ? (
-          <TouchableOpacity onPress={() => GetSms(realPhone, 'phone')}>
+          <TouchableOpacity onPress={() => GetSms(userPhone, 'phone')}>
             <CodeResend>Отправить код</CodeResend>
           </TouchableOpacity>
         ) : (

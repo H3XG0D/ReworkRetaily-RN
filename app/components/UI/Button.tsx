@@ -1,4 +1,10 @@
-import {Text, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  TextStyle,
+  ViewStyle,
+  StyleSheet,
+} from 'react-native';
 import React from 'react';
 import {COLORS} from '../../constants';
 
@@ -6,21 +12,25 @@ interface IButton {
   title: string;
   colors?: [string, string];
   onPress?: () => void;
+  style?: TextStyle | TextStyle[] | ViewStyle | ViewStyle[];
 }
 
-const Button: React.FC<IButton> = ({title, onPress}) => {
+const Button: React.FC<IButton> = ({title, onPress, style = {}}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={{
-        backgroundColor: COLORS.primary,
-        width: 260,
-        height: 45,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 8,
-        marginTop: 20,
-      }}>
+      style={StyleSheet.flatten([
+        {
+          backgroundColor: COLORS.primary,
+          width: 260,
+          height: 45,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 8,
+          marginTop: 20,
+        },
+        style,
+      ])}>
       <Text
         style={{textAlign: 'center', color: COLORS.white, fontWeight: '600'}}>
         {title}

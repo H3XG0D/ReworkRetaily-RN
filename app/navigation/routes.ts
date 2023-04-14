@@ -2,33 +2,33 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 export type RetaiyRootTypeParamList = {
   // * Main StackNavigation Retaily Screens:
-  LoginPage: undefined;
-  Forget: undefined;
-  ForgetCode: undefined;
-  ResetPassword: undefined;
-  Code: undefined;
-  Details: undefined;
-  Registration: undefined;
-  Market: undefined;
+  LoginPage: any;
+  Forget: any;
+  ForgetCode: any;
+  ResetPassword: any;
+  Code: any;
+  Details: any;
+  Registration: any;
+  Market: any;
 
   // * Loader screen:
-  Loader: undefined;
+  Loader: any;
 };
 
 export type BottomRootTypeParamList = {
   // * Main BottomNavigator Retaily Screens
   MarketStack: MarketRootParamList;
 
-  Suppliers: undefined;
-  ParentMeat: undefined;
-  Categories: undefined;
-  ProductsContainer: undefined;
+  Suppliers: any;
+  ParentMeat: any;
+  Categories: any;
+  ProductsContainer: any;
 };
 
 export type MarketRootParamList = {
   // * Screens that are inside the market
-  Market: undefined;
-  Request: undefined;
-  MyRequest: undefined;
-  UserProfile: undefined;
+  Market: any;
+  Request: any;
+  MyRequest: any;
+  UserProfile: any;
 };

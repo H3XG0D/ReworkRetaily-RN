@@ -1,4 +1,4 @@
-import {TextInput} from 'react-native';
+import {StyleSheet, TextInput, TextStyle, ViewStyle} from 'react-native';
 import React from 'react';
 import {COLORS} from '../../constants';
 
@@ -7,6 +7,10 @@ interface IField {
   value: string;
   placeholder: string;
   isSecure?: boolean;
+  isNumeric?: 'numeric';
+  maxLength?: number;
+  numberOfLines?: number;
+  style?: TextStyle | TextStyle[] | ViewStyle | ViewStyle[];
 }
 
 const Field: React.FC<IField> = ({
@@ -14,6 +18,10 @@ const Field: React.FC<IField> = ({
   value,
   placeholder,
   isSecure,
+  isNumeric,
+  maxLength,
+  numberOfLines,
+  style = {},
 }) => {
   return (
     <TextInput
@@ -23,14 +31,18 @@ const Field: React.FC<IField> = ({
       value={value}
       secureTextEntry={isSecure}
       autoCapitalize="none"
-      style={{
-        width: 260,
-        height: 45,
-        backgroundColor: COLORS.milky,
-        borderRadius: 8,
-        marginTop: 10,
-        padding: 10,
-      }}
+      keyboardType={isNumeric}
+      maxLength={maxLength}
+      numberOfLines={numberOfLines}
+      style={StyleSheet.flatten([
+        {
+          width: 260,
+          height: 45,
+          backgroundColor: COLORS.milky,
+          borderRadius: 8,
+        },
+        style,
+      ])}
     />
   );
 };

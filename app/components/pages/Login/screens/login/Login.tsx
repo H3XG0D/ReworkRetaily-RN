@@ -54,6 +54,7 @@ const LoginPage = () => {
           onChangeText={onChangeLogin}
           value={login}
           placeholder="Введите логин"
+          style={{marginTop: 10, padding: 10}}
         />
 
         <Field
@@ -61,6 +62,7 @@ const LoginPage = () => {
           value={password}
           placeholder="Пароль"
           isSecure={true}
+          style={{marginTop: 10, padding: 10}}
         />
 
         <LoginForgetPassword onPress={() => navigation.navigate('Forget')}>

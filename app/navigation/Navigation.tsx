@@ -9,6 +9,7 @@ import LoginPage from '../components/pages/Login/screens/login/Login';
 import Forget from '../components/pages/Login/screens/Forget/forget/Forget';
 import Registration from '../components/pages/Registration/screens/registration/Registration';
 import Market from '../components/pages/Market/screens/Main/Market';
+import ForgetCode from '../components/pages/Login/screens/Forget/forget-code/ForgetCode';
 
 const Stack = createNativeStackNavigator<RetaiyRootTypeParamList>();
 
@@ -22,6 +23,7 @@ const Navigation: React.FC = () => {
           options={{headerShown: false}}></Stack.Screen>
 
         <Stack.Screen name="Forget" component={Forget}></Stack.Screen>
+        <Stack.Screen name="ForgetCode" component={ForgetCode}></Stack.Screen>
 
         <Stack.Screen
           name="Registration"

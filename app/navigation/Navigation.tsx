@@ -4,6 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {RetaiyRootTypeParamList} from './routes';
 
+import {BottomNavigation} from './BottomNavigation/BottomNavigation';
+
 // * Import screens from directories
 import LoginPage from '../components/pages/Login/screens/login/Login';
 import Forget from '../components/pages/Login/screens/Forget/forget/Forget';
@@ -11,7 +13,6 @@ import Registration from '../components/pages/Registration/screens/registration/
 import ForgetCode from '../components/pages/Login/screens/Forget/forget-code/ForgetCode';
 import Code from '../components/pages/Registration/screens/code/Code';
 import ResetPassword from '../components/pages/Login/screens/Forget/reset-password/ResetPassword';
-import {BottomNavigation} from './BottomNavigation/BottomNavigation';
 
 const Stack = createNativeStackNavigator<RetaiyRootTypeParamList>();
 

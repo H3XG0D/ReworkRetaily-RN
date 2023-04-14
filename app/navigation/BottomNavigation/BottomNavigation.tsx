@@ -14,7 +14,8 @@ export const BottomNavigation: React.FC = () => {
     <Tab.Navigator>
       <Tab.Screen
         name="MarketStack"
-        component={RetailyBottomScreen}></Tab.Screen>
+        component={RetailyBottomScreen}
+        options={{headerShown: false}}></Tab.Screen>
       <Tab.Screen name="Request" component={Request}></Tab.Screen>
       <Tab.Screen name="MyRequest" component={MyRequest}></Tab.Screen>
       <Tab.Screen name="UserProfile" component={UserProfile}></Tab.Screen>

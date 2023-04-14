@@ -11,7 +11,7 @@ const RetailyStack = createNativeStackNavigator<MarketRootParamList>();
 
 export const RetailyBottomScreen = () => {
   return (
-    <RetailyStack.Navigator screenOptions={{headerShown: false}}>
+    <RetailyStack.Navigator>
       <RetailyStack.Screen
         name="Market"
         component={Market}></RetailyStack.Screen>

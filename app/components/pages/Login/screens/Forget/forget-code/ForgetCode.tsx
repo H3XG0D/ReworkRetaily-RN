@@ -196,8 +196,7 @@ const CodeContainer = styled(View)`
   align-items: center;
   border-radius: 20px;
 
-  margin-left: auto;
-  margin-right: auto;
+  align-self: center;
   margin-top: 20%;
 `;
 
@@ -224,8 +223,7 @@ const CodeContent = styled(View)`
   gap: 30px;
 
   margin-top: 50px;
-  margin-left: auto;
-  margin-right: auto;
+  align-self: center;
 `;
 
 const CodeBox = styled(View)`
@@ -256,7 +254,6 @@ const CodeSubmit = styled(View)`
   border-radius: 10;
 
   margin-top: 20px;
-  margin-left: auto;
   margin-right: auto;
 `;
 
@@ -271,7 +268,6 @@ const CodeSubmitOff = styled(View)`
   border-radius: 10;
 
   margin-top: 20px;
-  margin-left: auto;
   margin-right: auto;
 `;
 

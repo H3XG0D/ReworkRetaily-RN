@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {View, ViewStyle, StyleSheet} from 'react-native';
 import React from 'react';
 
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -9,21 +9,26 @@ import styled from 'styled-components';
 interface ILayout {
   children: React.ReactNode;
   isScrollView?: boolean;
+  style?: ViewStyle | ViewStyle[];
 }
 
 export const RetailyLayout: React.FC<ILayout> = ({
   children,
   isScrollView = true,
+  style = {},
 }) => {
   const insets = useSafeAreaInsets();
 
   return (
     <LayoutMain
-      style={{
-        paddingBottom: insets.bottom,
-        paddingLeft: insets.left,
-        paddingRight: insets.right,
-      }}>
+      style={StyleSheet.flatten([
+        {
+          paddingBottom: insets.bottom,
+          paddingLeft: insets.left,
+          paddingRight: insets.right,
+        },
+        style,
+      ])}>
       {children}
     </LayoutMain>
   );

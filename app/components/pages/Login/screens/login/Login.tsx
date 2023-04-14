@@ -175,6 +175,5 @@ const LoginErrorText = styled(Text)`
   font-size: 16px;
 
   margin-top: 30px;
-  margin-left: auto;
-  margin-right: auto;
+  align-self: center;
 `;

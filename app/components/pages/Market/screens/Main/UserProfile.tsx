@@ -1,9 +1,13 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {View, Text} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import RetailyLayout from '../../../../layout/RetailyLayout';
+import Button from '../../../../UI/Button';
 
 const UserProfile = () => {
   const navigation =
@@ -19,10 +23,21 @@ const UserProfile = () => {
     });
   }, [navigation]);
 
+  const logout = async () => {
+    await AsyncStorage.removeItem('login');
+    await AsyncStorage.removeItem('password');
+    await AsyncStorage.removeItem('token');
+    navigation.navigate('LoginPage');
+  };
+
   return (
-    <View>
-      <Text>UserProfile</Text>
-    </View>
+    <RetailyLayout>
+      <Button
+        onPress={() => logout()}
+        title="Выйти"
+        style={{alignSelf: 'center'}}
+      />
+    </RetailyLayout>
   );
 };
 

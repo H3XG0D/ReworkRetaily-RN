@@ -13,13 +13,14 @@ import Registration from '../components/pages/Registration/screens/registration/
 import ForgetCode from '../components/pages/Login/screens/Forget/forget-code/ForgetCode';
 import Code from '../components/pages/Registration/screens/code/Code';
 import ResetPassword from '../components/pages/Login/screens/Forget/reset-password/ResetPassword';
+import Loader from '../components/UI/Loader';
 
 const Stack = createNativeStackNavigator<RetaiyRootTypeParamList>();
 
 const Navigation: React.FC = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LoginPage">
+      <Stack.Navigator initialRouteName="Loader">
         <Stack.Screen
           name="LoginPage"
           component={LoginPage}
@@ -40,6 +41,8 @@ const Navigation: React.FC = () => {
           name="Market"
           component={BottomNavigation}
           options={{headerShown: false}}></Stack.Screen>
+
+        <Stack.Screen name="Loader" component={Loader}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

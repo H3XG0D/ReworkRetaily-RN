@@ -148,8 +148,7 @@ const ForgetContainer = styled(View)`
 
   background-color: ${COLORS.milky};
 
-  margin-left: auto;
-  margin-right: auto;
+  align-self: center;
   align-items: center;
 `;
 

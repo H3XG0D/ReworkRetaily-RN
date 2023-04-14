@@ -108,7 +108,7 @@ const LoginForgetPassword = styled(Text)`
   font-weight: ${SIZES.bold};
 
   margin-top: 12px;
-  margin-right: 36%; // TODO: Доделать стили по-лучше для разных экранов
+  /* margin-right: 36%; // TODO: Доделать стили по-лучше для разных экранов */
 
   text-decoration: underline;
   text-decoration-color: ${COLORS.secondary};

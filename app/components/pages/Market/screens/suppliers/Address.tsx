@@ -12,6 +12,7 @@ import {COLORS} from '../../../../../constants';
 import RetailyLayout from '../../../../layout/RetailyLayout';
 import Field from '../../../../UI/Field';
 import Button from '../../../../UI/Button';
+import AddressSkeleton from '../../Skeletons/AddressSkeleton';
 
 const Address = () => {
   const navigation =
@@ -29,6 +30,7 @@ const Address = () => {
   }, [navigation]);
 
   const [choosed, setChoosed] = React.useState<boolean>(false);
+  const [loadSkeleton, setLoadSkeleton] = React.useState<boolean>(true);
 
   const [shops, setShops] = React.useState<any>([]);
   const [selectShopCode, setSelectShopCode] = React.useState<
@@ -40,6 +42,7 @@ const Address = () => {
   const getContractInfo = async () => {
     const info = await getShopsInfo('getShops', supplier.code);
     setShops(info);
+    setLoadSkeleton(false);
   };
 
   const filterList = (list: any) => {
@@ -83,41 +86,47 @@ const Address = () => {
 
         <ScrollView style={{height: 400}}>
           <View>
-            {filterList(shops).map((item: any, index: any) => {
-              return (
-                <Pressable
-                  onPress={() => {
-                    setSelectShopCode(item.code);
-                  }}
-                  onPressIn={() => ChooseHandler()}>
-                  <AddressItemContent>
-                    {item.code === selectShopCode ? (
-                      <AddressItemLine>
-                        <AddressSelectView>
-                          <AddressItemText key={index}>
-                            {item.name}
-                          </AddressItemText>
-                          <AddressItemSubtitle>
-                            Инн: {item.inn}
-                          </AddressItemSubtitle>
-                        </AddressSelectView>
-                      </AddressItemLine>
-                    ) : (
-                      <AddressItemLine>
-                        <AddressUnSelectView>
-                          <AddressItemText key={index}>
-                            {item.name}
-                          </AddressItemText>
-                          <AddressItemSubtitle>
-                            Инн: {item.inn}
-                          </AddressItemSubtitle>
-                        </AddressUnSelectView>
-                      </AddressItemLine>
-                    )}
-                  </AddressItemContent>
-                </Pressable>
-              );
-            })}
+            {loadSkeleton ? (
+              <AddressSkeleton />
+            ) : (
+              <>
+                {filterList(shops).map((item: any, index: any) => {
+                  return (
+                    <Pressable
+                      onPress={() => {
+                        setSelectShopCode(item.code);
+                      }}
+                      onPressIn={() => ChooseHandler()}>
+                      <AddressItemContent>
+                        {item.code === selectShopCode ? (
+                          <AddressItemLine>
+                            <AddressSelectView>
+                              <AddressItemText key={index}>
+                                {item.name}
+                              </AddressItemText>
+                              <AddressItemSubtitle>
+                                Инн: {item.inn}
+                              </AddressItemSubtitle>
+                            </AddressSelectView>
+                          </AddressItemLine>
+                        ) : (
+                          <AddressItemLine>
+                            <AddressUnSelectView>
+                              <AddressItemText key={index}>
+                                {item.name}
+                              </AddressItemText>
+                              <AddressItemSubtitle>
+                                Инн: {item.inn}
+                              </AddressItemSubtitle>
+                            </AddressUnSelectView>
+                          </AddressItemLine>
+                        )}
+                      </AddressItemContent>
+                    </Pressable>
+                  );
+                })}
+              </>
+            )}
           </View>
         </ScrollView>
 

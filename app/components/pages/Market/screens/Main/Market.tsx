@@ -62,10 +62,25 @@ const Market = (props: Props): ReactElement => {
   return (
     <RetailyLayout style={{backgroundColor: COLORS.milky}}>
       <MarketPaginationView>
-        <Banner showModal={showModal} setContent={setContent} />
-        <Tags suppliers={suppliers} active={active} setActive={setActive} />
+        <Banner
+          showModal={showModal}
+          setContent={setContent}
+          loadSkeleton={loadSkeleton}
+          setLoadSkeleton={setLoadSkeleton}
+        />
+        <Tags
+          suppliers={suppliers}
+          active={active}
+          setActive={setActive}
+          loadSkeleton={loadSkeleton}
+        />
       </MarketPaginationView>
-      <Supplier suppliers={suppliers} active={active} setContent={setContent} />
+      <Supplier
+        suppliers={suppliers}
+        active={active}
+        setContent={setContent}
+        loadSkeleton={loadSkeleton}
+      />
 
       <Modal
         content={content}

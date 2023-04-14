@@ -6,11 +6,13 @@ import {COLORS, siteUrl} from '../../../../../../constants';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MarketRootParamList} from '../../../../../../Navigation/routes';
+import SupplierSkeleton from '../../../Skeletons/SupplierSkeleton';
 
 interface Props {
   suppliers: any;
   active: any;
   setContent: any;
+  loadSkeleton: any;
 }
 
 const Supplier = (props: Props) => {
@@ -21,52 +23,56 @@ const Supplier = (props: Props) => {
 
   return (
     <ScrollView>
-      <MarketContentContainer>
-        {props.suppliers?.suppliers && props.suppliers.suppliers.length > 0
-          ? props.suppliers.suppliers
-              .filter(
-                (f: any) =>
-                  (f.tags &&
-                    f.tags.some(
-                      (t: any) =>
-                        t === props.active && f.parent_code != 'parent_01',
-                    )) ||
-                  (!props.active && f.parent_code != 'parent_01'),
-              )
-              .map((supplier: any) => {
-                return (
-                  <TouchableOpacity
-                    onPressIn={() => {
-                      setSupplier(supplier);
-                    }}
-                    onPress={() =>
-                      supplier.code === 'parent_01'
-                        ? navigation.navigate('ParentMeat', {supplier})
-                        : navigation.navigate('Address', {supplier})
-                    }>
-                    {/* // ! TODO: Add skeleton here */}
-                    <MarketContentBoxContainer>
-                      <MarketContentBox>
-                        <Image
-                          source={{
-                            uri:
-                              supplier &&
-                              supplier.images &&
-                              supplier.images.length > 0
-                                ? siteUrl + '/api/repo/' + supplier.images[0]
-                                : undefined,
-                          }}
-                          style={{width: 130, height: 130}}></Image>
-                        <MarketContentBoxText>
-                          {supplier.name}
-                        </MarketContentBoxText>
-                      </MarketContentBox>
-                    </MarketContentBoxContainer>
-                  </TouchableOpacity>
-                );
-              })
-          : undefined}
-      </MarketContentContainer>
+      {props.loadSkeleton ? (
+        <SupplierSkeleton />
+      ) : (
+        <MarketContentContainer>
+          {props.suppliers?.suppliers && props.suppliers.suppliers.length > 0
+            ? props.suppliers.suppliers
+                .filter(
+                  (f: any) =>
+                    (f.tags &&
+                      f.tags.some(
+                        (t: any) =>
+                          t === props.active && f.parent_code != 'parent_01',
+                      )) ||
+                    (!props.active && f.parent_code != 'parent_01'),
+                )
+                .map((supplier: any) => {
+                  return (
+                    <TouchableOpacity
+                      onPressIn={() => {
+                        setSupplier(supplier);
+                      }}
+                      onPress={() =>
+                        supplier.code === 'parent_01'
+                          ? navigation.navigate('ParentMeat', {supplier})
+                          : navigation.navigate('Address', {supplier})
+                      }>
+                      {/* // ! TODO: Add skeleton here */}
+                      <MarketContentBoxContainer>
+                        <MarketContentBox>
+                          <Image
+                            source={{
+                              uri:
+                                supplier &&
+                                supplier.images &&
+                                supplier.images.length > 0
+                                  ? siteUrl + '/api/repo/' + supplier.images[0]
+                                  : undefined,
+                            }}
+                            style={{width: 130, height: 130}}></Image>
+                          <MarketContentBoxText>
+                            {supplier.name}
+                          </MarketContentBoxText>
+                        </MarketContentBox>
+                      </MarketContentBoxContainer>
+                    </TouchableOpacity>
+                  );
+                })
+            : undefined}
+        </MarketContentContainer>
+      )}
     </ScrollView>
   );
 };

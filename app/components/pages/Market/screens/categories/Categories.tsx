@@ -6,8 +6,10 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MarketRootParamList} from '../../../../../Navigation/routes';
 import {getCategoriesInfo} from '../../../../../api/api';
-import RetailyLayout from '../../../../layout/RetailyLayout';
 import {COLORS, siteUrl} from '../../../../../constants';
+
+import RetailyLayout from '../../../../layout/RetailyLayout';
+import CategoriesSkeleton from '../../Skeletons/CategoriesSkeleton';
 
 const Categories = () => {
   const navigation =
@@ -29,7 +31,6 @@ const Categories = () => {
   const [loadSkeleton, setLoadSkeleton] = React.useState<boolean>(true);
 
   const getCategories = async () => {
-    setLoadSkeleton(true);
     const categories = await getCategoriesInfo(
       'getcategories',
       selectShopCode,
@@ -47,38 +48,44 @@ const Categories = () => {
     <RetailyLayout>
       <ScrollView>
         <CategoriesContentContainer>
-          {categories && categories.length > 0
-            ? categories.map((category: any) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('ProductsContainer', {
-                        supplier,
-                        selectShopCode,
-                        category,
-                      })
-                    }>
-                    <CategoriesContentBox>
-                      <CategoriesContentImages
-                        source={{
-                          uri:
-                            category &&
-                            category.images &&
-                            category.images.length > 0
-                              ? siteUrl + '/api/repo/' + category.images[0]
-                              : undefined,
-                        }}
-                      />
-                      <CategoriesContentBoxTextContainer>
-                        <CategoriesContentBoxText>
-                          {category.name}
-                        </CategoriesContentBoxText>
-                      </CategoriesContentBoxTextContainer>
-                    </CategoriesContentBox>
-                  </TouchableOpacity>
-                );
-              })
-            : undefined}
+          {loadSkeleton ? (
+            <CategoriesSkeleton />
+          ) : (
+            <>
+              {categories && categories.length > 0
+                ? categories.map((category: any) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate('ProductsContainer', {
+                            supplier,
+                            selectShopCode,
+                            category,
+                          })
+                        }>
+                        <CategoriesContentBox>
+                          <CategoriesContentImages
+                            source={{
+                              uri:
+                                category &&
+                                category.images &&
+                                category.images.length > 0
+                                  ? siteUrl + '/api/repo/' + category.images[0]
+                                  : undefined,
+                            }}
+                          />
+                          <CategoriesContentBoxTextContainer>
+                            <CategoriesContentBoxText>
+                              {category.name}
+                            </CategoriesContentBoxText>
+                          </CategoriesContentBoxTextContainer>
+                        </CategoriesContentBox>
+                      </TouchableOpacity>
+                    );
+                  })
+                : undefined}
+            </>
+          )}
         </CategoriesContentContainer>
       </ScrollView>
     </RetailyLayout>

@@ -4,18 +4,23 @@ import {View, ScrollView, TouchableOpacity, Image, Text} from 'react-native';
 
 import {siteUrl} from '../../../../../../constants';
 import {getClient} from '../../../../../../api/api';
+import BannerSkeleton from '../../../Skeletons/BannerSkeleton';
 
 interface Props {
   showModal: () => void;
   setContent: any;
+  loadSkeleton: any;
+  setLoadSkeleton: any;
 }
 
 const Banner = (props: Props) => {
   const [image, setImage] = React.useState<any>([]);
 
   const getBanners = async () => {
+    props.setLoadSkeleton(true);
     const result = await getClient({cmd: 'getbanners'});
     setImage(result);
+    props.setLoadSkeleton(false);
   };
 
   React.useEffect(() => {
@@ -25,33 +30,39 @@ const Banner = (props: Props) => {
   return (
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       <MarketPaginationSpace>
-        <View style={{flexDirection: 'row'}}>
-          {image?.standart && image.standart.length > 0
-            ? image.standart.map((banner: any) => {
-                return (
-                  <TouchableOpacity
-                    onPressIn={() => {
-                      props.setContent(banner);
-                      props.showModal();
-                    }}>
-                    <MarketPaginationBox>
-                      <Image
-                        source={{
-                          uri:
-                            banner && banner.images && banner.images.length > 0
-                              ? siteUrl + '/api/repo/' + banner.images[0]
-                              : undefined,
-                        }}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                        }}></Image>
-                    </MarketPaginationBox>
-                  </TouchableOpacity>
-                );
-              })
-            : undefined}
-        </View>
+        {props.loadSkeleton ? (
+          <BannerSkeleton />
+        ) : (
+          <View style={{flexDirection: 'row'}}>
+            {image?.standart && image.standart.length > 0
+              ? image.standart.map((banner: any) => {
+                  return (
+                    <TouchableOpacity
+                      onPressIn={() => {
+                        props.setContent(banner);
+                        props.showModal();
+                      }}>
+                      <MarketPaginationBox>
+                        <Image
+                          source={{
+                            uri:
+                              banner &&
+                              banner.images &&
+                              banner.images.length > 0
+                                ? siteUrl + '/api/repo/' + banner.images[0]
+                                : undefined,
+                          }}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                          }}></Image>
+                      </MarketPaginationBox>
+                    </TouchableOpacity>
+                  );
+                })
+              : undefined}
+          </View>
+        )}
       </MarketPaginationSpace>
     </ScrollView>
   );

@@ -26,7 +26,7 @@ export type BottomRootTypeParamList = {
 export type MarketRootParamList = {
   // * Screens that are inside the market
   Market: any;
-  Suppliers: any;
+  Address: any;
   ParentMeat: any;
   Categories: any;
   ProductsContainer: any;

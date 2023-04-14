@@ -14,6 +14,8 @@ interface Props {
 }
 
 const Supplier = (props: Props) => {
+  const [supplier, setSupplier] = React.useState<any>(undefined);
+
   const navigation =
     useNavigation<NativeStackNavigationProp<MarketRootParamList>>();
 
@@ -34,11 +36,13 @@ const Supplier = (props: Props) => {
               .map((supplier: any) => {
                 return (
                   <TouchableOpacity
-                    // onPressIn={() => props.setContent(supplier)}
+                    onPressIn={() => {
+                      setSupplier(supplier);
+                    }}
                     onPress={() =>
                       supplier.code === 'parent_01'
-                        ? navigation.navigate('ParentMeat')
-                        : navigation.navigate('Suppliers')
+                        ? navigation.navigate('ParentMeat', {supplier})
+                        : navigation.navigate('Address', {supplier})
                     }>
                     {/* // ! TODO: Add skeleton here */}
                     <MarketContentBoxContainer>

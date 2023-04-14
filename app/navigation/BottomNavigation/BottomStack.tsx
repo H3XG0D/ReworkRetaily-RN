@@ -5,7 +5,7 @@ import Market from '../../components/pages/Market/screens/Main/Market';
 import ProductsContainer from '../../components/pages/Market/screens/products/ProductsContainer';
 import Categories from '../../components/pages/Market/screens/categories/Categories';
 import ParentMeat from '../../components/pages/Market/screens/Main/parentmeat/ParentMeat';
-import Suppliers from '../../components/pages/Market/screens/suppliers/Suppliers';
+import Address from '../../components/pages/Market/screens/suppliers/Address';
 
 const RetailyStack = createNativeStackNavigator<MarketRootParamList>();
 
@@ -25,8 +25,8 @@ export const RetailyBottomScreen = () => {
         name="ParentMeat"
         component={ParentMeat}></RetailyStack.Screen>
       <RetailyStack.Screen
-        name="Suppliers"
-        component={Suppliers}></RetailyStack.Screen>
+        name="Address"
+        component={Address}></RetailyStack.Screen>
     </RetailyStack.Navigator>
   );
 };

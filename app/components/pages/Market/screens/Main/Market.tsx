@@ -34,6 +34,14 @@ const Market = (props: Props): ReactElement => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: content.name,
+      headerTitleStyle: {fontSize: 20},
+      animation: 'fade',
+    });
+  }, [navigation]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
       headerTitle: 'Главная',
       headerTitleAlign: 'left',
       headerLeft: () => <Text></Text>,

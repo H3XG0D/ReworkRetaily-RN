@@ -1,4 +1,4 @@
-import {RetaiyRootTypeParamList} from './app/navigation/routes';
+import {RetaiyRootTypeParamList} from './app/Navigation/routes';
 
 declare global {
   namespace RetailyNavigation {

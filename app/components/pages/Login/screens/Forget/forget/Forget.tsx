@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RetaiyRootTypeParamList} from '../../../../../../navigation/routes';
+import {RetaiyRootTypeParamList} from '../../../../../../Navigation/routes';
 
 import {COLORS} from '../../../../../../constants';
 import {loginCheck} from '../../../../../../api/api';
@@ -53,7 +53,7 @@ const Forget = () => {
       } else {
         setNumberError(true);
         navigation.navigate('ForgetCode', {userPhone});
-        // GetSms(userPhone, 'phone');
+        GetSms(userPhone, 'phone');
       }
     }
     setLoad(false);

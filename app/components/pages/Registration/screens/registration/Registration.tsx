@@ -3,7 +3,7 @@ import React from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RetaiyRootTypeParamList} from '../../../../../navigation/routes';
+import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
 import {loginCheck} from '../../../../../api/api';
 import {GetSms} from '../../../../../hooks/GetSms';
 import RetailyLayout from '../../../../layout/RetailyLayout';

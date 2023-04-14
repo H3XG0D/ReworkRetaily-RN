@@ -3,7 +3,7 @@ import React, {useRef, useState} from 'react';
 
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RetaiyRootTypeParamList} from '../../../../../navigation/routes';
+import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
 
 import RetailyLayout from '../../../../layout/RetailyLayout';
 import {GetSms} from '../../../../../hooks/GetSms';

@@ -3,7 +3,7 @@ import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {LogBox} from 'react-native';
 
-import Navigation from './app/navigation/Navigation';
+import Navigation from './app/Navigation/Navigation';
 
 const App = () => {
   LogBox.ignoreAllLogs();

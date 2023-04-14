@@ -8,10 +8,10 @@ import {RetaiyRootTypeParamList} from './routes';
 import LoginPage from '../components/pages/Login/screens/login/Login';
 import Forget from '../components/pages/Login/screens/Forget/forget/Forget';
 import Registration from '../components/pages/Registration/screens/registration/Registration';
-import Market from '../components/pages/Market/screens/Main/Market';
 import ForgetCode from '../components/pages/Login/screens/Forget/forget-code/ForgetCode';
 import Code from '../components/pages/Registration/screens/code/Code';
 import ResetPassword from '../components/pages/Login/screens/Forget/reset-password/ResetPassword';
+import {BottomNavigation} from './BottomNavigation/BottomNavigation';
 
 const Stack = createNativeStackNavigator<RetaiyRootTypeParamList>();
 
@@ -35,7 +35,10 @@ const Navigation: React.FC = () => {
           component={Registration}></Stack.Screen>
         <Stack.Screen name="Code" component={Code}></Stack.Screen>
 
-        <Stack.Screen name="Market" component={Market}></Stack.Screen>
+        <Stack.Screen
+          name="Market"
+          component={BottomNavigation}
+          options={{headerShown: false}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

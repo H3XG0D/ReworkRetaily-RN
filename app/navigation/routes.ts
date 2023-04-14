@@ -18,17 +18,16 @@ export type RetaiyRootTypeParamList = {
 export type BottomRootTypeParamList = {
   // * Main BottomNavigator Retaily Screens
   MarketStack: MarketRootParamList;
-
-  Suppliers: any;
-  ParentMeat: any;
-  Categories: any;
-  ProductsContainer: any;
+  Request: any;
+  MyRequest: any;
+  UserProfile: any;
 };
 
 export type MarketRootParamList = {
   // * Screens that are inside the market
   Market: any;
-  Request: any;
-  MyRequest: any;
-  UserProfile: any;
+  Suppliers: any;
+  ParentMeat: any;
+  Categories: any;
+  ProductsContainer: any;
 };

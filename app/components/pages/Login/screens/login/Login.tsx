@@ -1,20 +1,42 @@
 import React from 'react';
 import {View, Text, Image} from 'react-native';
-
 import styled from 'styled-components';
+
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RetaiyRootTypeParamList} from '../../../../../navigation/routes';
 
 // * Import other components
 import Layout from '../../../../layout/Layout';
 import {SIZES, COLORS} from '../../../../../constants';
 import Field from '../../../../UI/Field';
 import Button from '../../../../UI/Button';
+import {auth} from '../../../../../api/api';
+import ButtonLoader from '../../../../UI/ButtonLoader';
 
 const LoginPage = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RetaiyRootTypeParamList>>();
+
   const [login, onChangeLogin] = React.useState<string>('');
   const [password, onChangePassword] = React.useState<string>('');
 
   const [error, setError] = React.useState<string | boolean>();
   const [loadError, setLoadError] = React.useState<boolean>();
+  const [load, setLoad] = React.useState<boolean>(false);
+
+  const loginCheck = async () => {
+    setLoad(true);
+
+    const register: any = await auth.login(login, password);
+
+    if (!loadError && !register) {
+      setError('Ошибка авторизации');
+    } else {
+      navigation.navigate('Market');
+    }
+    setLoad(false);
+  };
 
   return (
     <Layout>
@@ -41,14 +63,25 @@ const LoginPage = () => {
           isSecure={true}
         />
 
-        <LoginForgetPassword>Забыли пароль?</LoginForgetPassword>
-        <Button title="Войти" />
+        <LoginForgetPassword onPress={() => navigation.navigate('Forget')}>
+          Забыли пароль?
+        </LoginForgetPassword>
+
+        {load ? (
+          <ButtonLoader />
+        ) : (
+          <Button title="Войти" onPress={() => loginCheck()} />
+        )}
 
         <LoginSignUpView>
           <LoginSignUpText>
-            Нет аккаунта? <LoginSignUp>Зарегистрироваться</LoginSignUp>
+            Нет аккаунта?{' '}
+            <LoginSignUp onPress={() => navigation.navigate('Registration')}>
+              Зарегистрироваться
+            </LoginSignUp>
           </LoginSignUpText>
         </LoginSignUpView>
+        {loadError ? null : <LoginErrorText>{error}</LoginErrorText>}
       </Login>
     </Layout>
   );

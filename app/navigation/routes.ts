@@ -1,3 +1,5 @@
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+
 export type RetaiyRootTypeParamList = {
   // * Main StackNavigation Retaily Screens:
   LoginPage: undefined;
@@ -7,6 +9,7 @@ export type RetaiyRootTypeParamList = {
   Code: undefined;
   Details: undefined;
   Registration: undefined;
+  Market: undefined;
 
   // * Loader screen:
   Loader: undefined;
@@ -14,7 +17,7 @@ export type RetaiyRootTypeParamList = {
 
 export type BottomRootTypeParamList = {
   // * Main BottomNavigator Retaily Screens
-  MarketStack: undefined;
+  MarketStack: MarketRootParamList;
 
   Suppliers: undefined;
   ParentMeat: undefined;

@@ -1,11 +1,35 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 
-const Navigation = () => {
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {RetaiyRootTypeParamList} from './routes';
+
+// * Import screens from directories
+import LoginPage from '../components/pages/Login/screens/login/Login';
+import Forget from '../components/pages/Login/screens/Forget/forget/Forget';
+import Registration from '../components/pages/Registration/screens/registration/Registration';
+import Market from '../components/pages/Market/screens/Main/Market';
+
+const Stack = createNativeStackNavigator<RetaiyRootTypeParamList>();
+
+const Navigation: React.FC = () => {
   return (
-    <View>
-      <Text>Navigation</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="LoginPage">
+        <Stack.Screen
+          name="LoginPage"
+          component={LoginPage}
+          options={{headerShown: false}}></Stack.Screen>
+
+        <Stack.Screen name="Forget" component={Forget}></Stack.Screen>
+
+        <Stack.Screen
+          name="Registration"
+          component={Registration}></Stack.Screen>
+
+        <Stack.Screen name="Market" component={Market}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

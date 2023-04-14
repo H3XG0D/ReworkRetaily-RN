@@ -9,7 +9,7 @@ import React from 'react';
 import {COLORS} from '../../constants';
 
 interface IButton {
-  title: any;
+  title: string;
   colors?: [string, string];
   onPress?: () => void;
   disabled?: boolean;

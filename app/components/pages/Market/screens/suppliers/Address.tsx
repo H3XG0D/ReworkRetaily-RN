@@ -5,14 +5,13 @@ import {View, Text, ScrollView, Pressable} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-import {getShopsContract, getShopsInfo} from '../../../../../api/api';
+import {getShopsInfo} from '../../../../../api/api';
 import {MarketRootParamList} from '../../../../../Navigation/routes';
 import {COLORS} from '../../../../../constants';
 
 import RetailyLayout from '../../../../layout/RetailyLayout';
 import Field from '../../../../UI/Field';
 import Button from '../../../../UI/Button';
-import ButtonLoader from '../../../../UI/ButtonLoader';
 
 const Address = () => {
   const navigation =
@@ -29,7 +28,6 @@ const Address = () => {
     });
   }, [navigation]);
 
-  const [load, setLoad] = React.useState<boolean>(false);
   const [choosed, setChoosed] = React.useState<boolean>(false);
 
   const [shops, setShops] = React.useState<any>([]);
@@ -40,10 +38,8 @@ const Address = () => {
   const [search, setSearch] = React.useState<any>('');
 
   const getContractInfo = async () => {
-    setLoad(true);
     const info = await getShopsInfo('getShops', supplier.code);
     setShops(info);
-    setLoad(false);
   };
 
   const filterList = (list: any) => {
@@ -126,14 +122,16 @@ const Address = () => {
         </ScrollView>
 
         <Button
-          title={load ? <ButtonLoader /> : 'Выбрать'}
+          title="Выбрать"
           onPress={() =>
             navigation.navigate('Categories', {supplier, selectShopCode})
           }
-          disabled={load || !choosed ? true : false}
+          disabled={!choosed ? true : false}
           style={{
             backgroundColor: choosed ? COLORS.tertiary : COLORS.gray,
             alignSelf: 'center',
+            width: 350,
+            height: 45,
           }}
         />
       </AddressContent>
@@ -169,7 +167,7 @@ const AddressItemLine = styled(View)`
 `;
 
 const AddressSelectView = styled(View)`
-  width: 350px;
+  width: 370px;
 
   border-color: ${COLORS.primary};
   border-top-width: 1px;

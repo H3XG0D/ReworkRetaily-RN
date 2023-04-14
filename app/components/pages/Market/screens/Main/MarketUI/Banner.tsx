@@ -5,9 +5,13 @@ import {View, ScrollView, TouchableOpacity, Image, Text} from 'react-native';
 import {siteUrl} from '../../../../../../constants';
 import {getClient} from '../../../../../../api/api';
 
-const Banner = () => {
+interface Props {
+  showModal: () => void;
+  setContent: any;
+}
+
+const Banner = (props: Props) => {
   const [image, setImage] = React.useState<any>([]);
-  const [content, setContent] = React.useState<any>(undefined);
 
   const getBanners = async () => {
     const result = await getClient({cmd: 'getbanners'});
@@ -25,7 +29,11 @@ const Banner = () => {
           {image?.standart && image.standart.length > 0
             ? image.standart.map((banner: any) => {
                 return (
-                  <TouchableOpacity onPressIn={() => setContent(banner)}>
+                  <TouchableOpacity
+                    onPressIn={() => {
+                      props.setContent(banner);
+                      props.showModal();
+                    }}>
                     <MarketPaginationBox>
                       <Image
                         source={{

@@ -10,13 +10,12 @@ import {MarketRootParamList} from '../../../../../../Navigation/routes';
 interface Props {
   suppliers: any;
   active: any;
+  setContent: any;
 }
 
 const Supplier = (props: Props) => {
   const navigation =
     useNavigation<NativeStackNavigationProp<MarketRootParamList>>();
-
-  const [content, setContent] = React.useState<any>(undefined);
 
   return (
     <ScrollView>
@@ -35,7 +34,7 @@ const Supplier = (props: Props) => {
               .map((supplier: any) => {
                 return (
                   <TouchableOpacity
-                    onPressIn={() => setContent(supplier)}
+                    // onPressIn={() => props.setContent(supplier)}
                     onPress={() =>
                       supplier.code === 'parent_01'
                         ? navigation.navigate('ParentMeat')

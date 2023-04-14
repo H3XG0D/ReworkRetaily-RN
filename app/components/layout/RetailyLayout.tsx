@@ -8,7 +8,6 @@ import styled from 'styled-components';
 
 interface ILayout {
   children: React.ReactNode;
-  isScrollView?: boolean;
   style?: ViewStyle | ViewStyle[];
 }
 

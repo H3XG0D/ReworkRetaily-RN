@@ -299,6 +299,8 @@ PODS:
   - React-jsinspector (0.71.6)
   - React-logger (0.71.6):
     - glog
+  - react-native-ionicons (4.6.5):
+    - React
   - react-native-safe-area-context (4.5.1):
     - RCT-Folly
     - RCTRequired
@@ -395,6 +397,10 @@ PODS:
   - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
+  - RNSVG (13.9.0):
+    - React-Core
+  - RNVectorIcons (9.2.0):
+    - React-Core
   - SocketRocket (0.6.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -445,6 +451,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-ionicons (from `../node_modules/react-native-ionicons`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-version-info (from `../node_modules/react-native-version-info`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -463,6 +470,8 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -524,6 +533,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-ionicons:
+    :path: "../node_modules/react-native-ionicons"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-version-info:
@@ -560,6 +571,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-device-info"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -597,6 +612,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: fbbbda979d16e09825cced680f799108bec2ab58
   React-jsinspector: d5ce2ef3eb8fd30c28389d0bc577918c70821bd6
   React-logger: 9332c3e7b4ef007a0211c0a9868253aac3e1da82
+  react-native-ionicons: 7ce04a8e61c6de2fc3b6798e8b9621b865cb18b1
   react-native-safe-area-context: f5549f36508b1b7497434baa0cd97d7e470920d4
   react-native-version-info: a106f23009ac0db4ee00de39574eb546682579b9
   React-perflogger: 43392072a5b867a504e2b4857606f8fc5a403d7f
@@ -615,10 +631,12 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b90b71f45b8b97be43bc4284e71a6af48ac9f547
   RNDeviceInfo: 475a4c447168d0ad4c807e48ef5e0963a0f4eb1b
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
+  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: ba09b6b11e6139e3df8229238aa794205ca6a02a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 2821829abaa5058445a51d3021da7ba904d0ff6a
+PODFILE CHECKSUM: 9903113025148c53f44a156ab2024aba888add50
 
 COCOAPODS: 1.12.0

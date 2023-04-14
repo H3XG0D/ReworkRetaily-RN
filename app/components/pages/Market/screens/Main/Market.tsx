@@ -13,6 +13,7 @@ import Banner from './MarketUI/Banner';
 import Tags from './MarketUI/Tags';
 import {getClient} from '../../../../../api/api';
 import Supplier from './MarketUI/Supplier';
+import Modal from './MarketUI/Modal';
 
 interface Props {}
 
@@ -22,6 +23,11 @@ const Market = (props: Props): ReactElement => {
 
   const [active, setActive] = React.useState<string | undefined>(undefined);
   const [suppliers, setSuppliers] = React.useState<any>([]);
+  const [content, setContent] = React.useState<any>([]);
+
+  const showModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RetaiyRootTypeParamList>>();
@@ -48,10 +54,16 @@ const Market = (props: Props): ReactElement => {
   return (
     <RetailyLayout style={{backgroundColor: COLORS.milky}}>
       <MarketPaginationView>
-        <Banner />
+        <Banner showModal={showModal} setContent={setContent} />
         <Tags suppliers={suppliers} active={active} setActive={setActive} />
       </MarketPaginationView>
-      <Supplier suppliers={suppliers} active={active} />
+      <Supplier suppliers={suppliers} active={active} setContent={setContent} />
+
+      <Modal
+        content={content}
+        isVisible={isModalVisible}
+        showModal={showModal}
+      />
     </RetailyLayout>
   );
 };

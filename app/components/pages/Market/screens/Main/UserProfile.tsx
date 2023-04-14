@@ -1,13 +1,13 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Text} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RetailyLayout from '../../../../layout/RetailyLayout';
 import Button from '../../../../UI/Button';
+import PaddingLayout from '../../../../layout/PaddingLayout';
 
 const UserProfile = () => {
   const navigation =
@@ -31,13 +31,13 @@ const UserProfile = () => {
   };
 
   return (
-    <RetailyLayout>
+    <PaddingLayout>
       <Button
         onPress={() => logout()}
         title="Выйти"
         style={{alignSelf: 'center'}}
       />
-    </RetailyLayout>
+    </PaddingLayout>
   );
 };
 

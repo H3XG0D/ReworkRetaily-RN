@@ -1,4 +1,4 @@
-import {View, NativeModules} from 'react-native';
+import {View, NativeModules, ViewStyle} from 'react-native';
 import React from 'react';
 
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -8,12 +8,12 @@ import styled from 'styled-components';
 
 interface ILayout {
   children: React.ReactNode;
-  isScrollView?: boolean;
+  style?: ViewStyle | ViewStyle[];
 }
 
 export const {StatusBarManager} = NativeModules;
 
-export const Layout: React.FC<ILayout> = ({children, isScrollView = true}) => {
+export const Layout: React.FC<ILayout> = ({children}) => {
   const insets = useSafeAreaInsets();
 
   return (

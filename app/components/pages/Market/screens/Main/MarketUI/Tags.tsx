@@ -1,60 +1,63 @@
-import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
 import styled from 'styled-components';
 
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {COLORS} from '../../../../../../constants';
+import {getClient} from '../../../../../../api/api';
 
-import RetailyLayout from '../../../../layout/RetailyLayout';
-import {COLORS} from '../../../../../constants';
+const [active, setActive] = React.useState<string | undefined>(undefined);
+const [suppliers, setSuppliers] = React.useState<any>([]);
 
-const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
-const [loadSkeleton, setLoadSkeleton] = React.useState<boolean>(true);
+const getSuppliers = async () => {
+  const result = await getClient({cmd: 'getsuppliers'});
+  setSuppliers(result);
+};
 
-import Banner from './MarketUI/Banner';
-import Tags from './MarketUI/Tags';
-
-const Market = () => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RetaiyRootTypeParamList>>();
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: 'Главная',
-      headerTitleAlign: 'left',
-      headerLeft: () => <Text></Text>,
-      headerTitleStyle: {fontSize: 27, fontWeight: '700'},
-      animation: 'none',
-    });
-  }, [navigation]);
-
+const Tags = () => {
   return (
-    <RetailyLayout style={{backgroundColor: COLORS.milky}}>
-      <MarketPaginationView>
-        <Banner />
-        <Tags />
-      </MarketPaginationView>
-    </RetailyLayout>
+    <ScrollView
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+      style={{marginTop: 25}}>
+      <TouchableOpacity onPress={() => setActive(undefined)}>
+        <MarketPaginationFilterAll
+          style={{
+            backgroundColor: active === undefined ? '#288AF4' : '#E4E4E6',
+          }}>
+          <MarketPaginationFilterTextTabs
+            style={{color: active === undefined ? 'white' : 'black'}}>
+            Все
+          </MarketPaginationFilterTextTabs>
+        </MarketPaginationFilterAll>
+      </TouchableOpacity>
+      <MarketPaginationSpace>
+        {suppliers?.tags?.map((item: any) => {
+          return (
+            <TouchableOpacity onPress={() => setActive(item.code)}>
+              <MarketPagnationFilters
+                style={{
+                  backgroundColor: item.code === active ? '#288AF4' : '#E4E4E6',
+                }}>
+                <MarketPaginationFilterTextTabs
+                  style={{
+                    color: item.code === active ? 'white' : 'black',
+                  }}>
+                  {item.name}
+                </MarketPaginationFilterTextTabs>
+              </MarketPagnationFilters>
+            </TouchableOpacity>
+          );
+        })}
+      </MarketPaginationSpace>
+    </ScrollView>
   );
 };
 
-export default Market;
+React.useEffect(() => {
+  getSuppliers();
+}, []);
 
-const MarketPaginationView = styled(View)`
-  background-color: ${COLORS.white};
-  height: 205px;
-`;
-
-const MarketPaginationBox = styled(View)`
-  width: 150px;
-  height: 100px;
-  border-radius: 10px;
-
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 20px;
-`;
+export default Tags;
 
 const MarketPaginationFilterAll = styled(View)`
   background-color: ${COLORS.brightgray};

@@ -7,13 +7,15 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RetaiyRootTypeParamList} from '../../../../../../navigation/routes';
 
 import {COLORS} from '../../../../../../constants';
-import {getSMS, loginCheck} from '../../../../../../api/api';
+import {loginCheck} from '../../../../../../api/api';
 
 import RetailyLayout from '../../../../../layout/RetailyLayout';
 import ImportantInfo from '../../../../../UI/ImportantInfo';
 import Field from '../../../../../UI/Field';
 import ButtonLoader from '../../../../../UI/ButtonLoader';
 import Button from '../../../../../UI/Button';
+import {PhoneEdit} from '../../../../../../hooks/PhoneEdit';
+import {GetSms} from '../../../../../../hooks/GetSms';
 
 const Forget = () => {
   const navigation =
@@ -27,9 +29,7 @@ const Forget = () => {
   }, [navigation]);
 
   const [phone, onChangePhone] = React.useState<string>('');
-
   const [numberError, setNumberError] = React.useState<any>('');
-  const [userPhone, setUserPhone] = React.useState<any>();
 
   const [load, setLoad] = React.useState<boolean>(false);
 
@@ -42,11 +42,8 @@ const Forget = () => {
       .replace('-', '')
       .replace('(', '')
       .replace(')', '');
-    const realPhone = 8 + String(userPhone);
 
-    const smsGet = async () => {
-      let sms = await getSMS(userPhone, 'phone');
-    };
+    const realPhone = 8 + String(userPhone);
 
     if (phone.length < 15) {
       setNumberError('Полностью впишите свой номер');
@@ -57,10 +54,9 @@ const Forget = () => {
       } else {
         setNumberError(true);
         navigation.navigate('ForgetCode');
-        smsGet();
+        GetSms(userPhone, 'phone');
       }
     }
-
     setLoad(false);
   };
 

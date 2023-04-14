@@ -14,7 +14,6 @@ import ImportantInfo from '../../../../../UI/ImportantInfo';
 import Field from '../../../../../UI/Field';
 import ButtonLoader from '../../../../../UI/ButtonLoader';
 import Button from '../../../../../UI/Button';
-import {PhoneEdit} from '../../../../../../hooks/PhoneEdit';
 import {GetSms} from '../../../../../../hooks/GetSms';
 
 const Forget = () => {

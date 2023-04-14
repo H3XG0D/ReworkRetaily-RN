@@ -5,7 +5,6 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RetaiyRootTypeParamList} from '../../../../../navigation/routes';
 import {loginCheck} from '../../../../../api/api';
-import {PhoneEdit} from '../../../../../hooks/PhoneEdit';
 import {GetSms} from '../../../../../hooks/GetSms';
 import RetailyLayout from '../../../../layout/RetailyLayout';
 import styled from 'styled-components';
@@ -51,12 +50,11 @@ const Registration = () => {
         setNumberError('Этот номер уже зарегестрирован');
       } else {
         setNumberError(true);
-        // navigation.navigate('Code');
-        GetSms(userPhone, 'phone');
+        navigation.navigate('Code', {realPhone});
+        // GetSms(userPhone, 'phone');
       }
     }
     setLoad(false);
-    console.log(userPhone);
   };
 
   const validateNumberElements = (number: string) => {

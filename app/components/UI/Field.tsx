@@ -1,5 +1,5 @@
-import {StyleSheet, TextInput, TextStyle, ViewStyle} from 'react-native';
 import React from 'react';
+import {StyleSheet, TextInput, TextStyle, ViewStyle} from 'react-native';
 import {COLORS} from '../../constants';
 
 interface IField {
@@ -7,7 +7,7 @@ interface IField {
   value: string;
   placeholder: string;
   isSecure?: boolean;
-  isNumeric?: 'numeric';
+  isNumeric?: 'numeric' | 'number-pad';
   maxLength?: number;
   numberOfLines?: number;
   style?: TextStyle | TextStyle[] | ViewStyle | ViewStyle[];
@@ -25,9 +25,9 @@ const Field: React.FC<IField> = ({
 }) => {
   return (
     <TextInput
+      onChangeText={onChangeText}
       showSoftInputOnFocus={false}
       placeholder={placeholder}
-      onChangeText={onChangeText}
       value={value}
       secureTextEntry={isSecure}
       autoCapitalize="none"

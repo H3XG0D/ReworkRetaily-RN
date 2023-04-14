@@ -12,13 +12,15 @@ interface IButton {
   title: string;
   colors?: [string, string];
   onPress?: () => void;
+  disabled?: boolean;
   style?: TextStyle | TextStyle[] | ViewStyle | ViewStyle[];
 }
 
-const Button: React.FC<IButton> = ({title, onPress, style = {}}) => {
+const Button: React.FC<IButton> = ({title, onPress, disabled, style = {}}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       style={StyleSheet.flatten([
         {
           backgroundColor: COLORS.primary,

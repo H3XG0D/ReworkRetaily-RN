@@ -12,18 +12,13 @@ interface ILayout {
   style?: ViewStyle | ViewStyle[];
 }
 
-export const RetailyLayout: React.FC<ILayout> = ({
-  children,
-  isScrollView = true,
-  style = {},
-}) => {
+export const RetailyLayout: React.FC<ILayout> = ({children, style = {}}) => {
   const insets = useSafeAreaInsets();
 
   return (
     <LayoutMain
       style={StyleSheet.flatten([
         {
-          paddingBottom: insets.bottom,
           paddingLeft: insets.left,
           paddingRight: insets.right,
         },

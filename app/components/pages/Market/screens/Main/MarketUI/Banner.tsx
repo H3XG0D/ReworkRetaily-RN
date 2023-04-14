@@ -2,18 +2,22 @@ import React from 'react';
 import styled from 'styled-components';
 import {View, ScrollView, TouchableOpacity, Image, Text} from 'react-native';
 
-import {COLORS, siteUrl} from '../../../../../../constants';
+import {siteUrl} from '../../../../../../constants';
 import {getClient} from '../../../../../../api/api';
 
-const [image, setImage] = React.useState<any>([]);
-const [content, setContent] = React.useState<any>(undefined);
-
-const getBanners = async () => {
-  const result = await getClient({cmd: 'getbanners'});
-  setImage(result);
-};
-
 const Banner = () => {
+  const [image, setImage] = React.useState<any>([]);
+  const [content, setContent] = React.useState<any>(undefined);
+
+  const getBanners = async () => {
+    const result = await getClient({cmd: 'getbanners'});
+    setImage(result);
+  };
+
+  React.useEffect(() => {
+    getBanners();
+  }, []);
+
   return (
     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
       <MarketPaginationSpace>
@@ -44,10 +48,6 @@ const Banner = () => {
     </ScrollView>
   );
 };
-
-React.useEffect(() => {
-  getBanners();
-}, []);
 
 export default Banner;
 

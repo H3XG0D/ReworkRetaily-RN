@@ -2,7 +2,7 @@ export const COLORS = {
   primary: '#278AF5', // Main Color
   secondary: '#3486E2', // Active Color
   tertiary: '#439AF7',
-  fouth: '#347AB6',
+  forth: '#347AB6',
   fifth: '#288AF4',
 
   // Global Colors

@@ -3,14 +3,15 @@ import {StyleSheet, TextInput, TextStyle, ViewStyle} from 'react-native';
 import {COLORS} from '../../constants';
 
 interface IField {
-  onChangeText: (val: string) => void;
+  onChangeText?: (val: string) => void;
   value?: string;
-  placeholder: string;
+  placeholder?: string;
   isSecure?: boolean;
   isNumeric?: 'numeric' | 'number-pad';
   maxLength?: number;
   numberOfLines?: number;
   style?: TextStyle | TextStyle[] | ViewStyle | ViewStyle[];
+  children?: React.ReactNode;
 }
 
 const Field: React.FC<IField> = ({
@@ -21,6 +22,7 @@ const Field: React.FC<IField> = ({
   isNumeric,
   maxLength,
   numberOfLines,
+  children,
   style = {},
 }) => {
   return (
@@ -42,8 +44,9 @@ const Field: React.FC<IField> = ({
           borderRadius: 8,
         },
         style,
-      ])}
-    />
+      ])}>
+      {children}
+    </TextInput>
   );
 };
 

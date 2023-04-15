@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';

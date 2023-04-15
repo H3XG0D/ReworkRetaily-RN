@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, TextInput, TextStyle, ViewStyle} from 'react-native';
+
 import {COLORS} from '../../constants';
 
 interface IField {

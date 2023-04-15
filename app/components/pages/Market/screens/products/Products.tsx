@@ -1,14 +1,17 @@
 import React, {ReactElement} from 'react';
 import styled from 'styled-components';
-import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
+
+import {View, Text, Image} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MarketRootParamList} from '../../../../../Navigation/routes';
 
 import {getProductsInfo} from '../../../../../api/api';
-import {COLORS, siteUrl} from '../../../../../constants';
+import {COLORS} from '../../../../../constants';
+
 import Modal from './productsUI/Modal';
+import Items from './productsUI/Items';
 
 interface Props {
   supplier: any;
@@ -97,128 +100,20 @@ const Products = (props: Props): ReactElement => {
 
   return (
     <View>
-      <ScrollView>
-        <ProductsContentContainer>
-          {products && products.length > 0
-            ? products.map((product: any) => {
-                return (
-                  <ProductsContentBoxTextContainer>
-                    <ProductsContentOutsideBox>
-                      <ProductsContentBox>
-                        <TouchableOpacity
-                          onPress={() => {
-                            showModal();
-                            setInfo(product);
-                          }}>
-                          <ProductsContentImages
-                            source={{
-                              uri:
-                                product &&
-                                product.images &&
-                                product.images.length > 0
-                                  ? siteUrl + '/api/repo/' + product.images[0]
-                                  : undefined,
-                            }}
-                          />
-                        </TouchableOpacity>
+      <Items
+        products={products}
+        buy={buy}
+        loadSkeleton={loadSkeleton}
+        setInfo={setInfo}
+        makeActive={makeActive}
+        miniActive={miniActive}
+        choosed={choosed}
+        setChoosed={setChoosed}
+        showModal={showModal}
+        incrementCounter={incrementCounter}
+        decrementCounter={decrementCounter}
+      />
 
-                        <ProductsContentBoxText numberOfLines={3}>
-                          {product.name}
-                        </ProductsContentBoxText>
-
-                        {miniActive && choosed == product.code ? (
-                          <>
-                            {buy ? (
-                              <Text
-                                style={{
-                                  fontSize: 12,
-                                  marginLeft: 10,
-                                  marginBottom: 2,
-                                  color: COLORS.primary,
-                                }}>
-                                {product?.price}
-                              </Text>
-                            ) : (
-                              <>
-                                {product?.quantum <= 0 ? null : (
-                                  <Text
-                                    style={{
-                                      fontSize: 12,
-                                      marginLeft: 10,
-                                      marginBottom: 2,
-                                      color: COLORS.primary,
-                                    }}>
-                                    {(
-                                      product?.price * product?.quantum
-                                    ).toFixed(2)}{' '}
-                                    ₽
-                                  </Text>
-                                )}
-                              </>
-                            )}
-                          </>
-                        ) : null}
-
-                        <ProductsContentBoxSubText>
-                          {product.description_short}
-                        </ProductsContentBoxSubText>
-
-                        <TouchableOpacity
-                          onPress={() => {
-                            makeActive();
-                            setInfo(product);
-                          }}
-                          onPressIn={() => setChoosed(product?.code)}>
-                          {miniActive == true && choosed == product.code ? (
-                            <>
-                              {product?.quantum <= 0 ? (
-                                <TouchableOpacity
-                                  onPress={() => incrementCounter(product)}>
-                                  <ProductsContentBoxPriceContainer>
-                                    <ProductsContentBoxPriceText>
-                                      {product.price} ₽
-                                    </ProductsContentBoxPriceText>
-                                  </ProductsContentBoxPriceContainer>
-                                </TouchableOpacity>
-                              ) : (
-                                <ProductsContentBoxMiniPrice>
-                                  <TouchableOpacity
-                                    onPress={() => decrementCounter(product)}>
-                                    <ProductMiniExpression>
-                                      <ProductsExpression>-</ProductsExpression>
-                                    </ProductMiniExpression>
-                                  </TouchableOpacity>
-                                  <Text
-                                    style={{
-                                      fontSize: 13,
-                                    }}>
-                                    {product?.quantum}
-                                  </Text>
-                                  <TouchableOpacity
-                                    onPress={() => incrementCounter(product)}>
-                                    <ProductMiniExpression>
-                                      <ProductsExpression>+</ProductsExpression>
-                                    </ProductMiniExpression>
-                                  </TouchableOpacity>
-                                </ProductsContentBoxMiniPrice>
-                              )}
-                            </>
-                          ) : (
-                            <ProductsContentBoxPriceContainer>
-                              <ProductsContentBoxPriceText>
-                                {product.price} ₽
-                              </ProductsContentBoxPriceText>
-                            </ProductsContentBoxPriceContainer>
-                          )}
-                        </TouchableOpacity>
-                      </ProductsContentBox>
-                    </ProductsContentOutsideBox>
-                  </ProductsContentBoxTextContainer>
-                );
-              })
-            : undefined}
-        </ProductsContentContainer>
-      </ScrollView>
       <Modal
         isModalVisible={isModalVisible}
         info={info}

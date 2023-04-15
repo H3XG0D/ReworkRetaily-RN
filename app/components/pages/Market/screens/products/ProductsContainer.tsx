@@ -1,5 +1,4 @@
 import React, {ReactElement} from 'react';
-import {View, Text} from 'react-native';
 
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';

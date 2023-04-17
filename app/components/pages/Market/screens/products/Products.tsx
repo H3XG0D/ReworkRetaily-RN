@@ -101,10 +101,10 @@ const Products = (props: Props): ReactElement => {
         products={products}
         buy={buy}
         loadSkeleton={loadSkeleton}
-        setInfo={setInfo}
-        makeActive={makeActive}
         miniActive={miniActive}
         choosed={choosed}
+        setInfo={setInfo}
+        makeActive={makeActive}
         setChoosed={setChoosed}
         showModal={showModal}
         incrementCounter={incrementCounter}

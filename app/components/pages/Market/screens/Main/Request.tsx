@@ -4,6 +4,7 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
+import RetailyLayout from '../../../../layout/RetailyLayout';
 
 const Request = () => {
   const navigation =
@@ -20,9 +21,9 @@ const Request = () => {
   }, [navigation]);
 
   return (
-    <View>
+    <RetailyLayout>
       <Text>Request</Text>
-    </View>
+    </RetailyLayout>
   );
 };
 

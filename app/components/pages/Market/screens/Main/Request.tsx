@@ -18,8 +18,8 @@ import {
 
 import Button from '../../../../UI/Button';
 import styled from 'styled-components';
-import PaddingLayout from '../../../../layout/PaddingLayout';
-import {siteUrl} from '../../../../../constants';
+import {COLORS, siteUrl} from '../../../../../constants';
+import RetailyLayout from '../../../../layout/RetailyLayout';
 
 const Request = () => {
   const navigation =
@@ -35,7 +35,7 @@ const Request = () => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: 'Заявки',
+      headerTitle: 'Корзина',
       headerTitleAlign: 'left',
       headerLeft: () => <Text></Text>,
       headerTitleStyle: {fontSize: 27, fontWeight: '700'},
@@ -44,59 +44,112 @@ const Request = () => {
   }, [navigation]);
 
   return (
-    <PaddingLayout>
+    <RetailyLayout>
       <ScrollView>
-        <RequestView>
-          {cartProduct.map(product => (
-            <RequestItems key={product.code}>
-              <Image
-                source={{
-                  uri:
-                    product && product.images && product.images.length > 0
-                      ? siteUrl + '/api/repo/' + product.images[0]
-                      : undefined,
-                }}
-                style={{width: 80, height: 80, resizeMode: 'contain'}}
-              />
-              <Text style={{textAlign: 'center', width: 300}}>
-                Имя товара: {product.name}
-              </Text>
-              <Text>Количество: {product.quantum}</Text>
-              <Text>Цена: {product.price} ₽</Text>
+        {cartProduct.map(product => (
+          <RequestView key={product.code}>
+            <RequestItems>
+              <RequestImage>
+                <Image
+                  source={{
+                    uri:
+                      product && product.images && product.images.length > 0
+                        ? siteUrl + '/api/repo/' + product.images[0]
+                        : undefined,
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    resizeMode: 'contain',
+                  }}
+                />
+              </RequestImage>
+
+              <View>
+                <Text>Имя товара: {product.name}</Text>
+              </View>
+              <View style={{width: 100}}>
+                <Text style={{color: COLORS.primary}}>
+                  Цена: {product.price} ₽
+                </Text>
+              </View>
               <Button
                 title="X"
                 onPress={() => removeProduct(product.code)}
-                style={{marginTop: 10, width: 30, height: 30}}
+                style={{width: 25, height: 25, marginTop: 0}}
               />
             </RequestItems>
-          ))}
-          {totalPrice === '0.00' ? (
-            <Text style={{fontWeight: '600', marginBottom: 30}}>
-              Корзина пуста
-            </Text>
-          ) : (
-            <Text style={{fontWeight: '600', marginBottom: 30}}>
-              В сумме: {totalPrice} ₽
-            </Text>
-          )}
-        </RequestView>
+          </RequestView>
+        ))}
+        {totalPrice === '0.00' ? (
+          <RequestTotalPrice>Корзина пуста</RequestTotalPrice>
+        ) : (
+          <RequestTotalPrice>В сумме: {totalPrice} ₽</RequestTotalPrice>
+        )}
       </ScrollView>
-    </PaddingLayout>
+    </RetailyLayout>
   );
 };
 
 export default Request;
 
-const RequestView = styled(View)`
-  width: 100%;
-  height: 100%;
-  margin-top: 20px;
+const RequestImage = styled(View)`
+  width: 80px;
+  height: 80px;
 
   align-items: center;
-  gap: 30px;
+  justify-content: center;
+
+  border-width: 1px;
+  padding: 5px;
+  border-color: ${COLORS.brightgray};
+`;
+
+const RequestView = styled(View)`
+  width: 100%;
+  height: 120px;
+
+  flex-direction: row;
+
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  border-bottom-width: 1px;
+  border-color: ${COLORS.brightgray};
 `;
 
 const RequestItems = styled(View)`
+  width: 90px;
+  height: 100px;
+
+  flex-direction: row;
+  gap: 20px;
+
+  justify-content: center;
   align-items: center;
-  gap: 5px;
+`;
+
+const RequestTotalPrice = styled(Text)`
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 30px;
+`;
+
+const MiniBtnView = styled(View)`
+  width: 30px;
+  height: 30px;
+  background-color: ${COLORS.brightgray};
+
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+`;
+
+const MiniBtnText = styled(Text)`
+  font-weight: bold;
 `;

@@ -37,7 +37,6 @@ export const BottomNavigation: React.FC = () => {
         name="Request"
         component={Request}
         options={{
-          headerShown: false,
           tabBarLabel: 'Корзина',
           tabBarActiveTintColor: COLORS.primary,
           tabBarIcon: tabinfo => {
@@ -55,7 +54,6 @@ export const BottomNavigation: React.FC = () => {
         name="MyRequest"
         component={MyRequest}
         options={{
-          headerShown: false,
           tabBarLabel: 'Мои заявки',
           tabBarActiveTintColor: COLORS.primary,
           tabBarIcon: tabinfo => {
@@ -73,7 +71,6 @@ export const BottomNavigation: React.FC = () => {
         name="UserProfile"
         component={UserProfile}
         options={{
-          headerShown: false,
           tabBarLabel: 'Профиль',
           tabBarActiveTintColor: COLORS.primary,
           tabBarIcon: tabinfo => {

@@ -7,7 +7,7 @@ import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '../../../../UI/Button';
-import PaddingLayout from '../../../../layout/PaddingLayout';
+import RetailyLayout from '../../../../layout/RetailyLayout';
 
 const UserProfile = () => {
   const navigation =
@@ -31,13 +31,13 @@ const UserProfile = () => {
   };
 
   return (
-    <PaddingLayout>
+    <RetailyLayout>
       <Button
         onPress={() => logout()}
         title="Выйти"
         style={{alignSelf: 'center'}}
       />
-    </PaddingLayout>
+    </RetailyLayout>
   );
 };
 

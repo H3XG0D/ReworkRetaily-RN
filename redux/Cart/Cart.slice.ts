@@ -25,7 +25,6 @@ export const cartSlice = createSlice({
     },
     removeProductFromCart: (state, action: PayloadAction<string>) => {
       const indexCartProdux = state.findIndex(
-        // product => product.id == action.payload,
         product => product.code == action.payload,
       );
       if (state[indexCartProdux].amount > 1) {

@@ -5,6 +5,16 @@ import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 
 import {COLORS, siteUrl} from '../../../../../../constants';
 import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
+import {
+  getProductsSelector,
+  removeProduct,
+} from '../../../../../../../redux/Products/Products.slice';
+import {
+  getAppSelectore,
+  useAppDispatch,
+} from '../../../../../../../redux/store/store.hooks';
+import {addProductToCart} from '../../../../../../../redux/Cart/Cart.slice';
+import {IOrderProduct} from '../../../../../../../redux/types';
 
 interface Props {
   products: any;
@@ -24,6 +34,18 @@ interface Props {
 }
 
 const Items = (props: Props) => {
+  const products = getAppSelectore(getProductsSelector);
+
+  const dispatch = useAppDispatch();
+
+  const removeProductFromState = (code: string) => {
+    dispatch(removeProduct(code));
+  };
+
+  const addToCart = (product: IOrderProduct) => {
+    dispatch(addProductToCart(product));
+  };
+
   return (
     <ScrollView>
       <ProductsContentContainer>
@@ -99,6 +121,7 @@ const Items = (props: Props) => {
                             onPress={() => {
                               props.makeActive();
                               props.setInfo(product);
+                              addToCart(product);
                             }}
                             onPressIn={() => props.setChoosed(product?.code)}>
                             {props.miniActive &&

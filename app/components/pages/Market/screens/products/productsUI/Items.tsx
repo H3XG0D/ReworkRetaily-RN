@@ -1,20 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 
 import {COLORS, siteUrl} from '../../../../../../constants';
-import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
-import {
-  getProductsSelector,
-  removeProduct,
-} from '../../../../../../../redux/Products/Products.slice';
-import {
-  getAppSelectore,
-  useAppDispatch,
-} from '../../../../../../../redux/store/store.hooks';
+import {useAppDispatch} from '../../../../../../../redux/store/store.hooks';
 import {addProductToCart} from '../../../../../../../redux/Cart/Cart.slice';
 import {IOrderProduct} from '../../../../../../../redux/types';
+
+import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
 
 interface Props {
   products: any;
@@ -50,7 +43,15 @@ const Items = (props: Props) => {
             {props.products && props.products.length > 0
               ? props.products.map((product: any) => {
                   return (
-                    <ProductsContentBoxTextContainer>
+                    <ProductsContentBoxTextContainer
+                      style={{
+                        borderBottomWidth:
+                          props.choosed == product.code ? 4 : 0,
+                        borderColor:
+                          props.choosed == product.code
+                            ? COLORS.primary
+                            : COLORS.brightgray,
+                      }}>
                       <ProductsContentOutsideBox>
                         <ProductsContentBox>
                           <TouchableOpacity

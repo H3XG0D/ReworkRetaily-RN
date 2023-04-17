@@ -1,4 +1,4 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, Image} from 'react-native';
 import React from 'react';
 
 import {useNavigation} from '@react-navigation/native';
@@ -19,6 +19,7 @@ import {
 import Button from '../../../../UI/Button';
 import styled from 'styled-components';
 import PaddingLayout from '../../../../layout/PaddingLayout';
+import {siteUrl} from '../../../../../constants';
 
 const Request = () => {
   const navigation =
@@ -48,7 +49,18 @@ const Request = () => {
         <RequestView>
           {cartProduct.map(product => (
             <RequestItems key={product.code}>
-              <Text>Имя товара: {product.name}</Text>
+              <Image
+                source={{
+                  uri:
+                    product && product.images && product.images.length > 0
+                      ? siteUrl + '/api/repo/' + product.images[0]
+                      : undefined,
+                }}
+                style={{width: 80, height: 80, resizeMode: 'contain'}}
+              />
+              <Text style={{textAlign: 'center', width: 300}}>
+                Имя товара: {product.name}
+              </Text>
               <Text>Количество: {product.quantum}</Text>
               <Text>Цена: {product.price} ₽</Text>
               <Button
@@ -86,4 +98,5 @@ const RequestView = styled(View)`
 
 const RequestItems = styled(View)`
   align-items: center;
+  gap: 5px;
 `;

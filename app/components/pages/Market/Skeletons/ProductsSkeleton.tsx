@@ -105,6 +105,18 @@ export const ProductsSkeleton = () => {
             borderRadius={8}
             marginTop={30}
           />
+          <SkeletonPlaceholder.Item
+            width={115}
+            height={200}
+            borderRadius={8}
+            marginTop={30}
+          />
+          <SkeletonPlaceholder.Item
+            width={115}
+            height={200}
+            borderRadius={8}
+            marginTop={30}
+          />
         </SkeletonPlaceholder.Item>
       </SkeletonPlaceholder>
     </ScrollView>

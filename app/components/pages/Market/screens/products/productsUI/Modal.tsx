@@ -13,10 +13,13 @@ import Field from '../../../../../UI/Field';
 interface Props {
   isModalVisible: any;
   info: any;
+  setInfo: any;
   active: any;
 
-  showModal: () => void;
+  setChoosed: any;
+  choosed: any;
 
+  showModal: () => void;
   AddProduct: (product: any) => void;
   incrementCounter: (product: any) => void;
   decrementCounter: (product: any) => void;
@@ -68,11 +71,7 @@ const Modal = (props: Props) => {
             <ProductsModalHeader>
               <ProductsModalTitle>{props.info?.name}</ProductsModalTitle>
               <View style={{alignItems: 'center'}}>
-                {props.active ? (
-                  <ProductsModalCost style={{color: COLORS.black}}>
-                    {props.info?.price} ₽
-                  </ProductsModalCost>
-                ) : (
+                {props.active && props.choosed === props.info?.code ? (
                   <>
                     {props.info?.quantum <= 0 ? (
                       <ProductsModalCost style={{color: COLORS.black}}>
@@ -84,8 +83,12 @@ const Modal = (props: Props) => {
                       </ProductsModalCost>
                     )}
                   </>
+                ) : (
+                  <ProductsModalCost style={{color: COLORS.black}}>
+                    {props.info?.price} ₽
+                  </ProductsModalCost>
                 )}
-                {props.active ? null : (
+                {props.active && props.choosed === props.info?.code ? (
                   <>
                     {props.info?.quantum <= 0 ? null : (
                       <ProductsModalSubtitleCost>
@@ -93,23 +96,18 @@ const Modal = (props: Props) => {
                       </ProductsModalSubtitleCost>
                     )}
                   </>
-                )}
+                ) : null}
               </View>
             </ProductsModalHeader>
 
-            {props.active ? (
-              <TouchableOpacity onPress={() => props.AddProduct(props.info)}>
-                <ProductsModalBtn>
-                  <ProductsModalBtnText>
-                    {props.info?.price} ₽
-                  </ProductsModalBtnText>
-                </ProductsModalBtn>
-              </TouchableOpacity>
-            ) : (
+            {props.active && props.choosed === props.info?.code ? (
               <>
                 {props.info?.quantum <= 0 ? (
                   <TouchableOpacity
-                    onPress={() => props.AddProduct(props.info)}>
+                    onPress={() => {
+                      props.AddProduct(props.info);
+                      props.setChoosed(props.info?.code);
+                    }}>
                     <ProductsModalBtn>
                       <ProductsModalBtnText>
                         {props.info?.price} ₽
@@ -145,6 +143,18 @@ const Modal = (props: Props) => {
                   </ProductsModalCountView>
                 )}
               </>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  props.setInfo(props.info);
+                  props.setChoosed(props.info?.code);
+                }}>
+                <ProductsModalBtn>
+                  <ProductsModalBtnText>
+                    {props.info?.price} ₽
+                  </ProductsModalBtnText>
+                </ProductsModalBtn>
+              </TouchableOpacity>
             )}
 
             <ProductModalInfoContainer>

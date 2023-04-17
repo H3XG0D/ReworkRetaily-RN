@@ -30,7 +30,7 @@ const Products = (props: Props): ReactElement => {
 
   const [products, setProducts] = React.useState<any>(undefined);
 
-  const [active, setActive] = React.useState<boolean>(false);
+  const [active, setActive] = React.useState<any>(undefined);
   const [info, setInfo] = React.useState<any>(undefined);
   const [buy, setBuy] = React.useState<boolean>(false);
   const [miniActive, setMiniActive] = React.useState<boolean>(false);
@@ -55,7 +55,7 @@ const Products = (props: Props): ReactElement => {
   };
 
   const AddProduct = (product: any) => {
-    setActive(false);
+    setActive(true);
     setBuy(false);
 
     let obj = {...info};
@@ -114,9 +114,12 @@ const Products = (props: Props): ReactElement => {
       <Modal
         isModalVisible={isModalVisible}
         info={info}
+        setInfo={setInfo}
+        choosed={choosed}
         active={active}
         showModal={showModal}
         AddProduct={AddProduct}
+        setChoosed={setChoosed}
         incrementCounter={incrementCounter}
         decrementCounter={decrementCounter}
       />

@@ -99,6 +99,7 @@ const Items = (props: Props) => {
                             onPress={() => {
                               props.makeActive();
                               props.setInfo(product);
+                              debugger;
                             }}
                             onPressIn={() => props.setChoosed(product?.code)}>
                             {props.miniActive == true &&

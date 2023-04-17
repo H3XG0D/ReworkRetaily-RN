@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {IOrderProduct} from '../types';
 
+import {IOrderProduct} from '../types';
 import type {RootState} from '../store/store';
 
 export interface CartProduct extends IOrderProduct {
@@ -41,6 +41,6 @@ export const {addProductToCart, removeProductFromCart} = cartSlice.actions;
 export const getCartSelecror = (state: RootState) => state.cart;
 
 export const getTotalPrice = (state: RootState) =>
-  state.cart.reduce((acc, next) => (acc += next.price * next.amount), 0);
+  state.cart.reduce((acc, next) => (acc += next.price * next.quantum), 0);
 
 export default cartSlice.reducer;

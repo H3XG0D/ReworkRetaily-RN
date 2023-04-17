@@ -7,7 +7,7 @@ export interface IOrder {
 export interface IOrderProduct {
   product: string;
   quantity: number;
-  quantum: number | undefined;
+  quantum: number;
   step: number | undefined;
   code: string;
   category: string;

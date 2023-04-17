@@ -50,7 +50,7 @@ const Request = () => {
             <RequestItems key={product.code}>
               <Text>Имя товара: {product.name}</Text>
               <Text>Количество: {product.quantum}</Text>
-              <Text>Цена: {product.price}</Text>
+              <Text>Цена: {product.price} ₽</Text>
               <Button
                 title="X"
                 onPress={() => removeProduct(product.code)}
@@ -58,9 +58,15 @@ const Request = () => {
               />
             </RequestItems>
           ))}
-          <Text style={{fontWeight: '600', marginBottom: 30}}>
-            В сумме: {totalPrice}
-          </Text>
+          {totalPrice === '0.00' ? (
+            <Text style={{fontWeight: '600', marginBottom: 30}}>
+              Корзина пуста
+            </Text>
+          ) : (
+            <Text style={{fontWeight: '600', marginBottom: 30}}>
+              В сумме: {totalPrice} ₽
+            </Text>
+          )}
         </RequestView>
       </ScrollView>
     </PaddingLayout>
@@ -72,6 +78,7 @@ export default Request;
 const RequestView = styled(View)`
   width: 100%;
   height: 100%;
+  margin-top: 20px;
 
   align-items: center;
   gap: 30px;

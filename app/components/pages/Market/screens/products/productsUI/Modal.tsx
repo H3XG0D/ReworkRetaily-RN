@@ -9,6 +9,9 @@ import {faClose} from '@fortawesome/free-solid-svg-icons';
 
 import {COLORS, siteUrl} from '../../../../../../constants';
 import Field from '../../../../../UI/Field';
+import {useAppDispatch} from '../../../../../../../redux/store/store.hooks';
+import {IOrderProduct} from '../../../../../../../redux/types';
+import {addProductToCart} from '../../../../../../../redux/Cart/Cart.slice';
 
 interface Props {
   isModalVisible: any;
@@ -26,6 +29,12 @@ interface Props {
 }
 
 const Modal = (props: Props) => {
+  const dispatch = useAppDispatch();
+
+  const addToCart = (product: IOrderProduct) => {
+    dispatch(addProductToCart(product));
+  };
+
   return (
     <ReactNativeModal
       isVisible={props.isModalVisible}
@@ -107,6 +116,7 @@ const Modal = (props: Props) => {
                     onPress={() => {
                       props.AddProduct(props.info);
                       props.setChoosed(props.info?.code);
+                      addToCart(props.info);
                     }}>
                     <ProductsModalBtn>
                       <ProductsModalBtnText>
@@ -148,6 +158,7 @@ const Modal = (props: Props) => {
                 onPress={() => {
                   props.setInfo(props.info);
                   props.setChoosed(props.info?.code);
+                  addToCart(props.info);
                 }}>
                 <ProductsModalBtn>
                   <ProductsModalBtnText>

@@ -17,7 +17,6 @@ const PaddingLayout: React.FC<IPadding> = ({children}) => {
         paddingTop: insets.top,
         paddingLeft: insets.left,
         paddingRight: insets.right,
-        paddingBottom: insets.bottom,
       }}>
       {children}
     </Padding>

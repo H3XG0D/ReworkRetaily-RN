@@ -34,13 +34,7 @@ interface Props {
 }
 
 const Items = (props: Props) => {
-  const products = getAppSelectore(getProductsSelector);
-
   const dispatch = useAppDispatch();
-
-  const removeProductFromState = (code: string) => {
-    dispatch(removeProduct(code));
-  };
 
   const addToCart = (product: IOrderProduct) => {
     dispatch(addProductToCart(product));

@@ -35,6 +35,36 @@ export const cartSlice = createSlice({
             order.shop.code === action.payload.shop.code,
         );
 
+        let product = {...action.payload.product};
+        product.quantity = action.payload.product.quantum;
+
+        order!.products.push(product);
+      } else {
+        let product = {...action.payload.product};
+        product.quantity = action.payload.product.quantum;
+
+        state.push({
+          supplier: action.payload.supplier,
+          shop: action.payload.shop,
+          products: [product],
+        });
+      }
+    },
+
+    increaseProductToCart: (state, action: PayloadAction<CartEditProduct>) => {
+      if (
+        state.some(
+          order =>
+            order.supplier.code === action.payload.supplier.code &&
+            order.shop.code === action.payload.shop.code,
+        )
+      ) {
+        let order: CartOrder | undefined = state.find(
+          order =>
+            order.supplier.code === action.payload.supplier.code &&
+            order.shop.code === action.payload.shop.code,
+        );
+
         if (
           order!.products.some(
             product => product.code === action.payload.product.code,
@@ -60,12 +90,11 @@ export const cartSlice = createSlice({
         });
       }
     },
-    removeProductFromCart: (state, action: PayloadAction<string>) => {
-      return state.filter(p => p.products.find(i => i.code !== action.payload));
-    },
+    removeProductFromCart: (state, action: PayloadAction<string>) => {},
   },
 });
-export const {addProductToCart, removeProductFromCart} = cartSlice.actions;
+export const {addProductToCart, removeProductFromCart, increaseProductToCart} =
+  cartSlice.actions;
 export const getCartSelector = (state: RootState) => state.cart;
 
 export default cartSlice.reducer;

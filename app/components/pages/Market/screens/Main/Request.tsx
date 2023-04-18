@@ -11,8 +11,10 @@ import {
 } from '../../../../../../redux/store/store.hooks';
 
 import {
+  CartEditProduct,
   addProductToCart,
   getCartSelector,
+  increaseProductToCart,
   removeProductFromCart,
 } from '../../../../../../redux/Cart/Cart.slice';
 
@@ -36,12 +38,22 @@ const Request = () => {
     dispatch(removeProductFromCart(code));
   };
 
-  const addToCart = (productI: IOrderProduct) => {
+  const addToCart = (productAdd: IOrderProduct) => {
     dispatch(
       addProductToCart({
         supplier: product!.supplier,
         shop: product!.shop,
-        product: productI,
+        product: productAdd,
+      }),
+    );
+  };
+
+  const incrementToCart = (productInc: IOrderProduct) => {
+    dispatch(
+      increaseProductToCart({
+        supplier: product!.supplier,
+        shop: product!.shop,
+        product: productInc,
       }),
     );
   };
@@ -81,17 +93,21 @@ const Request = () => {
               <View>
                 <Text>Имя товара: {product.name}</Text>
               </View>
+
               <View style={{width: 100}}>
                 <Text>Количество: {product.quantity}</Text>
+
                 <Button
                   title="+"
-                  onPress={() => addToCart(product)}
+                  onPress={() => incrementToCart(product)}
                   style={{width: 25, height: 25, marginTop: 0}}
                 />
+
                 <Text style={{color: COLORS.primary}}>
                   Цена: {product.price} ₽
                 </Text>
               </View>
+
               <Button
                 title="X"
                 onPress={() => {

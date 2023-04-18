@@ -15,28 +15,44 @@ import {
 } from '../../../../../../../redux/store/store.hooks';
 import {IOrderProduct} from '../../../../../../../redux/types';
 import {
+  CartOrder,
   addProductToCart,
   getCartSelector,
+  increaseProductToCart,
 } from '../../../../../../../redux/Cart/Cart.slice';
 
 interface Props {
   isModalVisible: any;
   info: any;
   setInfo: any;
+  supplier: any;
+  shop: any;
 
   showModal: () => void;
-  AddProduct: (product: any) => void;
-  incrementCounter: (product: any) => void;
-  decrementCounter: (product: any) => void;
 }
 
 const Modal = (props: Props) => {
   const dispatch = useAppDispatch();
-
   const cartProduct = getAppSelectore(getCartSelector);
 
   const addToCart = (product: IOrderProduct) => {
-    dispatch(addProductToCart(product));
+    dispatch(
+      addProductToCart({
+        supplier: props.supplier,
+        shop: props.shop,
+        product: product,
+      }),
+    );
+  };
+
+  const incrementToCart = (product: IOrderProduct) => {
+    dispatch(
+      increaseProductToCart({
+        supplier: props.supplier,
+        shop: props.shop,
+        product: product,
+      }),
+    );
   };
 
   return (
@@ -85,7 +101,10 @@ const Modal = (props: Props) => {
               <ProductsModalTitle>{props.info?.name}</ProductsModalTitle>
               <View style={{alignItems: 'center'}}>
                 {cartProduct?.some(
-                  (f: IOrderProduct) => f.code === props.info?.code,
+                  (f: CartOrder) =>
+                    f.supplier.code === props.supplier.code &&
+                    f.shop.code === props.shop.code &&
+                    f.products.some(p => p.code === props.info?.code),
                 ) ? (
                   <>
                     {props.info?.quantum <= 0 ? (
@@ -104,7 +123,10 @@ const Modal = (props: Props) => {
                   </ProductsModalCost>
                 )}
                 {cartProduct?.some(
-                  (f: IOrderProduct) => f.code === props.info?.code,
+                  (f: CartOrder) =>
+                    f.supplier.code === props.supplier.code &&
+                    f.shop.code === props.shop.code &&
+                    f.products.some(p => p.code === props.info?.code),
                 ) ? (
                   <>
                     {props.info?.quantum <= 0 ? null : (
@@ -118,13 +140,15 @@ const Modal = (props: Props) => {
             </ProductsModalHeader>
 
             {cartProduct?.some(
-              (f: IOrderProduct) => f.code === props.info?.code,
+              (f: CartOrder) =>
+                f.supplier.code === props.supplier.code &&
+                f.shop.code === props.shop.code &&
+                f.products.some(p => p.code === props.info?.code),
             ) ? (
               <>
                 {props.info?.quantum <= 0 ? (
                   <TouchableOpacity
                     onPress={() => {
-                      props.AddProduct(props.info);
                       addToCart(props.info);
                     }}>
                     <ProductsModalBtn>
@@ -135,8 +159,7 @@ const Modal = (props: Props) => {
                   </TouchableOpacity>
                 ) : (
                   <ProductsModalCountView>
-                    <TouchableOpacity
-                      onPress={() => props.decrementCounter(props.info)}>
+                    <TouchableOpacity onPress={() => ''}>
                       <ProductsModalMinusBtn>
                         <ProductsModalExpression>-</ProductsModalExpression>
                       </ProductsModalMinusBtn>
@@ -154,7 +177,7 @@ const Modal = (props: Props) => {
                       <Text>{props.info?.quantum}</Text>
                     </Field>
                     <TouchableOpacity
-                      onPress={() => props.incrementCounter(props.info)}>
+                      onPress={() => incrementToCart(props.info)}>
                       <ProductsModalPlusBtn>
                         <ProductsModalExpression>+</ProductsModalExpression>
                       </ProductsModalPlusBtn>

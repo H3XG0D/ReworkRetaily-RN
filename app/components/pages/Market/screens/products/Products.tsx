@@ -112,18 +112,15 @@ const Products = (props: Props): ReactElement => {
         shop={props.shop}
         setInfo={setInfo}
         showModal={showModal}
-        incrementCounter={incrementCounter}
-        decrementCounter={decrementCounter}
       />
 
       <Modal
         isModalVisible={isModalVisible}
         info={info}
+        supplier={props.supplier}
+        shop={props.shop}
         setInfo={setInfo}
         showModal={showModal}
-        AddProduct={AddProduct}
-        incrementCounter={incrementCounter}
-        decrementCounter={decrementCounter}
       />
     </View>
   );

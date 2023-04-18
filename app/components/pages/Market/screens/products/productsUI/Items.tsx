@@ -11,6 +11,7 @@ import {
   CartOrder,
   addProductToCart,
   getCartSelector,
+  increaseProductToCart,
 } from '../../../../../../../redux/Cart/Cart.slice';
 import {
   IOrderProduct,
@@ -28,10 +29,7 @@ interface Props {
   shop: IShop;
 
   setInfo: any;
-
   showModal: () => void;
-  incrementCounter: (product: any) => void;
-  decrementCounter: (product: any) => void;
 }
 
 const Items = (props: Props) => {
@@ -41,6 +39,16 @@ const Items = (props: Props) => {
   const addToCart = (product: IOrderProduct) => {
     dispatch(
       addProductToCart({
+        supplier: props.supplier,
+        shop: props.shop,
+        product: product,
+      }),
+    );
+  };
+
+  const incrementToCart = (product: IOrderProduct) => {
+    dispatch(
+      increaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
@@ -146,7 +154,19 @@ const Items = (props: Props) => {
                             onPress={() => {
                               props.setInfo(product);
                               addToCart(product);
-                            }}>
+                            }}
+                            disabled={
+                              true
+                                ? cartProduct?.some(
+                                    (f: CartOrder) =>
+                                      f.supplier.code === props.supplier.code &&
+                                      f.shop.code === props.shop.code &&
+                                      f.products.some(
+                                        p => p.code === product.code,
+                                      ),
+                                  )
+                                : false
+                            }>
                             {cartProduct?.some(
                               (f: CartOrder) =>
                                 f.supplier.code === props.supplier.code &&
@@ -155,10 +175,7 @@ const Items = (props: Props) => {
                             ) ? (
                               <>
                                 <ProductsContentBoxMiniPrice>
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      props.decrementCounter(product)
-                                    }>
+                                  <TouchableOpacity onPress={() => ''}>
                                     <ProductMiniExpression>
                                       <ProductsExpression>-</ProductsExpression>
                                     </ProductMiniExpression>
@@ -181,7 +198,7 @@ const Items = (props: Props) => {
                                     }
                                   </Text>
                                   <TouchableOpacity
-                                    onPress={() => addToCart(product)}>
+                                    onPress={() => incrementToCart(product)}>
                                     <ProductMiniExpression>
                                       <ProductsExpression>+</ProductsExpression>
                                     </ProductMiniExpression>

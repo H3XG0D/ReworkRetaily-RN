@@ -8,10 +8,15 @@ import {
   useAppDispatch,
 } from '../../../../../../../redux/store/store.hooks';
 import {
+  CartOrder,
   addProductToCart,
   getCartSelector,
 } from '../../../../../../../redux/Cart/Cart.slice';
-import {IOrderProduct} from '../../../../../../../redux/types';
+import {
+  IOrderProduct,
+  IShop,
+  ISupplier,
+} from '../../../../../../../redux/types';
 
 import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
 
@@ -19,6 +24,8 @@ interface Props {
   products: any;
   buy: any;
   loadSkeleton: any;
+  supplier: ISupplier;
+  shop: IShop;
 
   setInfo: any;
 
@@ -32,7 +39,13 @@ const Items = (props: Props) => {
   const cartProduct = getAppSelectore(getCartSelector);
 
   const addToCart = (product: IOrderProduct) => {
-    dispatch(addProductToCart(product));
+    dispatch(
+      addProductToCart({
+        supplier: props.supplier,
+        shop: props.shop,
+        product: product,
+      }),
+    );
   };
 
   return (
@@ -48,12 +61,18 @@ const Items = (props: Props) => {
                     <ProductsContentBoxTextContainer
                       style={{
                         borderBottomWidth: cartProduct?.some(
-                          (f: IOrderProduct) => f.code === product.code,
+                          (f: CartOrder) =>
+                            f.supplier.code === props.supplier.code &&
+                            f.shop.code === props.shop.code &&
+                            f.products.some(p => p.code === product.code),
                         )
                           ? 4
                           : 0,
                         borderColor: cartProduct?.some(
-                          (f: IOrderProduct) => f.code == product.code,
+                          (f: CartOrder) =>
+                            f.supplier.code === props.supplier.code &&
+                            f.shop.code === props.shop.code &&
+                            f.products.some(p => p.code === product.code),
                         )
                           ? COLORS.primary
                           : COLORS.brightgray,
@@ -82,7 +101,10 @@ const Items = (props: Props) => {
                           </ProductsContentBoxText>
 
                           {cartProduct?.some(
-                            (f: IOrderProduct) => f.code === product.code,
+                            (f: CartOrder) =>
+                              f.supplier.code === props.supplier.code &&
+                              f.shop.code === props.shop.code &&
+                              f.products.some(p => p.code === product.code),
                           ) ? (
                             <>
                               {props.buy ? (
@@ -126,50 +148,45 @@ const Items = (props: Props) => {
                               addToCart(product);
                             }}>
                             {cartProduct?.some(
-                              (f: IOrderProduct) => f.code == product.code,
+                              (f: CartOrder) =>
+                                f.supplier.code === props.supplier.code &&
+                                f.shop.code === props.shop.code &&
+                                f.products.some(p => p.code === product.code),
                             ) ? (
                               <>
-                                {product?.quantum <= 0 ? (
+                                <ProductsContentBoxMiniPrice>
                                   <TouchableOpacity
                                     onPress={() =>
-                                      props.incrementCounter(product)
+                                      props.decrementCounter(product)
                                     }>
-                                    <ProductsContentBoxPriceContainer>
-                                      <ProductsContentBoxPriceText>
-                                        {product.price} ₽
-                                      </ProductsContentBoxPriceText>
-                                    </ProductsContentBoxPriceContainer>
+                                    <ProductMiniExpression>
+                                      <ProductsExpression>-</ProductsExpression>
+                                    </ProductMiniExpression>
                                   </TouchableOpacity>
-                                ) : (
-                                  <ProductsContentBoxMiniPrice>
-                                    <TouchableOpacity
-                                      onPress={() =>
-                                        props.decrementCounter(product)
-                                      }>
-                                      <ProductMiniExpression>
-                                        <ProductsExpression>
-                                          -
-                                        </ProductsExpression>
-                                      </ProductMiniExpression>
-                                    </TouchableOpacity>
-                                    <Text
-                                      style={{
-                                        fontSize: 13,
-                                      }}>
-                                      {product?.quantum}
-                                    </Text>
-                                    <TouchableOpacity
-                                      onPress={() =>
-                                        props.incrementCounter(product)
-                                      }>
-                                      <ProductMiniExpression>
-                                        <ProductsExpression>
-                                          +
-                                        </ProductsExpression>
-                                      </ProductMiniExpression>
-                                    </TouchableOpacity>
-                                  </ProductsContentBoxMiniPrice>
-                                )}
+                                  <Text
+                                    style={{
+                                      fontSize: 13,
+                                    }}>
+                                    {
+                                      cartProduct!
+                                        .find(
+                                          (f: CartOrder) =>
+                                            f.supplier.code ===
+                                              props.supplier.code &&
+                                            f.shop.code === props.shop.code,
+                                        )!
+                                        .products.find(
+                                          p => p.code === product.code,
+                                        )!.quantity
+                                    }
+                                  </Text>
+                                  <TouchableOpacity
+                                    onPress={() => addToCart(product)}>
+                                    <ProductMiniExpression>
+                                      <ProductsExpression>+</ProductsExpression>
+                                    </ProductMiniExpression>
+                                  </TouchableOpacity>
+                                </ProductsContentBoxMiniPrice>
                               </>
                             ) : (
                               <ProductsContentBoxPriceContainer>

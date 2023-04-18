@@ -1,5 +1,6 @@
 export interface IOrder {
-  value: IData[];
+  supplier: string;
+  shop: string;
   products: IOrderProduct[];
 }
 
@@ -7,7 +8,7 @@ export interface IOrderProduct {
   product: string;
   quantity: number;
   quantum: number;
-  step: number | undefined;
+  step: number;
   code: string;
   category: string;
   category_sub: string | undefined;
@@ -23,21 +24,22 @@ export interface IOrderProduct {
 
 export interface ISupplier {
   code: string;
-  // name: string;
-  // ord: number;
-  // tags: string[] | undefined;
-  // phone_support: string | undefined;
-  // phone_contract: string | undefined;
-  // hasContractOnline: boolean;
-  // hasPaymentChoice: boolean;
-  // parent_code: string | null;
-  // type: string | null;
-  // description: string | null;
-  // add_shops: boolean;
+  name: string;
+  ord: number;
+  tags: string[] | undefined;
+  phone_support: string | undefined;
+  phone_contract: string | undefined;
+  hasContractOnline: boolean;
+  hasPaymentChoice: boolean;
+  parent_code: string | null;
+  type: string | null;
+  description: string | null;
+  add_shops: boolean;
 }
 
 export interface IShop {
   code: string;
+  name: string;
 }
 
 export interface IData {

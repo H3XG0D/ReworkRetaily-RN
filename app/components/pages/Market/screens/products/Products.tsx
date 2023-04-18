@@ -9,10 +9,13 @@ import {getProductsInfo} from '../../../../../api/api';
 
 import Modal from './productsUI/Modal';
 import Items from './productsUI/Items';
+import {getAppSelectore} from '../../../../../../redux/store/store.hooks';
+import {getCartSelector} from '../../../../../../redux/Cart/Cart.slice';
+import {IOrderProduct, IShop, ISupplier} from '../../../../../../redux/types';
 
 interface Props {
-  supplier: any;
-  selectShopCode: any;
+  supplier: ISupplier;
+  shop: IShop;
   category: any;
 }
 
@@ -37,11 +40,13 @@ const Products = (props: Props): ReactElement => {
   const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
   const [loadSkeleton, setLoadSkeleton] = React.useState<boolean>(true);
 
+  const cartProduct = getAppSelectore(getCartSelector);
+
   const getProducts = async () => {
     const products = await getProductsInfo(
       'getProducts',
       props.category.code,
-      props.selectShopCode,
+      props.shop.code,
       props.supplier.code,
     );
     setProducts(products);
@@ -56,32 +61,41 @@ const Products = (props: Props): ReactElement => {
     setBuy(false);
 
     let obj = {...info};
-    obj.quantum = obj.step;
-    setInfo(obj);
+    let arrayProduct = [...cartProduct];
+
+    // arrayProduct.find((i: IOrderProduct) => (i.quantum = i.step));
+    // obj.quantum = obj.step;
+    // setInfo(obj);
   };
 
   const incrementCounter = (product: any) => {
     let obj = {...info};
-    obj.quantum = obj.quantum + obj.step;
+    let arrayIncrement = [...cartProduct];
 
-    let newArray = [...products];
-    let newRow = newArray.find((a: any) => a.code === obj.code);
-    newRow.quantum = obj.quantum;
+    // arrayIncrement.find((i: IOrderProduct) => (i.quantum += i.step));
+    // obj.quantum = obj.quantum + obj.step;
 
-    setProducts(newArray);
-    setInfo(obj);
+    // let newArray = [...products];
+    // let newRow = newArray.find((a: any) => a.code === obj.code);
+    // newRow.quantum = obj.quantum;
+
+    // setProducts(newArray);
+    // setInfo(obj);
   };
 
   const decrementCounter = (product: any) => {
     let obj = {...info};
-    obj.quantum = obj.quantum - obj.step;
+    let arrayIncrement = [...cartProduct];
 
-    let newArray = [...products];
-    let newRow = newArray.find((a: any) => a.code === obj.code);
-    newRow.quantum = obj.quantum;
+    // arrayIncrement.find((i: IOrderProduct) => (i.quantum -= i.step));
+    // obj.quantum = obj.quantum - obj.step;
 
-    setProducts(newArray);
-    setInfo(obj);
+    // let newArray = [...products];
+    // let newRow = newArray.find((a: any) => a.code === obj.code);
+    // newRow.quantum = obj.quantum;
+
+    // setProducts(newArray);
+    // setInfo(obj);
   };
 
   React.useEffect(() => {
@@ -94,6 +108,8 @@ const Products = (props: Props): ReactElement => {
         products={products}
         buy={buy}
         loadSkeleton={loadSkeleton}
+        supplier={props.supplier}
+        shop={props.shop}
         setInfo={setInfo}
         showModal={showModal}
         incrementCounter={incrementCounter}

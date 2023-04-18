@@ -16,7 +16,7 @@ const ProductsContainer = (props: Props): ReactElement => {
   const route = useRoute();
 
   const {supplier}: any = route.params;
-  const {selectShopCode}: any = route.params;
+  const {shop}: any = route.params;
   const {category}: any = route.params;
 
   React.useLayoutEffect(() => {
@@ -29,11 +29,7 @@ const ProductsContainer = (props: Props): ReactElement => {
 
   return (
     <RetailyLayout>
-      <Products
-        supplier={supplier}
-        selectShopCode={selectShopCode}
-        category={category}
-      />
+      <Products supplier={supplier} shop={shop} category={category} />
     </RetailyLayout>
   );
 };

@@ -13,6 +13,7 @@ import RetailyLayout from '../../../../layout/RetailyLayout';
 import Field from '../../../../UI/Field';
 import Button from '../../../../UI/Button';
 import AddressSkeleton from '../../Skeletons/AddressSkeleton';
+import {IShop} from '../../../../../../redux/types';
 
 const Address = () => {
   const navigation =
@@ -33,9 +34,9 @@ const Address = () => {
   const [loadSkeleton, setLoadSkeleton] = React.useState<boolean>(true);
 
   const [shops, setShops] = React.useState<any>([]);
-  const [selectShopCode, setSelectShopCode] = React.useState<
-    string | undefined
-  >(undefined);
+  const [selectShop, setSelectShopCode] = React.useState<IShop | undefined>(
+    undefined,
+  );
 
   const [search, setSearch] = React.useState<any>('');
 
@@ -94,11 +95,11 @@ const Address = () => {
                   return (
                     <Pressable
                       onPress={() => {
-                        setSelectShopCode(item.code);
+                        setSelectShopCode(item);
                       }}
                       onPressIn={() => ChooseHandler()}>
                       <AddressItemContent>
-                        {item.code === selectShopCode ? (
+                        {item.code === selectShop?.code ? (
                           <AddressItemLine>
                             <AddressSelectView>
                               <AddressItemText key={index}>
@@ -133,7 +134,7 @@ const Address = () => {
         <Button
           title="Выбрать"
           onPress={() =>
-            navigation.navigate('Categories', {supplier, selectShopCode})
+            navigation.navigate('Categories', {supplier, shop: selectShop!})
           }
           disabled={!choosed ? true : false}
           style={{

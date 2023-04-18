@@ -10,6 +10,7 @@ import {COLORS, siteUrl} from '../../../../../constants';
 
 import RetailyLayout from '../../../../layout/RetailyLayout';
 import CategoriesSkeleton from '../../Skeletons/CategoriesSkeleton';
+import {IShop} from '../../../../../../redux/types';
 
 const Categories = () => {
   const navigation =
@@ -17,7 +18,7 @@ const Categories = () => {
 
   const route = useRoute();
   const {supplier}: any = route.params;
-  const {selectShopCode}: any = route.params;
+  const {shop}: any = route.params;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -33,7 +34,7 @@ const Categories = () => {
   const getCategories = async () => {
     const categories = await getCategoriesInfo(
       'getcategories',
-      selectShopCode,
+      shop.code,
       supplier.code,
     );
     setCategories(categories);
@@ -59,7 +60,7 @@ const Categories = () => {
                         onPress={() =>
                           navigation.navigate('ProductsContainer', {
                             supplier,
-                            selectShopCode,
+                            shop,
                             category,
                           })
                         }>

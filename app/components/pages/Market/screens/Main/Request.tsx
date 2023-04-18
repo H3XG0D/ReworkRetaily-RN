@@ -1,4 +1,4 @@
-import {View, Text, ScrollView, Image} from 'react-native';
+import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 
 import {useNavigation} from '@react-navigation/native';
@@ -11,8 +11,8 @@ import {
 } from '../../../../../../redux/store/store.hooks';
 
 import {
+  addProductToCart,
   getCartSelector,
-  getTotalPrice,
   removeProductFromCart,
 } from '../../../../../../redux/Cart/Cart.slice';
 
@@ -21,6 +21,7 @@ import styled from 'styled-components';
 import {COLORS, siteUrl} from '../../../../../constants';
 
 import RetailyLayout from '../../../../layout/RetailyLayout';
+import {IOrderProduct} from '../../../../../../redux/types';
 
 const Request = () => {
   const navigation =
@@ -28,10 +29,21 @@ const Request = () => {
 
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
-  const totalPrice = getAppSelectore(getTotalPrice).toFixed(2);
+
+  const product = cartProduct.find(p => p.products);
 
   const removeProduct = (code: string) => {
     dispatch(removeProductFromCart(code));
+  };
+
+  const addToCart = (productI: IOrderProduct) => {
+    dispatch(
+      addProductToCart({
+        supplier: product!.supplier,
+        shop: product!.shop,
+        product: productI,
+      }),
+    );
   };
 
   React.useLayoutEffect(() => {
@@ -47,7 +59,7 @@ const Request = () => {
   return (
     <RetailyLayout>
       <ScrollView>
-        {cartProduct.map(product => (
+        {product?.products.map(product => (
           <RequestView key={product.code}>
             <RequestItems>
               <RequestImage>
@@ -70,23 +82,26 @@ const Request = () => {
                 <Text>Имя товара: {product.name}</Text>
               </View>
               <View style={{width: 100}}>
+                <Text>Количество: {product.quantity}</Text>
+                <Button
+                  title="+"
+                  onPress={() => addToCart(product)}
+                  style={{width: 25, height: 25, marginTop: 0}}
+                />
                 <Text style={{color: COLORS.primary}}>
                   Цена: {product.price} ₽
                 </Text>
               </View>
               <Button
                 title="X"
-                onPress={() => removeProduct(product.code)}
+                onPress={() => {
+                  removeProduct(product.code);
+                }}
                 style={{width: 25, height: 25, marginTop: 0}}
               />
             </RequestItems>
           </RequestView>
         ))}
-        {totalPrice === '0.00' ? (
-          <RequestTotalPrice>Корзина пуста</RequestTotalPrice>
-        ) : (
-          <RequestTotalPrice>В сумме: {totalPrice} ₽</RequestTotalPrice>
-        )}
       </ScrollView>
     </RetailyLayout>
   );

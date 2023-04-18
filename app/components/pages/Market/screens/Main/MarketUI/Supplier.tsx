@@ -7,6 +7,8 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MarketRootParamList} from '../../../../../../Navigation/routes';
 import SupplierSkeleton from '../../../Skeletons/SupplierSkeleton';
+import {useAppDispatch} from '../../../../../../../redux/store/store.hooks';
+import {ISupplier} from '../../../../../../../redux/types';
 
 interface Props {
   suppliers: any;
@@ -16,6 +18,8 @@ interface Props {
 }
 
 const Supplier = (props: Props) => {
+  const dispatch = useAppDispatch();
+
   const [supplier, setSupplier] = React.useState<any>(undefined);
 
   const navigation =
@@ -42,7 +46,9 @@ const Supplier = (props: Props) => {
                   return (
                     <TouchableOpacity
                       onPressIn={() => {
-                        setSupplier(supplier);
+                        {
+                          setSupplier(supplier);
+                        }
                       }}
                       onPress={() =>
                         supplier.code === 'parent_01'

@@ -9,16 +9,12 @@ import {getProductsInfo} from '../../../../../api/api';
 
 import Modal from './productsUI/Modal';
 import Items from './productsUI/Items';
-import {useDispatch} from 'react-redux';
-import {addOrder} from '../../../../../../redux/Orders/Orders.slice';
 
 interface Props {
   supplier: any;
   selectShopCode: any;
   category: any;
 }
-
-const dispatch = useDispatch();
 
 const Products = (props: Props): ReactElement => {
   const navigation =
@@ -98,9 +94,7 @@ const Products = (props: Props): ReactElement => {
         products={products}
         buy={buy}
         loadSkeleton={loadSkeleton}
-        choosed={choosed}
         setInfo={setInfo}
-        setChoosed={setChoosed}
         showModal={showModal}
         incrementCounter={incrementCounter}
         decrementCounter={decrementCounter}
@@ -109,11 +103,9 @@ const Products = (props: Props): ReactElement => {
       <Modal
         isModalVisible={isModalVisible}
         info={info}
-        choosed={choosed}
         setInfo={setInfo}
         showModal={showModal}
         AddProduct={AddProduct}
-        setChoosed={setChoosed}
         incrementCounter={incrementCounter}
         decrementCounter={decrementCounter}
       />

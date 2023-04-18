@@ -9,17 +9,20 @@ import {faClose} from '@fortawesome/free-solid-svg-icons';
 
 import {COLORS, siteUrl} from '../../../../../../constants';
 import Field from '../../../../../UI/Field';
-import {useAppDispatch} from '../../../../../../../redux/store/store.hooks';
+import {
+  getAppSelectore,
+  useAppDispatch,
+} from '../../../../../../../redux/store/store.hooks';
 import {IOrderProduct} from '../../../../../../../redux/types';
-import {addProductToCart} from '../../../../../../../redux/Cart/Cart.slice';
+import {
+  addProductToCart,
+  getCartSelector,
+} from '../../../../../../../redux/Cart/Cart.slice';
 
 interface Props {
   isModalVisible: any;
   info: any;
   setInfo: any;
-
-  setChoosed: any;
-  choosed: any;
 
   showModal: () => void;
   AddProduct: (product: any) => void;
@@ -29,6 +32,8 @@ interface Props {
 
 const Modal = (props: Props) => {
   const dispatch = useAppDispatch();
+
+  const cartProduct = getAppSelectore(getCartSelector);
 
   const addToCart = (product: IOrderProduct) => {
     dispatch(addProductToCart(product));
@@ -79,7 +84,9 @@ const Modal = (props: Props) => {
             <ProductsModalHeader>
               <ProductsModalTitle>{props.info?.name}</ProductsModalTitle>
               <View style={{alignItems: 'center'}}>
-                {props.choosed === props.info?.code ? (
+                {cartProduct?.some(
+                  (f: IOrderProduct) => f.code === props.info?.code,
+                ) ? (
                   <>
                     {props.info?.quantum <= 0 ? (
                       <ProductsModalCost style={{color: COLORS.black}}>
@@ -96,7 +103,9 @@ const Modal = (props: Props) => {
                     {props.info?.price} ₽
                   </ProductsModalCost>
                 )}
-                {props.choosed === props.info?.code ? (
+                {cartProduct?.some(
+                  (f: IOrderProduct) => f.code === props.info?.code,
+                ) ? (
                   <>
                     {props.info?.quantum <= 0 ? null : (
                       <ProductsModalSubtitleCost>
@@ -108,13 +117,14 @@ const Modal = (props: Props) => {
               </View>
             </ProductsModalHeader>
 
-            {props.choosed === props.info?.code ? (
+            {cartProduct?.some(
+              (f: IOrderProduct) => f.code === props.info?.code,
+            ) ? (
               <>
                 {props.info?.quantum <= 0 ? (
                   <TouchableOpacity
                     onPress={() => {
                       props.AddProduct(props.info);
-                      props.setChoosed(props.info?.code);
                       addToCart(props.info);
                     }}>
                     <ProductsModalBtn>
@@ -156,7 +166,6 @@ const Modal = (props: Props) => {
               <TouchableOpacity
                 onPress={() => {
                   props.setInfo(props.info);
-                  props.setChoosed(props.info?.code);
                   addToCart(props.info);
                 }}>
                 <ProductsModalBtn>

@@ -3,12 +3,17 @@ import styled from 'styled-components';
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 
 import {COLORS, siteUrl} from '../../../../../../constants';
-import {useAppDispatch} from '../../../../../../../redux/store/store.hooks';
-import {addProductToCart} from '../../../../../../../redux/Cart/Cart.slice';
+import {
+  getAppSelectore,
+  useAppDispatch,
+} from '../../../../../../../redux/store/store.hooks';
+import {
+  addProductToCart,
+  getCartSelector,
+} from '../../../../../../../redux/Cart/Cart.slice';
 import {IOrderProduct} from '../../../../../../../redux/types';
 
 import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
-import {useDispatch} from 'react-redux';
 
 interface Props {
   products: any;
@@ -17,9 +22,6 @@ interface Props {
 
   setInfo: any;
 
-  choosed: any;
-  setChoosed: any;
-
   showModal: () => void;
   incrementCounter: (product: any) => void;
   decrementCounter: (product: any) => void;
@@ -27,6 +29,7 @@ interface Props {
 
 const Items = (props: Props) => {
   const dispatch = useAppDispatch();
+  const cartProduct = getAppSelectore(getCartSelector);
 
   const addToCart = (product: IOrderProduct) => {
     dispatch(addProductToCart(product));
@@ -44,12 +47,16 @@ const Items = (props: Props) => {
                   return (
                     <ProductsContentBoxTextContainer
                       style={{
-                        borderBottomWidth:
-                          props.choosed == product.code ? 4 : 0,
-                        borderColor:
-                          props.choosed == product.code
-                            ? COLORS.primary
-                            : COLORS.brightgray,
+                        borderBottomWidth: cartProduct?.some(
+                          (f: IOrderProduct) => f.code === product.code,
+                        )
+                          ? 4
+                          : 0,
+                        borderColor: cartProduct?.some(
+                          (f: IOrderProduct) => f.code == product.code,
+                        )
+                          ? COLORS.primary
+                          : COLORS.brightgray,
                       }}>
                       <ProductsContentOutsideBox>
                         <ProductsContentBox>
@@ -74,7 +81,9 @@ const Items = (props: Props) => {
                             {product.name}
                           </ProductsContentBoxText>
 
-                          {props.choosed == product.code ? (
+                          {cartProduct?.some(
+                            (f: IOrderProduct) => f.code === product.code,
+                          ) ? (
                             <>
                               {props.buy ? (
                                 <Text
@@ -115,9 +124,10 @@ const Items = (props: Props) => {
                             onPress={() => {
                               props.setInfo(product);
                               addToCart(product);
-                            }}
-                            onPressIn={() => props.setChoosed(product?.code)}>
-                            {props.choosed == product.code ? (
+                            }}>
+                            {cartProduct?.some(
+                              (f: IOrderProduct) => f.code == product.code,
+                            ) ? (
                               <>
                                 {product?.quantum <= 0 ? (
                                   <TouchableOpacity

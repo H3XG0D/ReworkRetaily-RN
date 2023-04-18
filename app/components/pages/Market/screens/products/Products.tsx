@@ -9,12 +9,16 @@ import {getProductsInfo} from '../../../../../api/api';
 
 import Modal from './productsUI/Modal';
 import Items from './productsUI/Items';
+import {useDispatch} from 'react-redux';
+import {addOrder} from '../../../../../../redux/Orders/Orders.slice';
 
 interface Props {
   supplier: any;
   selectShopCode: any;
   category: any;
 }
+
+const dispatch = useDispatch();
 
 const Products = (props: Props): ReactElement => {
   const navigation =
@@ -30,10 +34,8 @@ const Products = (props: Props): ReactElement => {
 
   const [products, setProducts] = React.useState<any>(undefined);
 
-  const [active, setActive] = React.useState<any>(undefined);
   const [info, setInfo] = React.useState<any>(undefined);
   const [buy, setBuy] = React.useState<boolean>(false);
-  const [miniActive, setMiniActive] = React.useState<boolean>(false);
   const [choosed, setChoosed] = React.useState<string | undefined>(undefined);
 
   const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
@@ -55,7 +57,6 @@ const Products = (props: Props): ReactElement => {
   };
 
   const AddProduct = (product: any) => {
-    setActive(true);
     setBuy(false);
 
     let obj = {...info};
@@ -87,10 +88,6 @@ const Products = (props: Props): ReactElement => {
     setInfo(obj);
   };
 
-  const makeActive = () => {
-    setMiniActive(true);
-  };
-
   React.useEffect(() => {
     getProducts();
   }, []);
@@ -101,10 +98,8 @@ const Products = (props: Props): ReactElement => {
         products={products}
         buy={buy}
         loadSkeleton={loadSkeleton}
-        miniActive={miniActive}
         choosed={choosed}
         setInfo={setInfo}
-        makeActive={makeActive}
         setChoosed={setChoosed}
         showModal={showModal}
         incrementCounter={incrementCounter}
@@ -114,9 +109,8 @@ const Products = (props: Props): ReactElement => {
       <Modal
         isModalVisible={isModalVisible}
         info={info}
-        setInfo={setInfo}
         choosed={choosed}
-        active={active}
+        setInfo={setInfo}
         showModal={showModal}
         AddProduct={AddProduct}
         setChoosed={setChoosed}

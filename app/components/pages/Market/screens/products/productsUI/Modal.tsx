@@ -17,7 +17,6 @@ interface Props {
   isModalVisible: any;
   info: any;
   setInfo: any;
-  active: any;
 
   setChoosed: any;
   choosed: any;
@@ -80,7 +79,7 @@ const Modal = (props: Props) => {
             <ProductsModalHeader>
               <ProductsModalTitle>{props.info?.name}</ProductsModalTitle>
               <View style={{alignItems: 'center'}}>
-                {props.active && props.choosed === props.info?.code ? (
+                {props.choosed === props.info?.code ? (
                   <>
                     {props.info?.quantum <= 0 ? (
                       <ProductsModalCost style={{color: COLORS.black}}>
@@ -97,7 +96,7 @@ const Modal = (props: Props) => {
                     {props.info?.price} ₽
                   </ProductsModalCost>
                 )}
-                {props.active && props.choosed === props.info?.code ? (
+                {props.choosed === props.info?.code ? (
                   <>
                     {props.info?.quantum <= 0 ? null : (
                       <ProductsModalSubtitleCost>
@@ -109,7 +108,7 @@ const Modal = (props: Props) => {
               </View>
             </ProductsModalHeader>
 
-            {props.active && props.choosed === props.info?.code ? (
+            {props.choosed === props.info?.code ? (
               <>
                 {props.info?.quantum <= 0 ? (
                   <TouchableOpacity

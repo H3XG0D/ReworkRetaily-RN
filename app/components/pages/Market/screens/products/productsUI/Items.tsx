@@ -8,6 +8,7 @@ import {addProductToCart} from '../../../../../../../redux/Cart/Cart.slice';
 import {IOrderProduct} from '../../../../../../../redux/types';
 
 import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
+import {useDispatch} from 'react-redux';
 
 interface Props {
   products: any;
@@ -15,8 +16,6 @@ interface Props {
   loadSkeleton: any;
 
   setInfo: any;
-  makeActive: any;
-  miniActive: any;
 
   choosed: any;
   setChoosed: any;
@@ -75,7 +74,7 @@ const Items = (props: Props) => {
                             {product.name}
                           </ProductsContentBoxText>
 
-                          {props.miniActive && props.choosed == product.code ? (
+                          {props.choosed == product.code ? (
                             <>
                               {props.buy ? (
                                 <Text
@@ -114,13 +113,11 @@ const Items = (props: Props) => {
 
                           <TouchableOpacity
                             onPress={() => {
-                              props.makeActive();
                               props.setInfo(product);
                               addToCart(product);
                             }}
                             onPressIn={() => props.setChoosed(product?.code)}>
-                            {props.miniActive &&
-                            props.choosed == product.code ? (
+                            {props.choosed == product.code ? (
                               <>
                                 {product?.quantum <= 0 ? (
                                   <TouchableOpacity

@@ -11,7 +11,7 @@ import {
 } from '../../../../../../redux/store/store.hooks';
 
 import {
-  getCartSelecror,
+  getCartSelector,
   getTotalPrice,
   removeProductFromCart,
 } from '../../../../../../redux/Cart/Cart.slice';
@@ -26,7 +26,7 @@ const Request = () => {
     useNavigation<NativeStackNavigationProp<RetaiyRootTypeParamList>>();
 
   const dispatch = useAppDispatch();
-  const cartProduct = getAppSelectore(getCartSelecror);
+  const cartProduct = getAppSelectore(getCartSelector);
   const totalPrice = getAppSelectore(getTotalPrice).toFixed(2);
 
   const removeProduct = (code: string) => {

@@ -1,7 +1,6 @@
 export interface IOrder {
   supplier: string;
   shop: string;
-  products: IOrderProduct[];
 }
 
 export interface IOrderProduct {
@@ -20,8 +19,4 @@ export interface IOrderProduct {
   images: [string];
   balance: number | null;
   ei: string | null;
-}
-
-export interface IQuantity {
-  count: number;
 }

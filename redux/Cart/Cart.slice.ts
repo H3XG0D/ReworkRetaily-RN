@@ -129,23 +129,8 @@ export const cartSlice = createSlice({
       }
     },
 
-    removeAllFromCart: (state, action: PayloadAction<CartEditProduct>) => {
-      if (
-        state.some(
-          order =>
-            order.supplier.code === action.payload.supplier.code &&
-            order.shop.code === action.payload.shop.code,
-        )
-      ) {
-        let order: CartOrder | undefined = state.find(
-          order =>
-            order.supplier.code === action.payload.supplier.code &&
-            order.shop.code === action.payload.shop.code,
-        );
-        return [];
-      } else {
-        return [];
-      }
+    removeAllFromCart: (state, action: PayloadAction<string>) => {
+      return state.filter(p => p.shop.code !== action.payload);
     },
   },
 });

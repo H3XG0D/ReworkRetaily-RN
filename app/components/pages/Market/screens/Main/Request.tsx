@@ -62,18 +62,8 @@ const Request = () => {
     );
   };
 
-  const removeCartItems = (
-    supplier: ISupplier,
-    shop: IShop,
-    productDel: IOrderProduct,
-  ) => {
-    dispatch(
-      removeAllFromCart({
-        supplier: supplier,
-        shop: shop,
-        product: productDel,
-      }),
-    );
+  const removeCartItems = (shop: string) => {
+    dispatch(removeAllFromCart(shop));
   };
 
   React.useLayoutEffect(() => {
@@ -95,23 +85,23 @@ const Request = () => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
                 marginTop: 15,
               }}>
               <Text
                 style={{
-                  fontSize: 18,
-                  textAlign: 'center',
-                  fontWeight: '600',
-                  width: 300,
+                  fontSize: 20,
+                  marginLeft: '5%',
                 }}>
                 {cart.shop.name}
               </Text>
+
               <TouchableOpacity
-                onPress={() => removeCartItems(cart.supplier, cart.shop)}>
-                <MaterialCommunityIcons name="trash-can" size={33} />
+                onPress={() => removeCartItems(cart.shop.code)}
+                style={{marginLeft: 'auto', marginRight: '5%'}}>
+                <MaterialCommunityIcons name="trash-can" size={30} />
               </TouchableOpacity>
             </View>
+
             {cart.products.map(item => (
               <RequestView key={item.code}>
                 <RequestItems>
@@ -133,7 +123,25 @@ const Request = () => {
 
                   <View>
                     <Text>Имя товара: {item.name}</Text>
-                    <Text style={{color: COLORS.primary}}>{item.price} ₽</Text>
+                    <Text style={{color: COLORS.primary}}>
+                      {(
+                        cartProduct!
+                          .find(
+                            (f: CartOrder) =>
+                              f.supplier.code === cart.supplier.code &&
+                              f.shop.code === cart.shop.code,
+                          )!
+                          .products.find(p => p.code === item.code)!.price *
+                        cartProduct!
+                          .find(
+                            (f: CartOrder) =>
+                              f.supplier.code === cart.supplier.code &&
+                              f.shop.code === cart.shop.code,
+                          )!
+                          .products.find(p => p.code === item.code)!.quantity
+                      ).toFixed(2)}{' '}
+                      ₽
+                    </Text>
                   </View>
 
                   <View
@@ -215,6 +223,7 @@ const RequestTotalPrice = styled(Text)`
   font-size: 18px;
   font-weight: 600;
   text-align: center;
+
   margin-top: 15px;
   margin-bottom: 30px;
 `;

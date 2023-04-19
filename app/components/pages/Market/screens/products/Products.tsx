@@ -11,7 +11,7 @@ import Modal from './productsUI/Modal';
 import Items from './productsUI/Items';
 import {getAppSelectore} from '../../../../../../redux/store/store.hooks';
 import {getCartSelector} from '../../../../../../redux/Cart/Cart.slice';
-import {IOrderProduct, IShop, ISupplier} from '../../../../../../redux/types';
+import {IShop, ISupplier} from '../../../../../../redux/types';
 
 interface Props {
   supplier: ISupplier;
@@ -40,8 +40,6 @@ const Products = (props: Props): ReactElement => {
   const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
   const [loadSkeleton, setLoadSkeleton] = React.useState<boolean>(true);
 
-  const cartProduct = getAppSelectore(getCartSelector);
-
   const getProducts = async () => {
     const products = await getProductsInfo(
       'getProducts',
@@ -55,47 +53,6 @@ const Products = (props: Props): ReactElement => {
 
   const showModal = () => {
     setModalVisible(!isModalVisible);
-  };
-
-  const AddProduct = (product: any) => {
-    setBuy(false);
-
-    let obj = {...info};
-    let arrayProduct = [...cartProduct];
-
-    // arrayProduct.find((i: IOrderProduct) => (i.quantum = i.step));
-    // obj.quantum = obj.step;
-    // setInfo(obj);
-  };
-
-  const incrementCounter = (product: any) => {
-    let obj = {...info};
-    let arrayIncrement = [...cartProduct];
-
-    // arrayIncrement.find((i: IOrderProduct) => (i.quantum += i.step));
-    // obj.quantum = obj.quantum + obj.step;
-
-    // let newArray = [...products];
-    // let newRow = newArray.find((a: any) => a.code === obj.code);
-    // newRow.quantum = obj.quantum;
-
-    // setProducts(newArray);
-    // setInfo(obj);
-  };
-
-  const decrementCounter = (product: any) => {
-    let obj = {...info};
-    let arrayIncrement = [...cartProduct];
-
-    // arrayIncrement.find((i: IOrderProduct) => (i.quantum -= i.step));
-    // obj.quantum = obj.quantum - obj.step;
-
-    // let newArray = [...products];
-    // let newRow = newArray.find((a: any) => a.code === obj.code);
-    // newRow.quantum = obj.quantum;
-
-    // setProducts(newArray);
-    // setInfo(obj);
   };
 
   React.useEffect(() => {

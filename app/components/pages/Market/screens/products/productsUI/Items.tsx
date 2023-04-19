@@ -10,6 +10,7 @@ import {
 import {
   CartOrder,
   addProductToCart,
+  decreaseProductToCart,
   getCartSelector,
   increaseProductToCart,
 } from '../../../../../../../redux/Cart/Cart.slice';
@@ -49,6 +50,16 @@ const Items = (props: Props) => {
   const incrementToCart = (product: IOrderProduct) => {
     dispatch(
       increaseProductToCart({
+        supplier: props.supplier,
+        shop: props.shop,
+        product: product,
+      }),
+    );
+  };
+
+  const decreaseToCart = (product: IOrderProduct) => {
+    dispatch(
+      decreaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
@@ -127,7 +138,14 @@ const Items = (props: Props) => {
                                 </Text>
                               ) : (
                                 <>
-                                  {product?.quantum <= 0 ? null : (
+                                  {cartProduct?.some(
+                                    (f: CartOrder) =>
+                                      f.supplier.code === props.supplier.code &&
+                                      f.shop.code === props.shop.code &&
+                                      f.products.some(
+                                        p => p.code === product.code,
+                                      ),
+                                  ) ? (
                                     <Text
                                       style={{
                                         fontSize: 12,
@@ -136,11 +154,30 @@ const Items = (props: Props) => {
                                         color: COLORS.primary,
                                       }}>
                                       {(
-                                        product?.price * product?.quantum
+                                        cartProduct!
+                                          .find(
+                                            (f: CartOrder) =>
+                                              f.supplier.code ===
+                                                props.supplier.code &&
+                                              f.shop.code === props.shop.code,
+                                          )!
+                                          .products.find(
+                                            p => p.code === product.code,
+                                          )!.price *
+                                        cartProduct!
+                                          .find(
+                                            (f: CartOrder) =>
+                                              f.supplier.code ===
+                                                props.supplier.code &&
+                                              f.shop.code === props.shop.code,
+                                          )!
+                                          .products.find(
+                                            p => p.code === product.code,
+                                          )!.quantity
                                       ).toFixed(2)}{' '}
                                       ₽
                                     </Text>
-                                  )}
+                                  ) : null}
                                 </>
                               )}
                             </>
@@ -175,7 +212,8 @@ const Items = (props: Props) => {
                             ) ? (
                               <>
                                 <ProductsContentBoxMiniPrice>
-                                  <TouchableOpacity onPress={() => ''}>
+                                  <TouchableOpacity
+                                    onPress={() => decreaseToCart(product)}>
                                     <ProductMiniExpression>
                                       <ProductsExpression>-</ProductsExpression>
                                     </ProductMiniExpression>

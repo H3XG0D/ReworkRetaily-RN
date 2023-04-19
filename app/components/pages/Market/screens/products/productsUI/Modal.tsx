@@ -17,6 +17,7 @@ import {IOrderProduct} from '../../../../../../../redux/types';
 import {
   CartOrder,
   addProductToCart,
+  decreaseProductToCart,
   getCartSelector,
   increaseProductToCart,
 } from '../../../../../../../redux/Cart/Cart.slice';
@@ -48,6 +49,16 @@ const Modal = (props: Props) => {
   const incrementToCart = (product: IOrderProduct) => {
     dispatch(
       increaseProductToCart({
+        supplier: props.supplier,
+        shop: props.shop,
+        product: product,
+      }),
+    );
+  };
+
+  const decreaseToCart = (product: IOrderProduct) => {
+    dispatch(
+      decreaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
@@ -159,7 +170,8 @@ const Modal = (props: Props) => {
                   </TouchableOpacity>
                 ) : (
                   <ProductsModalCountView>
-                    <TouchableOpacity onPress={() => ''}>
+                    <TouchableOpacity
+                      onPress={() => decreaseToCart(props.info)}>
                       <ProductsModalMinusBtn>
                         <ProductsModalExpression>-</ProductsModalExpression>
                       </ProductsModalMinusBtn>

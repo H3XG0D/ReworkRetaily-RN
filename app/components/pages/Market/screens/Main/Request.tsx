@@ -1,9 +1,11 @@
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
   getAppSelectore,
@@ -11,11 +13,10 @@ import {
 } from '../../../../../../redux/store/store.hooks';
 
 import {
-  CartEditProduct,
-  addProductToCart,
+  decreaseProductToCart,
   getCartSelector,
   increaseProductToCart,
-  removeProductFromCart,
+  removeAllFromCart,
 } from '../../../../../../redux/Cart/Cart.slice';
 
 import Button from '../../../../UI/Button';
@@ -30,23 +31,42 @@ const Request = () => {
     useNavigation<NativeStackNavigationProp<RetaiyRootTypeParamList>>();
 
   const dispatch = useAppDispatch();
+
   const cartProduct = getAppSelectore(getCartSelector);
 
   const product = cartProduct.find(p => p.products);
+  const shop = cartProduct.map(p => p.shop);
 
-  const removeProduct = (code: string) => {
-    dispatch(removeProductFromCart(code));
-  };
+  // const productName = cartProduct
+  //   .find(order => order.shop.code != order.shop.code)
+  //   ?.products.map(i => i.name);
 
-  const addToCart = (productAdd: IOrderProduct) => {
-    dispatch(
-      addProductToCart({
-        supplier: product!.supplier,
-        shop: product!.shop,
-        product: productAdd,
-      }),
-    );
-  };
+  // console.log(cartProduct);
+
+  const shopProduct = cartProduct.map(item => ({
+    ...item.products,
+    ...item.shop,
+  }));
+
+  console.log(shopProduct);
+
+  // const shopProduct = cartProduct.find(
+  //   i => i.shop.code != i.shop.code,
+  // )?.products;
+
+  // const shopProduct = cartProduct.map(v => {
+  //   let obj = cartProduct.find(o => o.products === v.products);
+
+  //   if (obj) {
+  //     v.products = obj.products;
+  //   }
+
+  //   return v;
+  // });
+
+  // console.log(shopProduct);
+
+  // const prod = shopProduct.map(i => i.map(t => t))
 
   const incrementToCart = (productInc: IOrderProduct) => {
     dispatch(
@@ -58,11 +78,32 @@ const Request = () => {
     );
   };
 
+  const decreaseToCart = (productDec: IOrderProduct) => {
+    dispatch(
+      decreaseProductToCart({
+        supplier: product!.supplier,
+        shop: product!.shop,
+        product: productDec,
+      }),
+    );
+  };
+
+  const removeCartItems = () => {
+    dispatch(removeAllFromCart());
+  };
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Корзина',
       headerTitleAlign: 'left',
       headerLeft: () => <Text></Text>,
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={() => removeCartItems()}
+          style={{marginRight: 20}}>
+          <MaterialCommunityIcons name="trash-can" size={30} />
+        </TouchableOpacity>
+      ),
       headerTitleStyle: {fontSize: 27, fontWeight: '700'},
       animation: 'none',
     });
@@ -71,52 +112,67 @@ const Request = () => {
   return (
     <RetailyLayout>
       <ScrollView>
-        {product?.products.map(product => (
-          <RequestView key={product.code}>
-            <RequestItems>
-              <RequestImage>
-                <Image
-                  source={{
-                    uri:
-                      product && product.images && product.images.length > 0
-                        ? siteUrl + '/api/repo/' + product.images[0]
-                        : undefined,
-                  }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    resizeMode: 'contain',
-                  }}
-                />
-              </RequestImage>
+        {shop?.map(p => (
+          <>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: '600',
+                textAlign: 'center',
+                paddingTop: 20,
+              }}>
+              {p.name}
+            </Text>
+            {product?.products.map(product => (
+              <RequestView key={product.code}>
+                <RequestItems>
+                  <RequestImage>
+                    <Image
+                      source={{
+                        uri:
+                          product && product.images && product.images.length > 0
+                            ? siteUrl + '/api/repo/' + product.images[0]
+                            : undefined,
+                      }}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </RequestImage>
 
-              <View>
-                <Text>Имя товара: {product.name}</Text>
-              </View>
+                  <View>
+                    <Text>Имя товара: {product.name}</Text>
+                    <Text style={{color: COLORS.primary}}>
+                      {product.price} ₽
+                    </Text>
+                  </View>
 
-              <View style={{width: 100}}>
-                <Text>Количество: {product.quantity}</Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 10,
+                    }}>
+                    <Button
+                      title="+"
+                      onPress={() => incrementToCart(product)}
+                      style={{width: 25, height: 25, marginTop: 0}}
+                    />
 
-                <Button
-                  title="+"
-                  onPress={() => incrementToCart(product)}
-                  style={{width: 25, height: 25, marginTop: 0}}
-                />
+                    <Text>{product.quantity}</Text>
 
-                <Text style={{color: COLORS.primary}}>
-                  Цена: {product.price} ₽
-                </Text>
-              </View>
-
-              <Button
-                title="X"
-                onPress={() => {
-                  removeProduct(product.code);
-                }}
-                style={{width: 25, height: 25, marginTop: 0}}
-              />
-            </RequestItems>
-          </RequestView>
+                    <Button
+                      title="-"
+                      onPress={() => decreaseToCart(product)}
+                      style={{width: 25, height: 25, marginTop: 0}}
+                    />
+                  </View>
+                </RequestItems>
+              </RequestView>
+            ))}
+          </>
         ))}
       </ScrollView>
     </RetailyLayout>
@@ -158,7 +214,7 @@ const RequestItems = styled(View)`
   height: 100px;
 
   flex-direction: row;
-  gap: 20px;
+  gap: 30px;
 
   justify-content: center;
   align-items: center;

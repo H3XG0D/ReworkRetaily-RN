@@ -34,42 +34,6 @@ const Request = () => {
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
 
-  // let prod = {...cartProduct.map(i => i.products)};
-  // const productToCart = Object.values(prod);
-
-  // const productName = cartProduct
-  //   .find(order => order.shop.code != order.shop.code)
-  //   ?.products.map(i => i.name);
-
-  // console.log(cartProduct);
-
-  // const productName = cartProduct
-  //   .filter(p => p.shop.code[0] != p.shop.code[1])
-  //   .find(p => p.products);
-
-  // console.log(shopProduct);
-
-  // const shopProduct = cartProduct.find(
-  //   i => i.shop.code != i.shop.code,
-  // )?.products;
-
-  // const shopProduct = cartProduct.map(v => {
-  //   let obj = cartProduct.find(o => o.products === v.products);
-
-  //   if (obj) {
-  //     v.products = obj.products;
-  //   }
-
-  //   return v;
-  // });
-
-  // console.log(shopProduct);
-
-  // const prod = shopProduct.map(i => i.map(t => t))
-
-  // let order: CartOrder;
-  // const ord = cartProduct.find(i => i.shop.code !== order?.shop.code)?.products;
-
   const incrementToCart = (
     supplier: ISupplier,
     shop: IShop,

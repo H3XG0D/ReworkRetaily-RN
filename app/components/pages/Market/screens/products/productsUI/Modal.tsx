@@ -124,7 +124,25 @@ const Modal = (props: Props) => {
                       </ProductsModalCost>
                     ) : (
                       <ProductsModalCost>
-                        {(props.info?.price * props.info?.quantum).toFixed(2)} ₽
+                        {(
+                          cartProduct!
+                            .find(
+                              (f: CartOrder) =>
+                                f.supplier.code === props.supplier.code &&
+                                f.shop.code === props.shop.code,
+                            )!
+                            .products.find(p => p.code === props.info?.code)!
+                            .price *
+                          cartProduct!
+                            .find(
+                              (f: CartOrder) =>
+                                f.supplier.code === props.supplier.code &&
+                                f.shop.code === props.shop.code,
+                            )!
+                            .products.find(p => p.code === props.info?.code)!
+                            .quantity
+                        ).toFixed(2)}{' '}
+                        ₽
                       </ProductsModalCost>
                     )}
                   </>
@@ -186,7 +204,16 @@ const Modal = (props: Props) => {
                         fontWeight: '600',
                         textAlign: 'center',
                       }}>
-                      <Text>{props.info?.quantum}</Text>
+                      {
+                        cartProduct!
+                          .find(
+                            (f: CartOrder) =>
+                              f.supplier.code === props.supplier.code &&
+                              f.shop.code === props.shop.code,
+                          )!
+                          .products.find(p => p.code === props.info?.code)!
+                          .quantity
+                      }
                     </Field>
                     <TouchableOpacity
                       onPress={() => incrementToCart(props.info)}>

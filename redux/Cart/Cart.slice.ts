@@ -129,8 +129,23 @@ export const cartSlice = createSlice({
       }
     },
 
-    removeAllFromCart: state => {
-      return [];
+    removeAllFromCart: (state, action: PayloadAction<CartEditProduct>) => {
+      if (
+        state.some(
+          order =>
+            order.supplier.code === action.payload.supplier.code &&
+            order.shop.code === action.payload.shop.code,
+        )
+      ) {
+        let order: CartOrder | undefined = state.find(
+          order =>
+            order.supplier.code === action.payload.supplier.code &&
+            order.shop.code === action.payload.shop.code,
+        );
+        return [];
+      } else {
+        return [];
+      }
     },
   },
 });

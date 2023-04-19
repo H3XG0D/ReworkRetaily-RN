@@ -62,8 +62,18 @@ const Request = () => {
     );
   };
 
-  const removeCartItems = () => {
-    dispatch(removeAllFromCart());
+  const removeCartItems = (
+    supplier: ISupplier,
+    shop: IShop,
+    productDel: IOrderProduct,
+  ) => {
+    dispatch(
+      removeAllFromCart({
+        supplier: supplier,
+        shop: shop,
+        product: productDel,
+      }),
+    );
   };
 
   React.useLayoutEffect(() => {
@@ -71,13 +81,6 @@ const Request = () => {
       headerTitle: 'Корзина',
       headerTitleAlign: 'left',
       headerLeft: () => <Text></Text>,
-      headerRight: () => (
-        <TouchableOpacity
-          onPress={() => removeCartItems()}
-          style={{marginRight: 20}}>
-          <MaterialCommunityIcons name="trash-can" size={30} />
-        </TouchableOpacity>
-      ),
       headerTitleStyle: {fontSize: 27, fontWeight: '700'},
       animation: 'none',
     });
@@ -88,15 +91,27 @@ const Request = () => {
       <ScrollView>
         {cartProduct.map((cart: CartOrder) => (
           <>
-            <Text
+            <View
               style={{
-                fontSize: 16,
-                fontWeight: '600',
-                textAlign: 'center',
-                paddingTop: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 15,
               }}>
-              {cart.shop.name}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  textAlign: 'center',
+                  fontWeight: '600',
+                  width: 300,
+                }}>
+                {cart.shop.name}
+              </Text>
+              <TouchableOpacity
+                onPress={() => removeCartItems(cart.supplier, cart.shop)}>
+                <MaterialCommunityIcons name="trash-can" size={33} />
+              </TouchableOpacity>
+            </View>
             {cart.products.map(item => (
               <RequestView key={item.code}>
                 <RequestItems>

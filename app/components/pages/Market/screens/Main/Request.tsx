@@ -13,6 +13,7 @@ import {
 } from '../../../../../../redux/store/store.hooks';
 
 import {
+  CartOrder,
   decreaseProductToCart,
   getCartSelector,
   increaseProductToCart,
@@ -24,18 +25,17 @@ import styled from 'styled-components';
 import {COLORS, siteUrl} from '../../../../../constants';
 
 import RetailyLayout from '../../../../layout/RetailyLayout';
-import {IOrderProduct} from '../../../../../../redux/types';
+import {IOrderProduct, IShop, ISupplier} from '../../../../../../redux/types';
 
 const Request = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RetaiyRootTypeParamList>>();
 
   const dispatch = useAppDispatch();
-
   const cartProduct = getAppSelectore(getCartSelector);
 
-  const product = cartProduct.find(p => p.products);
-  const shop = cartProduct.map(p => p.shop);
+  // let prod = {...cartProduct.map(i => i.products)};
+  // const productToCart = Object.values(prod);
 
   // const productName = cartProduct
   //   .find(order => order.shop.code != order.shop.code)
@@ -43,12 +43,11 @@ const Request = () => {
 
   // console.log(cartProduct);
 
-  const shopProduct = cartProduct.map(item => ({
-    ...item.products,
-    ...item.shop,
-  }));
+  // const productName = cartProduct
+  //   .filter(p => p.shop.code[0] != p.shop.code[1])
+  //   .find(p => p.products);
 
-  console.log(shopProduct);
+  // console.log(shopProduct);
 
   // const shopProduct = cartProduct.find(
   //   i => i.shop.code != i.shop.code,
@@ -68,21 +67,32 @@ const Request = () => {
 
   // const prod = shopProduct.map(i => i.map(t => t))
 
-  const incrementToCart = (productInc: IOrderProduct) => {
+  // let order: CartOrder;
+  // const ord = cartProduct.find(i => i.shop.code !== order?.shop.code)?.products;
+
+  const incrementToCart = (
+    supplier: ISupplier,
+    shop: IShop,
+    productInc: IOrderProduct,
+  ) => {
     dispatch(
       increaseProductToCart({
-        supplier: product!.supplier,
-        shop: product!.shop,
+        supplier: supplier,
+        shop: shop,
         product: productInc,
       }),
     );
   };
 
-  const decreaseToCart = (productDec: IOrderProduct) => {
+  const decreaseToCart = (
+    supplier: ISupplier,
+    shop: IShop,
+    productDec: IOrderProduct,
+  ) => {
     dispatch(
       decreaseProductToCart({
-        supplier: product!.supplier,
-        shop: product!.shop,
+        supplier: supplier,
+        shop: shop,
         product: productDec,
       }),
     );
@@ -112,7 +122,7 @@ const Request = () => {
   return (
     <RetailyLayout>
       <ScrollView>
-        {shop?.map(p => (
+        {cartProduct.map((cart: CartOrder) => (
           <>
             <Text
               style={{
@@ -121,17 +131,17 @@ const Request = () => {
                 textAlign: 'center',
                 paddingTop: 20,
               }}>
-              {p.name}
+              {cart.shop.name}
             </Text>
-            {product?.products.map(product => (
-              <RequestView key={product.code}>
+            {cart.products.map(item => (
+              <RequestView key={item.code}>
                 <RequestItems>
                   <RequestImage>
                     <Image
                       source={{
                         uri:
-                          product && product.images && product.images.length > 0
-                            ? siteUrl + '/api/repo/' + product.images[0]
+                          item && item.images && item.images.length > 0
+                            ? siteUrl + '/api/repo/' + item.images[0]
                             : undefined,
                       }}
                       style={{
@@ -143,10 +153,8 @@ const Request = () => {
                   </RequestImage>
 
                   <View>
-                    <Text>Имя товара: {product.name}</Text>
-                    <Text style={{color: COLORS.primary}}>
-                      {product.price} ₽
-                    </Text>
+                    <Text>Имя товара: {item.name}</Text>
+                    <Text style={{color: COLORS.primary}}>{item.price} ₽</Text>
                   </View>
 
                   <View
@@ -157,15 +165,19 @@ const Request = () => {
                     }}>
                     <Button
                       title="+"
-                      onPress={() => incrementToCart(product)}
+                      onPress={() =>
+                        incrementToCart(cart.supplier, cart.shop, item)
+                      }
                       style={{width: 25, height: 25, marginTop: 0}}
                     />
 
-                    <Text>{product.quantity}</Text>
+                    <Text>{item.quantity}</Text>
 
                     <Button
                       title="-"
-                      onPress={() => decreaseToCart(product)}
+                      onPress={() =>
+                        decreaseToCart(cart.supplier, cart.shop, item)
+                      }
                       style={{width: 25, height: 25, marginTop: 0}}
                     />
                   </View>

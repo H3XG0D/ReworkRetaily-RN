@@ -89,6 +89,7 @@ export const cartSlice = createSlice({
         });
       }
     },
+
     decreaseProductToCart: (state, action: PayloadAction<CartEditProduct>) => {
       if (
         state.some(

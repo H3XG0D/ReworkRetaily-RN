@@ -21,6 +21,7 @@ import {
   getCartSelector,
   increaseProductToCart,
 } from '../../../../../../../redux/Cart/Cart.slice';
+import CodeField from '../../../../../UI/CodeField';
 
 interface Props {
   isModalVisible: any;
@@ -35,6 +36,8 @@ interface Props {
 const Modal = (props: Props) => {
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
+
+  const inputRef = React.useRef(null);
 
   const addToCart = (product: IOrderProduct) => {
     dispatch(
@@ -70,6 +73,8 @@ const Modal = (props: Props) => {
     <ReactNativeModal
       isVisible={props.isModalVisible}
       backdropOpacity={0.4}
+      onSwipeComplete={() => props.showModal()}
+      swipeDirection="down"
       style={{
         width: '100%',
         height: '100%',
@@ -195,6 +200,7 @@ const Modal = (props: Props) => {
                       </ProductsModalMinusBtn>
                     </TouchableOpacity>
                     <Field
+                      ref={inputRef}
                       style={{
                         width: 80,
                         height: 50,

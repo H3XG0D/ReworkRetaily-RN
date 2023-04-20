@@ -135,6 +135,7 @@ export const cartSlice = createSlice({
     },
   },
 });
+
 export const {
   addProductToCart,
   increaseProductToCart,

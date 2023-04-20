@@ -12,6 +12,7 @@ interface IField {
   maxLength?: number;
   numberOfLines?: number;
   style?: TextStyle | TextStyle[] | ViewStyle | ViewStyle[];
+  ref?: React.Ref<TextInput> | undefined;
   children?: React.ReactNode;
 }
 
@@ -24,6 +25,7 @@ const Field: React.FC<IField> = ({
   maxLength,
   numberOfLines,
   children,
+  ref,
   style = {},
 }) => {
   return (
@@ -37,6 +39,7 @@ const Field: React.FC<IField> = ({
       keyboardType={isNumeric}
       maxLength={maxLength}
       numberOfLines={numberOfLines}
+      ref={ref}
       style={StyleSheet.flatten([
         {
           width: 260,

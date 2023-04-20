@@ -3,7 +3,7 @@ import {TextInput, TextStyle, ViewStyle} from 'react-native';
 import {COLORS} from '../../constants';
 
 export interface ICodeField {
-  onChangeText: (val: string) => void;
+  onChangeText?: (val: string) => void;
   isNumeric?: 'numeric' | 'number-pad';
   maxLength?: number;
   onKeyPress?: any;

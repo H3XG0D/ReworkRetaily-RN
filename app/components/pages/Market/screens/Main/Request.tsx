@@ -1,5 +1,6 @@
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import React, {useEffect} from 'react';
+import styled from 'styled-components';
+import React from 'react';
 
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -20,11 +21,9 @@ import {
   removeAllFromCart,
 } from '../../../../../../redux/Cart/Cart.slice';
 
-import Button from '../../../../UI/Button';
-import styled from 'styled-components';
-import {COLORS, siteUrl} from '../../../../../constants';
-
 import RetailyLayout from '../../../../layout/RetailyLayout';
+
+import {COLORS, siteUrl} from '../../../../../constants';
 import {IOrderProduct, IShop, ISupplier} from '../../../../../../redux/types';
 
 const Request = () => {
@@ -76,114 +75,143 @@ const Request = () => {
     });
   }, [navigation]);
 
+  const getSum = (cart: CartOrder) => {
+    let sum = 0;
+
+    cart.products.forEach(i => {
+      sum =
+        sum +
+        cartProduct!
+          .find(
+            (f: CartOrder) =>
+              f.supplier.code === cart.supplier.code &&
+              f.shop.code === cart.shop.code,
+          )!
+          .products.find(p => p.code === i.code)!.price *
+          cartProduct!
+            .find(
+              (f: CartOrder) =>
+                f.supplier.code === cart.supplier.code &&
+                f.shop.code === cart.shop.code,
+            )!
+            .products.find(p => p.code === i.code)!.quantity;
+    });
+
+    return sum.toFixed(2);
+  };
+
   return (
     <RetailyLayout>
       <ScrollView>
-        {cartProduct.map((cart: CartOrder) => (
-          <>
-            {cart.products.length > 0 ? (
-              <View>
-                <RequestHeader>
-                  <RequestSuppler>{cart.supplier.name}</RequestSuppler>
-                  <RequestTrashIcon
-                    onPress={() => removeCartItems(cart.shop.code)}>
-                    <MaterialCommunityIcons name="trash-can" size={30} />
-                  </RequestTrashIcon>
-                </RequestHeader>
+        <View style={{marginBottom: 40}}>
+          {cartProduct.map((cart: CartOrder) => (
+            <View>
+              {cart.products.length > 0 ? (
+                <View>
+                  <RequestHeader>
+                    <RequestSuppler>{cart.supplier.name}</RequestSuppler>
+                    <RequestTrashIcon
+                      onPress={() => removeCartItems(cart.shop.code)}>
+                      <MaterialCommunityIcons name="trash-can" size={30} />
+                    </RequestTrashIcon>
+                  </RequestHeader>
 
-                <RequestShop>{cart.shop.name}</RequestShop>
+                  <RequestShop>{cart.shop.name}</RequestShop>
 
-                {cart.products.map(item => (
-                  <RequestView key={cart.shop.code}>
-                    <RequestItems>
-                      <RequestImage>
-                        <Image
-                          source={{
-                            uri:
-                              item && item.images && item.images.length > 0
-                                ? siteUrl + '/api/repo/' + item.images[0]
-                                : undefined,
-                          }}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            resizeMode: 'contain',
-                          }}
-                        />
-                      </RequestImage>
+                  {cart.products.map((item, index) => (
+                    <RequestView key={cart.shop.code}>
+                      <RequestItems>
+                        <RequestImage>
+                          <Image
+                            source={{
+                              uri:
+                                item && item.images && item.images.length > 0
+                                  ? siteUrl + '/api/repo/' + item.images[0]
+                                  : undefined,
+                            }}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              resizeMode: 'contain',
+                            }}
+                          />
+                        </RequestImage>
 
-                      <RequestInfo>
-                        <RequestProductName numberOfLines={3}>
-                          {item.name}
-                        </RequestProductName>
+                        <RequestInfo>
+                          <RequestProductName numberOfLines={3}>
+                            {item.name}
+                          </RequestProductName>
 
-                        <RequestProductPrice>
-                          <RequestProductWeight>
-                            {item.description_short}
-                          </RequestProductWeight>{' '}
-                          • {item.price} ₽
-                        </RequestProductPrice>
-                      </RequestInfo>
+                          <RequestProductPrice>
+                            <RequestProductWeight>
+                              {item.description_short}
+                            </RequestProductWeight>{' '}
+                            • {item.price} ₽
+                          </RequestProductPrice>
+                        </RequestInfo>
 
-                      <RequestRightView>
-                        <RequestFinalPriceView>
-                          <RequestFinalPriceText>
-                            {(
-                              cartProduct!
-                                .find(
-                                  (f: CartOrder) =>
-                                    f.supplier.code === cart.supplier.code &&
-                                    f.shop.code === cart.shop.code,
-                                )!
-                                .products.find(p => p.code === item.code)!
-                                .price *
-                              cartProduct!
-                                .find(
-                                  (f: CartOrder) =>
-                                    f.supplier.code === cart.supplier.code &&
-                                    f.shop.code === cart.shop.code,
-                                )!
-                                .products.find(p => p.code === item.code)!
-                                .quantity
-                            ).toFixed(2)}{' '}
-                            ₽
-                          </RequestFinalPriceText>
-                        </RequestFinalPriceView>
+                        <RequestRightView>
+                          <RequestFinalPriceView>
+                            <RequestFinalPriceText key={index}>
+                              {(
+                                cartProduct!
+                                  .find(
+                                    (f: CartOrder) =>
+                                      f.supplier.code === cart.supplier.code &&
+                                      f.shop.code === cart.shop.code,
+                                  )!
+                                  .products.find(p => p.code === item.code)!
+                                  .price *
+                                cartProduct!
+                                  .find(
+                                    (f: CartOrder) =>
+                                      f.supplier.code === cart.supplier.code &&
+                                      f.shop.code === cart.shop.code,
+                                  )!
+                                  .products.find(p => p.code === item.code)!
+                                  .quantity
+                              ).toFixed(2)}{' '}
+                              ₽
+                            </RequestFinalPriceText>
+                          </RequestFinalPriceView>
 
-                        <RequestBtn>
-                          <TouchableOpacity
-                            onPress={() =>
-                              decreaseToCart(cart.supplier, cart.shop, item)
-                            }>
-                            <MiniBtnView>
-                              <MiniBtnText>-</MiniBtnText>
-                            </MiniBtnView>
-                          </TouchableOpacity>
+                          <RequestBtn>
+                            <TouchableOpacity
+                              onPress={() =>
+                                decreaseToCart(cart.supplier, cart.shop, item)
+                              }>
+                              <MiniBtnView>
+                                <MiniBtnText>-</MiniBtnText>
+                              </MiniBtnView>
+                            </TouchableOpacity>
 
-                          <Text>{item.quantity}</Text>
+                            <Text>{item.quantity}</Text>
 
-                          <TouchableOpacity
-                            onPress={() =>
-                              incrementToCart(cart.supplier, cart.shop, item)
-                            }>
-                            <MiniBtnView>
-                              <MiniBtnText>+</MiniBtnText>
-                            </MiniBtnView>
-                          </TouchableOpacity>
-                        </RequestBtn>
-                      </RequestRightView>
-                    </RequestItems>
-                  </RequestView>
-                ))}
-                <TouchableOpacity>
-                  <PaymentButtonView>
-                    <PaymentButtonText>Оформить заявку</PaymentButtonText>
-                  </PaymentButtonView>
-                </TouchableOpacity>
-              </View>
-            ) : undefined}
-          </>
-        ))}
+                            <TouchableOpacity
+                              onPress={() =>
+                                incrementToCart(cart.supplier, cart.shop, item)
+                              }>
+                              <MiniBtnView>
+                                <MiniBtnText>+</MiniBtnText>
+                              </MiniBtnView>
+                            </TouchableOpacity>
+                          </RequestBtn>
+                        </RequestRightView>
+                      </RequestItems>
+                    </RequestView>
+                  ))}
+
+                  <TouchableOpacity>
+                    <PaymentButtonView>
+                      <PaymentButtonText>Оформить заявку</PaymentButtonText>
+                      <PaymentButtonText>{getSum(cart)} ₽</PaymentButtonText>
+                    </PaymentButtonView>
+                  </TouchableOpacity>
+                </View>
+              ) : undefined}
+            </View>
+          ))}
+        </View>
       </ScrollView>
     </RetailyLayout>
   );
@@ -315,8 +343,11 @@ const PaymentButtonView = styled(View)`
   background-color: ${COLORS.primary};
   border-radius: 5px;
 
-  align-items: center;
+  flex-direction: row;
+  gap: 120px;
+
   justify-content: center;
+  align-items: center;
 
   margin-left: auto;
   margin-right: auto;

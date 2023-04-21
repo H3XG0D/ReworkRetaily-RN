@@ -9,8 +9,6 @@ import {getProductsInfo} from '../../../../../api/api';
 
 import Modal from './productsUI/Modal';
 import Items from './productsUI/Items';
-import {getAppSelectore} from '../../../../../../redux/store/store.hooks';
-import {getCartSelector} from '../../../../../../redux/Cart/Cart.slice';
 import {IShop, ISupplier} from '../../../../../../redux/types';
 
 interface Props {
@@ -35,7 +33,6 @@ const Products = (props: Props): ReactElement => {
 
   const [info, setInfo] = React.useState<any>(undefined);
   const [buy, setBuy] = React.useState<boolean>(false);
-  const [choosed, setChoosed] = React.useState<string | undefined>(undefined);
 
   const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
   const [loadSkeleton, setLoadSkeleton] = React.useState<boolean>(true);
@@ -73,9 +70,9 @@ const Products = (props: Props): ReactElement => {
 
       <Modal
         isModalVisible={isModalVisible}
-        info={info}
         supplier={props.supplier}
         shop={props.shop}
+        info={info}
         setInfo={setInfo}
         showModal={showModal}
       />

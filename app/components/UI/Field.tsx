@@ -5,7 +5,7 @@ import {COLORS} from '../../constants';
 
 interface IField {
   onChangeText?: (val: string) => void;
-  value?: string;
+  value?: any;
   placeholder?: string;
   isSecure?: boolean;
   isNumeric?: 'numeric' | 'number-pad';

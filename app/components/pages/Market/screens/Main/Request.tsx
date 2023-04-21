@@ -1,8 +1,8 @@
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import styled from 'styled-components';
-import React from 'react';
+import React, {ReactElement} from 'react';
 
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
 
@@ -26,12 +26,17 @@ import RetailyLayout from '../../../../layout/RetailyLayout';
 import {COLORS, siteUrl} from '../../../../../constants';
 import {IOrderProduct, IShop, ISupplier} from '../../../../../../redux/types';
 
-const Request = () => {
+import Modal from './RequestUI/Modal';
+
+const Request = (): ReactElement => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RetaiyRootTypeParamList>>();
 
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
+
+  const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
+  const [info, setInfo] = React.useState<any>(undefined);
 
   const incrementToCart = (
     supplier: ISupplier,
@@ -63,6 +68,10 @@ const Request = () => {
 
   const removeCartItems = (shop: string) => {
     dispatch(removeAllFromCart(shop));
+  };
+
+  const showModal = () => {
+    setModalVisible(!isModalVisible);
   };
 
   React.useLayoutEffect(() => {
@@ -121,21 +130,28 @@ const Request = () => {
                   {cart.products.map((item, index) => (
                     <RequestView key={cart.shop.code}>
                       <RequestItems>
-                        <RequestImage>
-                          <Image
-                            source={{
-                              uri:
-                                item && item.images && item.images.length > 0
-                                  ? siteUrl + '/api/repo/' + item.images[0]
-                                  : undefined,
-                            }}
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              resizeMode: 'contain',
-                            }}
-                          />
-                        </RequestImage>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setInfo(item);
+                            showModal();
+                            console.log(item);
+                          }}>
+                          <RequestImage>
+                            <Image
+                              source={{
+                                uri:
+                                  item && item.images && item.images.length > 0
+                                    ? siteUrl + '/api/repo/' + item.images[0]
+                                    : undefined,
+                              }}
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                resizeMode: 'contain',
+                              }}
+                            />
+                          </RequestImage>
+                        </TouchableOpacity>
 
                         <RequestInfo>
                           <RequestProductName numberOfLines={3}>
@@ -211,6 +227,12 @@ const Request = () => {
               ) : undefined}
             </View>
           ))}
+          <Modal
+            isModalVisible={isModalVisible}
+            info={info}
+            showModal={showModal}
+            setInfo={setInfo}
+          />
         </View>
       </ScrollView>
     </RetailyLayout>

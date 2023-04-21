@@ -13,6 +13,7 @@ export interface CartEditProduct {
   supplier: ISupplier;
   shop: IShop;
   product: IOrderProduct;
+  value?: any;
 }
 
 const initialState: CartOrder[] = [];
@@ -130,6 +131,55 @@ export const cartSlice = createSlice({
       }
     },
 
+    updateCartQuantity: (state, action: PayloadAction<CartEditProduct>) => {
+      if (
+        state.some(
+          order =>
+            order.supplier.code === action.payload.supplier.code &&
+            order.shop.code === action.payload.shop.code,
+        )
+      ) {
+        let order: CartOrder | undefined = state.find(
+          order =>
+            order.supplier.code === action.payload.supplier.code &&
+            order.shop.code === action.payload.shop.code,
+        );
+
+        if (
+          order!.products.some(
+            product => product.code === action.payload.product.code,
+          )
+        ) {
+          let handle_quantity = (order!.products!.find(
+            product => product.code === action.payload.product.code,
+          )!.step = Number(action.payload.value));
+
+          if (
+            handle_quantity <= 0 ||
+            handle_quantity < action.payload.product.quantum ||
+            handle_quantity % 2 == 0
+          ) {
+            order!.products = order!.products!.filter(
+              product => product.code !== action.payload.product.code,
+            );
+          } else {
+            order!.products!.find(
+              product => product.code === action.payload.product.code,
+            )!.quantity = handle_quantity;
+          }
+        }
+      } else {
+        let product = {...action.payload.product};
+        product.quantity = action.payload.product.quantum;
+
+        state.push({
+          supplier: action.payload.supplier,
+          shop: action.payload.shop,
+          products: [product],
+        });
+      }
+    },
+
     removeAllFromCart: (state, action: PayloadAction<string>) => {
       return state.filter(p => p.shop.code !== action.payload);
     },
@@ -141,6 +191,7 @@ export const {
   increaseProductToCart,
   decreaseProductToCart,
   removeAllFromCart,
+  updateCartQuantity,
 } = cartSlice.actions;
 
 export const getCartSelector = (state: RootState) => state.cart;

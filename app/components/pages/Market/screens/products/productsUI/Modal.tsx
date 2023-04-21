@@ -215,27 +215,6 @@ const Modal = (props: Props) => {
                         <ProductsModalExpression>-</ProductsModalExpression>
                       </ProductsModalMinusBtn>
                     </TouchableOpacity>
-                    {/* <Field
-                      style={{
-                        width: 80,
-                        height: 50,
-                        backgroundColor: COLORS.white,
-                        color: COLORS.black,
-                        fontSize: 20,
-                        fontWeight: '600',
-                        textAlign: 'center',
-                      }}>
-                      {
-                        cartProduct!
-                          .find(
-                            (f: CartOrder) =>
-                              f.supplier.code === props.supplier.code &&
-                              f.shop.code === props.shop.code,
-                          )!
-                          .products.find(p => p.code === props.info?.code)!
-                          .quantity
-                      }
-                    </Field> */}
 
                     <TextInput
                       onChange={(e: any) => handleQuantity(e, props.info)}

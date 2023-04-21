@@ -1,4 +1,11 @@
-import {View, Text, Image, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from 'react-native';
 import React from 'react';
 import styled from 'styled-components';
 import {COLORS, siteUrl} from '../../../../../../constants';
@@ -14,6 +21,7 @@ import {
   decreaseProductToCart,
   getCartSelector,
   increaseProductToCart,
+  updateCartQuantity,
 } from '../../../../../../../redux/Cart/Cart.slice';
 import Field from '../../../../../UI/Field';
 import {
@@ -57,6 +65,22 @@ const Modal = (props: IModal) => {
         supplier: supplier,
         shop: shop,
         product: productDec,
+      }),
+    );
+  };
+
+  const handleQuantity = (
+    e: any,
+    product: IOrderProduct,
+    supplier: ISupplier,
+    shop: IShop,
+  ) => {
+    dispatch(
+      updateCartQuantity({
+        supplier: supplier,
+        shop: shop,
+        product: product,
+        value: e.nativeEvent.text,
       }),
     );
   };
@@ -117,27 +141,45 @@ const Modal = (props: IModal) => {
                   <>
                     {props.info?.quantum <= 0 ? null : (
                       <ProductsModalCost>
-                        {(
-                          cartProduct!
-                            .find(
-                              (f: CartOrder) =>
-                                f.supplier.code === f.supplier?.code &&
-                                f.shop.code === f.shop?.code,
-                            )!
-                            .products.find(p => p.code === props.info?.code)!
-                            .price *
-                          cartProduct!
-                            .find(
-                              (f: CartOrder) =>
-                                f.supplier.code === f.supplier?.code &&
-                                f.shop.code === f.shop?.code,
-                            )!
-                            .products.find(p => p.code === props.info?.code)!
-                            .quantity
-                        ).toFixed(2)}{' '}
+                        {cartProduct && cartProduct.length > 0
+                          ? (
+                              cartProduct
+                                ?.find(
+                                  (f: CartOrder) =>
+                                    f.supplier.code === f.supplier?.code &&
+                                    f.shop.code === f.shop?.code,
+                                )!
+                                .products.find(
+                                  p => p.code === props.info?.code,
+                                )!.price *
+                              cartProduct
+                                ?.find(
+                                  (f: CartOrder) =>
+                                    f.supplier.code === f.supplier?.code &&
+                                    f.shop.code === f.shop?.code,
+                                )!
+                                .products.find(
+                                  p => p.code === props.info?.code,
+                                )!.quantity
+                            ).toFixed(2)
+                          : null}{' '}
                         ₽
                       </ProductsModalCost>
                     )}
+                    {cartProduct?.some(
+                      (f: CartOrder) =>
+                        f.supplier.code === f.supplier.code &&
+                        f.shop.code === f.shop.code &&
+                        f.products.some(p => p.code === props.info?.code),
+                    ) ? (
+                      <>
+                        {props.info?.quantum <= 0 ? null : (
+                          <ProductsModalSubtitleCost>
+                            {props.info?.price} ₽
+                          </ProductsModalSubtitleCost>
+                        )}
+                      </>
+                    ) : null}
                   </>
                 ) : null}
               </View>
@@ -148,7 +190,58 @@ const Modal = (props: IModal) => {
                 f.supplier.code === f.supplier.code &&
                 f.shop.code === f.shop.code &&
                 f.products.some(p => p.code === props.info?.code),
-            ) && (
+            ) ? (
+              <>
+                <ProductsModalCountView>
+                  <TouchableOpacity
+                    onPress={() =>
+                      cartProduct.find((f: CartOrder) =>
+                        decreaseToCart(f.supplier, f.shop, props.info),
+                      )
+                    }>
+                    <ProductsModalMinusBtn>
+                      <ProductsModalExpression>-</ProductsModalExpression>
+                    </ProductsModalMinusBtn>
+                  </TouchableOpacity>
+                  <TextInput
+                    onChange={(e: any) =>
+                      cartProduct.find((f: CartOrder) =>
+                        handleQuantity(e, props.info, f.supplier, f.shop),
+                      )
+                    }
+                    style={{
+                      width: 80,
+                      height: 50,
+                      backgroundColor: COLORS.white,
+                      color: COLORS.black,
+                      fontSize: 20,
+                      fontWeight: '600',
+                      textAlign: 'center',
+                    }}>
+                    {
+                      cartProduct!
+                        .find(
+                          (f: CartOrder) =>
+                            f.supplier.code === f.supplier.code &&
+                            f.shop.code === f.shop.code,
+                        )!
+                        .products.find(p => p.code === props.info?.code)!
+                        .quantity
+                    }
+                  </TextInput>
+                  <TouchableOpacity
+                    onPress={() =>
+                      cartProduct.find((f: CartOrder) =>
+                        incrementToCart(f.supplier, f.shop, props.info),
+                      )
+                    }>
+                    <ProductsModalPlusBtn>
+                      <ProductsModalExpression>+</ProductsModalExpression>
+                    </ProductsModalPlusBtn>
+                  </TouchableOpacity>
+                </ProductsModalCountView>
+              </>
+            ) : (
               <ProductsModalCountView>
                 <TouchableOpacity
                   onPress={() =>
@@ -160,7 +253,13 @@ const Modal = (props: IModal) => {
                     <ProductsModalExpression>-</ProductsModalExpression>
                   </ProductsModalMinusBtn>
                 </TouchableOpacity>
-                <Field
+
+                <TextInput
+                  onChange={(e: any) =>
+                    cartProduct.find((f: CartOrder) =>
+                      handleQuantity(e, props.info, f.supplier, f.shop),
+                    )
+                  }
                   style={{
                     width: 80,
                     height: 50,
@@ -176,10 +275,11 @@ const Modal = (props: IModal) => {
                         (f: CartOrder) =>
                           f.supplier.code === f.supplier.code &&
                           f.shop.code === f.shop.code,
-                      )!
-                      .products.find(p => p.code === props.info?.code)!.quantity
+                      )
+                      ?.products.find(p => p.code === props.info?.code)
+                      ?.quantity
                   }
-                </Field>
+                </TextInput>
                 <TouchableOpacity
                   onPress={() =>
                     cartProduct.find((f: CartOrder) =>

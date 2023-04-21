@@ -74,6 +74,7 @@ const Request = (): ReactElement => {
     setModalVisible(!isModalVisible);
   };
 
+  // Navigation settings
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Корзина',
@@ -84,6 +85,7 @@ const Request = (): ReactElement => {
     });
   }, [navigation]);
 
+  // Create function for sum result price
   const getSum = (cart: CartOrder) => {
     let sum = 0;
 
@@ -127,6 +129,7 @@ const Request = (): ReactElement => {
 
                   <RequestShop>{cart.shop.name}</RequestShop>
 
+                  {/* Create some map function for implementing all object in the same view */}
                   {cart.products.map((item, index) => (
                     <RequestView key={cart.shop.code}>
                       <RequestItems>
@@ -134,7 +137,6 @@ const Request = (): ReactElement => {
                           onPress={() => {
                             setInfo(item);
                             showModal();
-                            console.log(item);
                           }}>
                           <RequestImage>
                             <Image

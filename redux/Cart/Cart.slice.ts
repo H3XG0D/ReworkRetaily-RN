@@ -156,8 +156,14 @@ export const cartSlice = createSlice({
 
           if (
             handle_quantity <= 0 ||
-            handle_quantity < action.payload.product.quantum ||
-            handle_quantity % 2 == 0
+            handle_quantity < action.payload.product.quantum
+          ) {
+            order!.products = order!.products!.filter(
+              product => product.code !== action.payload.product.code,
+            );
+          } else if (
+            order!.products.some(product => product.step === 7) &&
+            handle_quantity % 7 != 0
           ) {
             order!.products = order!.products!.filter(
               product => product.code !== action.payload.product.code,
@@ -169,6 +175,16 @@ export const cartSlice = createSlice({
           }
         }
       } else {
+        let order: CartOrder | undefined = state.find(
+          order =>
+            order.supplier.code === action.payload.supplier.code &&
+            order.shop.code === action.payload.shop.code,
+        );
+
+        let handle_quantity = (order!.products!.find(
+          product => product.code === action.payload.product.code,
+        )!.step = Number(action.payload.value));
+
         let product = {...action.payload.product};
         product.quantity = action.payload.product.quantum;
 

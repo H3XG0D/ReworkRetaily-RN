@@ -86,6 +86,7 @@ instance.interceptors.response.use(
           config.headers!.Person = buyerType === 'c' ? 'true' : 'false';
 
           return new Promise((resolve, reject) => {
+            // Some resolves from async storage
             axios
               .request(config)
               .then(response => {
@@ -106,6 +107,7 @@ instance.interceptors.response.use(
   },
 );
 
+// Create auth authentification
 export const auth = {
   login(login: string, psw: string) {
     return instance
@@ -129,6 +131,7 @@ export const auth = {
   unloguot() {},
 };
 
+// Get client objects from backend
 export const getClientObjects = (tbl: string) => {
   return instance
     .get('client' + apiVersion + '/object/' + tbl)
@@ -136,6 +139,7 @@ export const getClientObjects = (tbl: string) => {
     .catch(err => console.log(err));
 };
 
+// Get phone verify
 export const getPhoneVerify = (phone: string, code: string, type: string) => {
   return instance
     .post('users/' + type + '/verify', {
@@ -146,6 +150,7 @@ export const getPhoneVerify = (phone: string, code: string, type: string) => {
     .catch(err => console.log(err));
 };
 
+// This function create for checking if user have in database
 export const loginCheck = (login: string) => {
   return instance
     .post('users/valid', {
@@ -159,6 +164,7 @@ export const loginCheck = (login: string) => {
     });
 };
 
+// This function was made for get sms
 export const getSMS = (phone: string, type: string) => {
   return instance
     .get('users/' + type + '/' + phone)
@@ -166,6 +172,7 @@ export const getSMS = (phone: string, type: string) => {
     .catch(err => console.log(err));
 };
 
+// Registation system for user
 export const userRegister = (
   login: string,
   psw: string | undefined,
@@ -185,6 +192,7 @@ export const userRegister = (
     .catch(err => console.log(err));
 };
 
+// Forgot password system for one more authorization
 export const forgotPassword = (login: string, psw: string, code: string) => {
   return instance
     .post('users/forgot', {
@@ -207,6 +215,7 @@ export const getClient = (json: any) => {
     });
 };
 
+// This function was created for handling some shops contact
 export const getShopsContract = (cmd: string, supplier: string) => {
   return instance
     .post('clientv7/contract', {
@@ -221,6 +230,7 @@ export const getShopsContract = (cmd: string, supplier: string) => {
     });
 };
 
+// This function was contained for getShopsInfo
 export const getShopsInfo = (cmd: string, supplier: string) => {
   return instance
     .post('clientv7', {

@@ -90,6 +90,16 @@ const Modal = (props: IModal) => {
     );
   };
 
+  const submitInput = () => {
+    return cartProduct!
+      .find(
+        (f: CartOrder) =>
+          f.supplier.code === props.cart?.supplier?.code &&
+          f.shop.code === props.cart?.shop?.code,
+      )!
+      .products.find(p => p.code === props.info?.code)!.quantity;
+  };
+
   return (
     <ReactNativeModal
       isVisible={props.isModalVisible}
@@ -225,6 +235,7 @@ const Modal = (props: IModal) => {
                         ),
                       )
                     }
+                    onBlur={() => submitInput()}
                     style={{
                       width: 80,
                       height: 50,

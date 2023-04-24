@@ -9,6 +9,8 @@ import {
   Image,
   TextInput,
   Keyboard,
+  NativeSyntheticEvent,
+  TextInputKeyPressEventData,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
@@ -27,6 +29,7 @@ import {
   ISupplier,
 } from '../../../../../../../redux/types';
 import {
+  CartEditProduct,
   CartOrder,
   addProductToCart,
   decreaseProductToCart,
@@ -94,6 +97,27 @@ const Modal = (props: Props) => {
       }),
     );
   };
+
+  const [quantity, onChangeQuantity] = React.useState<string>('');
+
+  const value = cartProduct!
+    .find(
+      (f: CartOrder) =>
+        f.supplier.code === props.supplier.code &&
+        f.shop.code === props.shop.code,
+    )
+    ?.products.find(p => p.code === props.info?.code)?.quantity;
+
+  const oldQuantum = React.useRef('');
+
+  const handleChange = (e: any) => {
+    oldQuantum.current = quantity;
+    onChangeQuantity(String(value));
+  };
+
+  React.useEffect(() => {
+    onChangeQuantity(String(value));
+  }, [value]);
 
   return (
     <ReactNativeModal
@@ -224,6 +248,7 @@ const Modal = (props: Props) => {
                       </ProductsModalMinusBtn>
                     </TouchableOpacity>
 
+                    {/* !!! Change quantity !!! */}
                     <TextInput
                       onEndEditing={(e: any) => {
                         handleQuantity(
@@ -233,7 +258,10 @@ const Modal = (props: Props) => {
                           props.shop,
                         );
                       }}
+                      onChangeText={value => onChangeQuantity(value)}
+                      value={quantity}
                       keyboardType="number-pad"
+                      onBlur={(e: any) => handleChange(e)}
                       style={{
                         width: 80,
                         height: 50,
@@ -242,18 +270,8 @@ const Modal = (props: Props) => {
                         fontSize: 20,
                         fontWeight: '600',
                         textAlign: 'center',
-                      }}>
-                      {
-                        cartProduct!
-                          .find(
-                            (f: CartOrder) =>
-                              f.supplier.code === props.supplier.code &&
-                              f.shop.code === props.shop.code,
-                          )!
-                          .products.find(p => p.code === props.info?.code)!
-                          .quantity
-                      }
-                    </TextInput>
+                      }}
+                    />
                     <TouchableOpacity
                       onPress={() => incrementToCart(props.info)}>
                       <ProductsModalPlusBtn>

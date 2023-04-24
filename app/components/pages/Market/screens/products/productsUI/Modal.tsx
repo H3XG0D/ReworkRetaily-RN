@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Keyboard,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
@@ -20,7 +21,11 @@ import {
   getAppSelectore,
   useAppDispatch,
 } from '../../../../../../../redux/store/store.hooks';
-import {IOrderProduct} from '../../../../../../../redux/types';
+import {
+  IOrderProduct,
+  IShop,
+  ISupplier,
+} from '../../../../../../../redux/types';
 import {
   CartOrder,
   addProductToCart,
@@ -74,12 +79,17 @@ const Modal = (props: Props) => {
     );
   };
 
-  const handleQuantity = (e: any, product: IOrderProduct) => {
+  const handleQuantity = (
+    e: any,
+    product: IOrderProduct,
+    supplier: ISupplier,
+    shop: IShop,
+  ) => {
     dispatch(
       updateCartQuantity({
         value: e.nativeEvent.text,
-        supplier: props.supplier,
-        shop: props.shop,
+        supplier: supplier,
+        shop: shop,
         product: product,
       }),
     );
@@ -89,8 +99,6 @@ const Modal = (props: Props) => {
     <ReactNativeModal
       isVisible={props.isModalVisible}
       backdropOpacity={0.4}
-      onSwipeComplete={() => props.showModal()}
-      swipeDirection="down"
       style={{
         width: '100%',
         height: '100%',
@@ -100,13 +108,13 @@ const Modal = (props: Props) => {
       }}>
       <View
         style={{
-          maxHeight: 1300 - 10,
+          maxHeight: 1100 - 20,
           width: '100%',
           backgroundColor: COLORS.white,
           borderRadius: 15,
           marginTop: 50,
         }}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView>
           <TouchableOpacity onPress={() => props.showModal()}>
             <FontAwesomeIcon
               icon={faClose}
@@ -217,7 +225,15 @@ const Modal = (props: Props) => {
                     </TouchableOpacity>
 
                     <TextInput
-                      onChange={(e: any) => handleQuantity(e, props.info)}
+                      onEndEditing={(e: any) => {
+                        handleQuantity(
+                          e,
+                          props.info,
+                          props.supplier,
+                          props.shop,
+                        );
+                      }}
+                      keyboardType="number-pad"
                       style={{
                         width: 80,
                         height: 50,

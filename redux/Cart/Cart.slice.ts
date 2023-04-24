@@ -132,6 +132,15 @@ export const cartSlice = createSlice({
     },
 
     updateCartQuantity: (state, action: PayloadAction<CartEditProduct>) => {
+      let new_quantity: number = action.payload.product.quantum;
+
+      while (
+        new_quantity + action.payload.product.step <=
+        Number(action.payload.value)
+      ) {
+        new_quantity += action.payload.product.step;
+      }
+
       if (
         state.some(
           order =>
@@ -150,43 +159,24 @@ export const cartSlice = createSlice({
             product => product.code === action.payload.product.code,
           )
         ) {
-          let handle_quantity = (order!.products!.find(
-            product => product.code === action.payload.product.code,
-          )!.step = Number(action.payload.value));
-
-          if (
-            handle_quantity <= 0 ||
-            handle_quantity < action.payload.product.quantum
-          ) {
-            order!.products = order!.products!.filter(
-              product => product.code !== action.payload.product.code,
-            );
-          } else if (
-            order!.products.some(product => product.step === 7) &&
-            handle_quantity % 7 != 0
-          ) {
+          if (Number(action.payload.value) <= 0) {
             order!.products = order!.products!.filter(
               product => product.code !== action.payload.product.code,
             );
           } else {
             order!.products!.find(
               product => product.code === action.payload.product.code,
-            )!.quantity = handle_quantity;
+            )!.quantity = new_quantity;
           }
+        } else {
+          let product = {...action.payload.product};
+          product.quantity = new_quantity;
+
+          order!.products.push(product);
         }
       } else {
-        let order: CartOrder | undefined = state.find(
-          order =>
-            order.supplier.code === action.payload?.supplier.code &&
-            order.shop.code === action.payload?.shop.code,
-        );
-
-        let handle_quantity = (order!.products!.find(
-          product => product.code === action.payload.product.code,
-        )!.step = Number(action.payload.value));
-
         let product = {...action.payload.product};
-        product.quantity = handle_quantity;
+        product.quantity = new_quantity;
 
         state.push({
           supplier: action.payload.supplier,

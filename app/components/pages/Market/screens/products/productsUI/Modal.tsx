@@ -15,7 +15,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faClose} from '@fortawesome/free-solid-svg-icons';
 
 import {COLORS, siteUrl} from '../../../../../../constants';
-import Field from '../../../../../UI/Field';
+
 import {
   getAppSelectore,
   useAppDispatch,
@@ -77,10 +77,10 @@ const Modal = (props: Props) => {
   const handleQuantity = (e: any, product: IOrderProduct) => {
     dispatch(
       updateCartQuantity({
+        value: e.nativeEvent.text,
         supplier: props.supplier,
         shop: props.shop,
         product: product,
-        value: e.nativeEvent.text,
       }),
     );
   };

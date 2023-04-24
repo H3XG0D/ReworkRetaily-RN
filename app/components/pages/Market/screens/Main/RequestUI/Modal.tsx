@@ -1,3 +1,6 @@
+import React from 'react';
+import styled from 'styled-components';
+
 import {
   View,
   Text,
@@ -6,8 +9,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import React from 'react';
-import styled from 'styled-components';
+
 import {COLORS, siteUrl} from '../../../../../../constants';
 import ReactNativeModal from 'react-native-modal';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -16,6 +18,7 @@ import {
   getAppSelectore,
   useAppDispatch,
 } from '../../../../../../../redux/store/store.hooks';
+
 import {
   CartOrder,
   decreaseProductToCart,
@@ -23,7 +26,7 @@ import {
   increaseProductToCart,
   updateCartQuantity,
 } from '../../../../../../../redux/Cart/Cart.slice';
-import Field from '../../../../../UI/Field';
+
 import {
   IOrderProduct,
   IShop,
@@ -32,9 +35,10 @@ import {
 
 interface IModal {
   isModalVisible: any;
-  showModal: () => void;
   info: any;
   setInfo: any;
+
+  showModal: () => void;
 }
 
 const Modal = (props: IModal) => {
@@ -70,17 +74,17 @@ const Modal = (props: IModal) => {
   };
 
   const handleQuantity = (
-    e: any,
     product: IOrderProduct,
     supplier: ISupplier,
     shop: IShop,
+    e: any,
   ) => {
     dispatch(
       updateCartQuantity({
         supplier: supplier,
         shop: shop,
         product: product,
-        value: e.nativeEvent.text,
+        value: e?.nativeEvent?.text,
       }),
     );
   };
@@ -143,23 +147,23 @@ const Modal = (props: IModal) => {
                       <ProductsModalCost>
                         {cartProduct && cartProduct.length > 0
                           ? (
-                              cartProduct
-                                ?.find(
+                              cartProduct!
+                                .find(
                                   (f: CartOrder) =>
-                                    f.supplier.code === f.supplier?.code &&
-                                    f.shop.code === f.shop?.code,
+                                    f.supplier.code === f.supplier!.code &&
+                                    f.shop.code === f.shop!.code,
                                 )!
                                 .products.find(
-                                  p => p.code === props.info?.code,
+                                  p => p.code === props.info!.code,
                                 )!.price *
-                              cartProduct
-                                ?.find(
+                              cartProduct!
+                                .find(
                                   (f: CartOrder) =>
-                                    f.supplier.code === f.supplier?.code &&
-                                    f.shop.code === f.shop?.code,
+                                    f.supplier.code === f.supplier!.code &&
+                                    f.shop.code === f.shop!.code,
                                 )!
                                 .products.find(
-                                  p => p.code === props.info?.code,
+                                  p => p.code === props.info!.code,
                                 )!.quantity
                             ).toFixed(2)
                           : null}{' '}

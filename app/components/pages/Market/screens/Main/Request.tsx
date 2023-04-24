@@ -74,7 +74,6 @@ const Request = (): ReactElement => {
     setModalVisible(!isModalVisible);
   };
 
-  // Navigation settings
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Корзина',

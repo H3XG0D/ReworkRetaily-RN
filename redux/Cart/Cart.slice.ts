@@ -177,8 +177,8 @@ export const cartSlice = createSlice({
       } else {
         let order: CartOrder | undefined = state.find(
           order =>
-            order.supplier.code === action.payload.supplier.code &&
-            order.shop.code === action.payload.shop.code,
+            order.supplier.code === action.payload?.supplier.code &&
+            order.shop.code === action.payload?.shop.code,
         );
 
         let handle_quantity = (order!.products!.find(
@@ -186,7 +186,7 @@ export const cartSlice = createSlice({
         )!.step = Number(action.payload.value));
 
         let product = {...action.payload.product};
-        product.quantity = action.payload.product.quantum;
+        product.quantity = handle_quantity;
 
         state.push({
           supplier: action.payload.supplier,

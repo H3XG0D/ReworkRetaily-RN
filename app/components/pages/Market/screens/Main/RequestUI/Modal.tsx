@@ -46,6 +46,8 @@ const Modal = (props: IModal) => {
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
 
+  const [quantity, onChangeQuantity] = React.useState<string>('');
+
   const incrementToCart = (
     supplier: ISupplier,
     shop: IShop,
@@ -76,29 +78,38 @@ const Modal = (props: IModal) => {
 
   const handleQuantity = (
     product: IOrderProduct,
-    e: any,
     supplier: ISupplier,
     shop: IShop,
+    e: any,
   ) => {
     dispatch(
       updateCartQuantity({
         product: product,
-        supplier: props.cart.supplier,
-        shop: props.cart.shop,
+        supplier: supplier,
+        shop: shop,
         value: e.nativeEvent.text,
       }),
     );
   };
 
-  const submitInput = () => {
-    return cartProduct!
-      .find(
-        (f: CartOrder) =>
-          f.supplier.code === props.cart?.supplier?.code &&
-          f.shop.code === props.cart?.shop?.code,
-      )!
-      .products.find(p => p.code === props.info?.code)!.quantity;
+  const value = cartProduct!
+    .find(
+      (f: CartOrder) =>
+        f.supplier.code === props.cart?.supplier?.code &&
+        f.shop.code === props.cart?.shop?.code,
+    )
+    ?.products.find(p => p.code === props.info?.code)?.quantity;
+
+  const oldQuantum = React.useRef('');
+
+  const handleChange = (e: any) => {
+    oldQuantum.current = quantity;
+    onChangeQuantity(String(value));
   };
+
+  React.useEffect(() => {
+    onChangeQuantity(String(value));
+  }, [value]);
 
   return (
     <ReactNativeModal
@@ -225,17 +236,18 @@ const Modal = (props: IModal) => {
                     </ProductsModalMinusBtn>
                   </TouchableOpacity>
                   <TextInput
-                    onChange={(e: any) =>
-                      cartProduct.find((f: CartOrder) =>
-                        handleQuantity(
-                          props.info,
-                          e,
-                          props.cart.supplier,
-                          props.cart.shop,
-                        ),
-                      )
-                    }
-                    onBlur={() => submitInput()}
+                    onEndEditing={(e: any) => {
+                      handleQuantity(
+                        props?.info,
+                        props.cart.supplier,
+                        props.cart.shop,
+                        e,
+                      );
+                    }}
+                    onChangeText={value => onChangeQuantity(value)}
+                    value={quantity}
+                    keyboardType="number-pad"
+                    onBlur={(e: any) => handleChange(e)}
                     style={{
                       width: 80,
                       height: 50,
@@ -244,18 +256,8 @@ const Modal = (props: IModal) => {
                       fontSize: 20,
                       fontWeight: '600',
                       textAlign: 'center',
-                    }}>
-                    {
-                      cartProduct!
-                        .find(
-                          (f: CartOrder) =>
-                            f.supplier.code === props.cart?.supplier?.code &&
-                            f.shop.code === props.cart?.shop?.code,
-                        )!
-                        .products.find(p => p.code === props.info?.code)!
-                        .quantity
-                    }
-                  </TextInput>
+                    }}
+                  />
                   <TouchableOpacity
                     onPress={() =>
                       cartProduct.find((f: CartOrder) =>

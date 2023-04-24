@@ -136,7 +136,10 @@ export const cartSlice = createSlice({
 
       while (
         new_quantity + action.payload.product.step <=
-        Number(action.payload.value)
+          Number(action.payload.value) &&
+        (action.payload.product.balance === null ||
+          new_quantity + action.payload.product.step <=
+            action.payload.product.balance)
       ) {
         new_quantity += action.payload.product.step;
       }

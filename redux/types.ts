@@ -18,7 +18,7 @@ export interface IOrderProduct {
   description_short: string | undefined;
   price: number;
   images: [string];
-  balance: number | null;
+  balance: number;
   ei: string | null;
 }
 

@@ -37,6 +37,7 @@ const Request = (): ReactElement => {
 
   const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
   const [info, setInfo] = React.useState<any>(undefined);
+  const [cart, setCart] = React.useState<any>(undefined);
 
   const incrementToCart = (
     supplier: ISupplier,
@@ -135,6 +136,7 @@ const Request = (): ReactElement => {
                         <TouchableOpacity
                           onPress={() => {
                             setInfo(item);
+                            setCart(cart);
                             showModal();
                           }}>
                           <RequestImage>
@@ -233,6 +235,7 @@ const Request = (): ReactElement => {
             info={info}
             showModal={showModal}
             setInfo={setInfo}
+            cart={cart}
           />
         </View>
       </ScrollView>

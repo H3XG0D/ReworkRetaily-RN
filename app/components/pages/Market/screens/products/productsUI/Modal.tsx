@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import {
   View,
   Text,
@@ -9,13 +8,10 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-
 import ReactNativeModal from 'react-native-modal';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faClose} from '@fortawesome/free-solid-svg-icons';
-
 import {COLORS, siteUrl} from '../../../../../../constants';
-
 import {
   getAppSelectore,
   useAppDispatch,
@@ -33,8 +29,6 @@ import {
   increaseProductToCart,
   updateCartQuantity,
 } from '../../../../../../../redux/Cart/Cart.slice';
-import {SelectList} from 'react-native-dropdown-select-list';
-
 interface Props {
   isModalVisible: any;
   info: any;
@@ -44,13 +38,13 @@ interface Props {
   category: any;
   setCategory: any;
 
+  getProductCategory: () => void;
+  getProductSecondCategory: () => void;
   showModal: () => void;
 }
-
 const Modal = (props: Props) => {
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
-
   const addToCart = (product: IOrderProduct) => {
     dispatch(
       addProductToCart({
@@ -60,7 +54,6 @@ const Modal = (props: Props) => {
       }),
     );
   };
-
   const incrementToCart = (product: IOrderProduct) => {
     dispatch(
       increaseProductToCart({
@@ -70,7 +63,6 @@ const Modal = (props: Props) => {
       }),
     );
   };
-
   const decreaseToCart = (product: IOrderProduct) => {
     dispatch(
       decreaseProductToCart({
@@ -80,7 +72,6 @@ const Modal = (props: Props) => {
       }),
     );
   };
-
   const handleQuantity = (
     e: any,
     product: IOrderProduct,
@@ -96,10 +87,7 @@ const Modal = (props: Props) => {
       }),
     );
   };
-
   const [quantity, onChangeQuantity] = React.useState<string>('');
-  const [selected, setSelected] = React.useState('');
-
   const value = cartProduct!
     .find(
       (f: CartOrder) =>
@@ -107,25 +95,14 @@ const Modal = (props: Props) => {
         f.shop.code === props.shop.code,
     )
     ?.products.find(p => p.code === props.info?.code)?.quantity;
-
   const oldQuantum = React.useRef('');
-
   const handleChange = (e: any) => {
     oldQuantum.current = quantity;
     onChangeQuantity(String(value));
   };
-
-  const map_product_properties = props.info?.properties2.map(
-    ({name, ...data}: any) => data,
-  );
-
-  const data = map_product_properties?.find((i: any) => i?.values)?.values;
-  const getData = data?.map((i: any) => i.name);
-
   React.useEffect(() => {
     onChangeQuantity(String(value));
   }, [value]);
-
   return (
     <ReactNativeModal
       isVisible={props.isModalVisible}
@@ -157,7 +134,6 @@ const Modal = (props: Props) => {
               }}
             />
           </TouchableOpacity>
-
           <ProductsModalImage
             source={{
               uri:
@@ -166,7 +142,6 @@ const Modal = (props: Props) => {
                   : undefined,
             }}
           />
-
           <ProductsModalContent>
             <ProductsModalHeader>
               <ProductsModalTitle>{props.info?.name}</ProductsModalTitle>
@@ -227,7 +202,6 @@ const Modal = (props: Props) => {
                 ) : null}
               </View>
             </ProductsModalHeader>
-
             {cartProduct?.some(
               (f: CartOrder) =>
                 f.supplier.code === props.supplier.code &&
@@ -236,140 +210,8 @@ const Modal = (props: Props) => {
             ) ? (
               <>
                 {props.info?.quantum <= 0 ? (
-                  <>
-                    {data?.length > 0 ? (
-                      <Text>Values1</Text>
-                    ) : (
-                      <TouchableOpacity
-                        onPress={() => {
-                          addToCart(props.info);
-                        }}>
-                        <ProductsModalBtn>
-                          <ProductsModalBtnText>
-                            {props.info?.price} ₽
-                          </ProductsModalBtnText>
-                        </ProductsModalBtn>
-                      </TouchableOpacity>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {data?.length > 0 ? (
-                      <View style={{marginTop: 20, gap: 5}}>
-                        <Text style={{marginLeft: 20}}>Упаковка</Text>
-
-                        <SelectList
-                          setSelected={setSelected}
-                          data={getData}
-                          save="value"
-                          search={false}
-                          boxStyles={{
-                            width: 360,
-                            alignSelf: 'center',
-                            borderColor: COLORS.primary,
-                            alignItems: 'center',
-                            borderRadius: 5,
-                          }}
-                          dropdownStyles={{
-                            width: 360,
-                            backgroundColor: COLORS.white,
-                            alignSelf: 'center',
-                            marginTop: 0,
-                            borderWidth: 0,
-                            borderRadius: 5,
-                          }}
-                          // dropdownItemStyles={{
-                          //   borderBottomWidth: 2,
-                          //   borderBottomColor: COLORS.brightgray,
-                          // }}
-                          inputStyles={{color: COLORS.gray, fontSize: 14}}
-                          placeholder={selected}
-                          onSelect={() => addToCart(props.info)}
-                        />
-                      </View>
-                    ) : (
-                      <ProductsModalCountView>
-                        <TouchableOpacity
-                          onPress={() => decreaseToCart(props.info)}>
-                          <ProductsModalMinusBtn>
-                            <ProductsModalExpression>-</ProductsModalExpression>
-                          </ProductsModalMinusBtn>
-                        </TouchableOpacity>
-
-                        {/* !!! Change quantity !!! */}
-                        <TextInput
-                          onEndEditing={(e: any) => {
-                            handleQuantity(
-                              e,
-                              props.info,
-                              props.supplier,
-                              props.shop,
-                            );
-                          }}
-                          onChangeText={value => onChangeQuantity(value)}
-                          value={quantity}
-                          keyboardType="number-pad"
-                          onBlur={(e: any) => handleChange(e)}
-                          style={{
-                            width: 80,
-                            height: 50,
-                            backgroundColor: COLORS.white,
-                            color: COLORS.black,
-                            fontSize: 20,
-                            fontWeight: '600',
-                            textAlign: 'center',
-                          }}
-                        />
-                        <TouchableOpacity
-                          onPress={() => incrementToCart(props.info)}>
-                          <ProductsModalPlusBtn>
-                            <ProductsModalExpression>+</ProductsModalExpression>
-                          </ProductsModalPlusBtn>
-                        </TouchableOpacity>
-                      </ProductsModalCountView>
-                    )}
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                {data?.length > 0 ? (
-                  <View style={{marginTop: 20, gap: 5}}>
-                    <Text style={{marginLeft: 20}}>Упаковка</Text>
-
-                    <SelectList
-                      setSelected={setSelected}
-                      data={getData}
-                      save="value"
-                      search={false}
-                      boxStyles={{
-                        width: 360,
-                        alignSelf: 'center',
-                        borderColor: COLORS.primary,
-                        alignItems: 'center',
-                        borderRadius: 5,
-                      }}
-                      dropdownStyles={{
-                        width: 360,
-                        backgroundColor: COLORS.white,
-                        alignSelf: 'center',
-                        marginTop: 0,
-                        borderWidth: 0,
-                        borderRadius: 5,
-                      }}
-                      // dropdownItemStyles={{
-                      //   borderBottomWidth: 2,
-                      //   borderBottomColor: COLORS.brightgray,
-                      // }}
-                      inputStyles={{color: COLORS.gray, fontSize: 14}}
-                      placeholder="Выберите значение"
-                      onSelect={() => addToCart(props.info)}
-                    />
-                  </View>
-                ) : (
                   <TouchableOpacity
                     onPress={() => {
-                      props.setInfo(props.info);
                       addToCart(props.info);
                     }}>
                     <ProductsModalBtn>
@@ -378,10 +220,60 @@ const Modal = (props: Props) => {
                       </ProductsModalBtnText>
                     </ProductsModalBtn>
                   </TouchableOpacity>
+                ) : (
+                  <ProductsModalCountView>
+                    <TouchableOpacity
+                      onPress={() => decreaseToCart(props.info)}>
+                      <ProductsModalMinusBtn>
+                        <ProductsModalExpression>-</ProductsModalExpression>
+                      </ProductsModalMinusBtn>
+                    </TouchableOpacity>
+                    {/* !!! Change quantity !!! */}
+                    <TextInput
+                      onEndEditing={(e: any) => {
+                        handleQuantity(
+                          e,
+                          props.info,
+                          props.supplier,
+                          props.shop,
+                        );
+                      }}
+                      onChangeText={value => onChangeQuantity(value)}
+                      value={quantity}
+                      keyboardType="number-pad"
+                      onBlur={(e: any) => handleChange(e)}
+                      style={{
+                        width: 80,
+                        height: 50,
+                        backgroundColor: COLORS.white,
+                        color: COLORS.black,
+                        fontSize: 20,
+                        fontWeight: '600',
+                        textAlign: 'center',
+                      }}
+                    />
+                    <TouchableOpacity
+                      onPress={() => incrementToCart(props.info)}>
+                      <ProductsModalPlusBtn>
+                        <ProductsModalExpression>+</ProductsModalExpression>
+                      </ProductsModalPlusBtn>
+                    </TouchableOpacity>
+                  </ProductsModalCountView>
                 )}
               </>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  props.setInfo(props.info);
+                  addToCart(props.info);
+                }}>
+                <ProductsModalBtn>
+                  <ProductsModalBtnText>
+                    {props.info?.price} ₽
+                  </ProductsModalBtnText>
+                </ProductsModalBtn>
+              </TouchableOpacity>
             )}
-
             <ProductModalInfoContainer>
               {props.info?.properties1 && props.info?.properties1.length > 0
                 ? props.info.properties1.map((prop: any) => {
@@ -416,133 +308,100 @@ const Modal = (props: Props) => {
     </ReactNativeModal>
   );
 };
-
 export default Modal;
-
 const ProductsModalContent = styled(View)`
   background-color: ${COLORS.milky};
   height: 450px;
 `;
-
 const ProductsModalBackground = styled(View)`
   background-color: white;
   max-height: 1300px - 10px;
   width: 100%;
-
   border-radius: 15px;
   margin-top: 50px;
 `;
-
 const ProductsModalImage = styled(Image)`
   width: 300px;
   height: 250px;
   object-fit: contain;
   align-self: center;
-
   border-radius: 15px;
   margin-bottom: 30px;
 `;
-
 const ProductsModalHeader = styled(View)`
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
-
   margin-left: 20px;
   margin-top: 20px;
 `;
-
 const ProductsModalTitle = styled(Text)`
   color: ${COLORS.black};
   width: 235px;
-
   font-size: 16px;
 `;
-
 const ProductsModalCost = styled(Text)`
   color: ${COLORS.forth};
-
   font-size: 18px;
   font-weight: 600;
 `;
-
 const ProductsModalSubtitleCost = styled(Text)`
   color: ${COLORS.gray};
-
   font-size: 15px;
   font-weight: 600;
 `;
-
 const ProductsModalBtn = styled(View)`
   background-color: ${COLORS.tertiary};
   width: 350px;
   height: 45px;
-
   align-items: center;
   justify-content: center;
   align-self: center;
-
   border-radius: 10px;
   margin-top: 20px;
 `;
-
 const ProductsModalBtnText = styled(Text)`
   color: ${COLORS.white};
-
   font-size: 18px;
   font-weight: 600;
 `;
-
 const ProductModalInfoContainer = styled(View)`
   gap: 10px;
   margin-top: 20px;
 `;
-
 const ProductModalInfoCharacteristic = styled(Text)`
   color: ${COLORS.gray};
   width: 150px;
-
   font-size: 13px;
   text-align: right;
 `;
-
 const ProductModalInfoText = styled(Text)`
   color: ${COLORS.black};
   font-size: 13px;
 `;
-
 const ProductsModalCountView = styled(View)`
   flex-direction: row;
   gap: 15px;
-
   justify-content: center;
   align-items: center;
-
   margin-top: 15px;
 `;
-
 const ProductsModalMinusBtn = styled(View)`
   background-color: ${COLORS.white};
   width: 50px;
   height: 50px;
-
   align-items: center;
   justify-content: center;
-
   border-radius: 10px;
 `;
-
 const ProductsModalPlusBtn = styled(View)`
   background-color: ${COLORS.white};
   width: 50px;
   height: 50px;
-
   align-items: center;
   justify-content: center;
-
   border-radius: 10px;
 `;
-
 const ProductsModalExpression = styled(Text)`
   font-weight: 600;
 `;

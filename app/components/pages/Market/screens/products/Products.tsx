@@ -61,18 +61,38 @@ const Products = (props: Props): ReactElement => {
     setCategory(productCategory);
   };
 
+  const getProductSecondCategory = async () => {
+    const productCategory = await getProductPrice(
+      'getProductPrice',
+      String(info?.code),
+      String(props.shop?.code),
+      String(props.supplier?.code),
+      secondProductData,
+    );
+    setCategory(productCategory);
+  };
+
   const map_product_properties = info?.properties2.map(
     ({name, ...data}: any) => data,
   );
 
   const values = map_product_properties?.find((i: any) => i?.values)?.values;
-  const code_values = values?.find((i: any) => i?.code)?.code;
   const code_product = map_product_properties?.find((i: any) => i?.code)?.code;
+
+  const code_values = values?.find((i: any) => i?.code)?.code;
+  const allCode_values = values?.map((i: any) => i?.code);
 
   const productData = [
     {
       property: code_product,
-      code: code_values,
+      code: allCode_values[0],
+    },
+  ];
+
+  const secondProductData = [
+    {
+      property: code_product,
+      code: allCode_values[1],
     },
   ];
 
@@ -102,6 +122,8 @@ const Products = (props: Props): ReactElement => {
 
       <Modal
         isModalVisible={isModalVisible}
+        getProductCategory={getProductCategory}
+        getProductSecondCategory={getProductSecondCategory}
         supplier={props.supplier}
         shop={props.shop}
         info={info}

@@ -21,7 +21,6 @@ import {
 } from '../../../../../../../redux/types';
 
 import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
-import {getProductPrice} from '../../../../../../api/api';
 
 interface Props {
   loadSkeleton: any;
@@ -140,7 +139,6 @@ const Items = (props: Props) => {
                             onPress={() => {
                               props.showModal();
                               props.setInfo(product);
-                              props.getProductCategory();
                             }}>
                             <ProductsContentImages
                               source={{

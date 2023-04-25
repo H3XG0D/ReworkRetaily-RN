@@ -169,7 +169,7 @@ const Request = (): ReactElement => {
                           </RequestProductPrice>
                         </RequestInfo>
 
-                        <RequestRightView>
+                        <View>
                           <RequestFinalPriceView>
                             <RequestFinalPriceText key={index}>
                               {(
@@ -215,7 +215,7 @@ const Request = (): ReactElement => {
                               </MiniBtnView>
                             </TouchableOpacity>
                           </RequestBtn>
-                        </RequestRightView>
+                        </View>
                       </RequestItems>
                     </RequestView>
                   ))}
@@ -265,10 +265,6 @@ const RequestHeader = styled(View)`
 
 const RequestInfo = styled(View)`
   margin-bottom: 30px;
-`;
-
-const RequestRightView = styled(View)`
-  margin-left: 3%;
 `;
 
 const RequestFinalPriceView = styled(View)`

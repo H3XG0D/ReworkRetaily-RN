@@ -68,15 +68,13 @@ export const cartSlice = createSlice({
         if (
           order!.products.some(
             product => product.code === action.payload.product.code,
-            // &&
-            // action.payload.product.quantity + action.payload.product.step <=
-            //   action.payload.product.balance
           )
         ) {
           if (
             order!.products!.some(
               product =>
-                product.code === action.payload.product.code &&
+                (product.code === action.payload.product.code &&
+                  action.payload.product.balance === null) ||
                 product.quantity + product.step <=
                   action.payload.product.balance,
             )
@@ -92,7 +90,8 @@ export const cartSlice = createSlice({
           if (
             order!.products!.some(
               product =>
-                product.code === action.payload.product.code &&
+                (product.code === action.payload.product.code &&
+                  action.payload.product.balance === null) ||
                 product.quantity + product.step <=
                   action.payload.product.balance,
             )
@@ -104,7 +103,10 @@ export const cartSlice = createSlice({
         let product = {...action.payload.product};
         product.quantity = action.payload.product.quantum;
 
-        if (product.quantity + product.step <= action.payload.product.balance) {
+        if (
+          action.payload.product.balance === null ||
+          product.quantity + product.step <= action.payload.product.balance
+        ) {
           state.push({
             supplier: action.payload.supplier,
             shop: action.payload.shop,

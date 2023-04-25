@@ -21,21 +21,59 @@ import {
 } from '../../../../../../../redux/types';
 
 import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
+import {getProductPrice} from '../../../../../../api/api';
 
 interface Props {
-  products: any;
-  buy: any;
   loadSkeleton: any;
+  products: any;
+  setInfo: any;
+  info: any;
+  buy: any;
+
+  category: any;
+  setCategory: any;
+
   supplier: ISupplier;
   shop: IShop;
-
-  setInfo: any;
   showModal: () => void;
+  getProductCategory: () => void;
 }
 
 const Items = (props: Props) => {
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
+
+  // const [category, setCategory] = React.useState<any>(undefined);
+
+  // const getProductCategory = async () => {
+  //   const productCategory = await getProductPrice(
+  //     'getProductPrice',
+  //     String(props.info?.code),
+  //     String(props.shop?.code),
+  //     String(props.supplier?.code),
+  //     productData,
+  //   );
+  //   setCategory(productCategory);
+  // };
+
+  // const product_properties = {
+  //   ...props.info.properties2,
+  // };
+
+  // const map_product_properties = props.info?.properties2.map(
+  //   ({name, ...data}: any) => data,
+  // );
+
+  // const values = map_product_properties?.find((i: any) => i?.values)?.values;
+  // const code_values = values?.find((i: any) => i?.code)?.code;
+  // const code_product = map_product_properties?.find((i: any) => i?.code)?.code;
+
+  // const productData = [
+  //   {
+  //     property: code_product,
+  //     code: code_values,
+  //   },
+  // ];
 
   const addToCart = (product: IOrderProduct) => {
     dispatch(
@@ -102,6 +140,7 @@ const Items = (props: Props) => {
                             onPress={() => {
                               props.showModal();
                               props.setInfo(product);
+                              props.getProductCategory();
                             }}>
                             <ProductsContentImages
                               source={{

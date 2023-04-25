@@ -284,3 +284,27 @@ export const getProductsInfo = (
       return console.log(err);
     });
 };
+
+export const getProductPrice = (
+  cmd: string,
+  product: string,
+  shop: string,
+  supplier: string,
+  product_properites: {},
+) => {
+  debugger;
+  return instance
+    .post('clientv7', {
+      cmd: cmd,
+      product: product,
+      shop: shop,
+      supplier: supplier,
+      product_properties: product_properites,
+    })
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      return console.log(err);
+    });
+};

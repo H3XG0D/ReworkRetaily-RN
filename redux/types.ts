@@ -20,6 +20,8 @@ export interface IOrderProduct {
   images: [string];
   balance: number;
   ei: string | null;
+  properties1: IProductProperty1[];
+  properties2: IProductProperty2[];
 }
 
 export interface ISupplier {
@@ -45,4 +47,16 @@ export interface IShop {
 export interface IData {
   supplier_code: string;
   shop_code: string;
+}
+
+export interface IProductProperty1 {
+  code: string;
+  name: string;
+  value: string | null;
+}
+
+export interface IProductProperty2 {
+  code: string;
+  name: string;
+  value: string | null;
 }

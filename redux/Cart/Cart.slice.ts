@@ -73,10 +73,10 @@ export const cartSlice = createSlice({
           if (
             order!.products!.some(
               product =>
-                (product.code === action.payload.product.code &&
-                  action.payload.product.balance === null) ||
-                product.quantity + product.step <=
-                  action.payload.product.balance,
+                product.code === action.payload.product.code &&
+                (action.payload.product.balance === null ||
+                  product.quantity + product.step <=
+                    action.payload.product.balance),
             )
           ) {
             order!.products!.find(
@@ -90,10 +90,10 @@ export const cartSlice = createSlice({
           if (
             order!.products!.some(
               product =>
-                (product.code === action.payload.product.code &&
-                  action.payload.product.balance === null) ||
-                product.quantity + product.step <=
-                  action.payload.product.balance,
+                product.code === action.payload.product.code &&
+                (action.payload.product.balance === null ||
+                  product.quantity + product.step <=
+                    action.payload.product.balance),
             )
           ) {
             order!.products.push(product);

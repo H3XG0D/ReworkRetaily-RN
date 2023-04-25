@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MarketRootParamList} from '../../../../../Navigation/routes';
 
-import {getProductsInfo} from '../../../../../api/api';
+import {getProductPrice, getProductsInfo} from '../../../../../api/api';
 
 import Modal from './productsUI/Modal';
 import Items from './productsUI/Items';
@@ -48,6 +48,34 @@ const Products = (props: Props): ReactElement => {
     setLoadSkeleton(false);
   };
 
+  const [category, setCategory] = React.useState<any>(undefined);
+
+  const getProductCategory = async () => {
+    const productCategory = await getProductPrice(
+      'getProductPrice',
+      String(info?.code),
+      String(props.shop?.code),
+      String(props.supplier?.code),
+      productData,
+    );
+    setCategory(productCategory);
+  };
+
+  const map_product_properties = info?.properties2.map(
+    ({name, ...data}: any) => data,
+  );
+
+  const values = map_product_properties?.find((i: any) => i?.values)?.values;
+  const code_values = values?.find((i: any) => i?.code)?.code;
+  const code_product = map_product_properties?.find((i: any) => i?.code)?.code;
+
+  const productData = [
+    {
+      property: code_product,
+      code: code_values,
+    },
+  ];
+
   const showModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -59,6 +87,7 @@ const Products = (props: Props): ReactElement => {
   return (
     <View>
       <Items
+        info={info}
         products={products}
         buy={buy}
         loadSkeleton={loadSkeleton}
@@ -66,6 +95,9 @@ const Products = (props: Props): ReactElement => {
         shop={props.shop}
         setInfo={setInfo}
         showModal={showModal}
+        getProductCategory={getProductCategory}
+        category={category}
+        setCategory={setCategory}
       />
 
       <Modal
@@ -75,6 +107,8 @@ const Products = (props: Props): ReactElement => {
         info={info}
         setInfo={setInfo}
         showModal={showModal}
+        category={category}
+        setCategory={setCategory}
       />
     </View>
   );

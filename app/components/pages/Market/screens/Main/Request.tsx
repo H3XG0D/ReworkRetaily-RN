@@ -227,7 +227,13 @@ const Request = (): ReactElement => {
                     </PaymentButtonView>
                   </TouchableOpacity>
                 </View>
-              ) : undefined}
+              ) : (
+                <RequestView>
+                  <Text style={{textAlign: 'center', fontSize: 30}}>
+                    Ваша корзина пуста
+                  </Text>
+                </RequestView>
+              )}
             </View>
           ))}
           <Modal

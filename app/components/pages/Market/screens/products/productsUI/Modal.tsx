@@ -8,9 +8,6 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Keyboard,
-  NativeSyntheticEvent,
-  TextInputKeyPressEventData,
 } from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
@@ -36,6 +33,7 @@ import {
   increaseProductToCart,
   updateCartQuantity,
 } from '../../../../../../../redux/Cart/Cart.slice';
+import {SelectList} from 'react-native-dropdown-select-list';
 
 interface Props {
   isModalVisible: any;
@@ -43,6 +41,8 @@ interface Props {
   setInfo: any;
   supplier: any;
   shop: any;
+  category: any;
+  setCategory: any;
 
   showModal: () => void;
 }
@@ -98,6 +98,7 @@ const Modal = (props: Props) => {
   };
 
   const [quantity, onChangeQuantity] = React.useState<string>('');
+  const [selected, setSelected] = React.useState('');
 
   const value = cartProduct!
     .find(
@@ -113,6 +114,13 @@ const Modal = (props: Props) => {
     oldQuantum.current = quantity;
     onChangeQuantity(String(value));
   };
+
+  const map_product_properties = props.info?.properties2.map(
+    ({name, ...data}: any) => data,
+  );
+
+  const data = map_product_properties?.find((i: any) => i?.values)?.values;
+  const getData = data?.map((i: any) => i.name);
 
   React.useEffect(() => {
     onChangeQuantity(String(value));
@@ -228,8 +236,140 @@ const Modal = (props: Props) => {
             ) ? (
               <>
                 {props.info?.quantum <= 0 ? (
+                  <>
+                    {data?.length > 0 ? (
+                      <Text>Values1</Text>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => {
+                          addToCart(props.info);
+                        }}>
+                        <ProductsModalBtn>
+                          <ProductsModalBtnText>
+                            {props.info?.price} ₽
+                          </ProductsModalBtnText>
+                        </ProductsModalBtn>
+                      </TouchableOpacity>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {data?.length > 0 ? (
+                      <View style={{marginTop: 20, gap: 5}}>
+                        <Text style={{marginLeft: 20}}>Упаковка</Text>
+
+                        <SelectList
+                          setSelected={setSelected}
+                          data={getData}
+                          save="value"
+                          search={false}
+                          boxStyles={{
+                            width: 360,
+                            alignSelf: 'center',
+                            borderColor: COLORS.primary,
+                            alignItems: 'center',
+                            borderRadius: 5,
+                          }}
+                          dropdownStyles={{
+                            width: 360,
+                            backgroundColor: COLORS.white,
+                            alignSelf: 'center',
+                            marginTop: 0,
+                            borderWidth: 0,
+                            borderRadius: 5,
+                          }}
+                          // dropdownItemStyles={{
+                          //   borderBottomWidth: 2,
+                          //   borderBottomColor: COLORS.brightgray,
+                          // }}
+                          inputStyles={{color: COLORS.gray, fontSize: 14}}
+                          placeholder={selected}
+                          onSelect={() => addToCart(props.info)}
+                        />
+                      </View>
+                    ) : (
+                      <ProductsModalCountView>
+                        <TouchableOpacity
+                          onPress={() => decreaseToCart(props.info)}>
+                          <ProductsModalMinusBtn>
+                            <ProductsModalExpression>-</ProductsModalExpression>
+                          </ProductsModalMinusBtn>
+                        </TouchableOpacity>
+
+                        {/* !!! Change quantity !!! */}
+                        <TextInput
+                          onEndEditing={(e: any) => {
+                            handleQuantity(
+                              e,
+                              props.info,
+                              props.supplier,
+                              props.shop,
+                            );
+                          }}
+                          onChangeText={value => onChangeQuantity(value)}
+                          value={quantity}
+                          keyboardType="number-pad"
+                          onBlur={(e: any) => handleChange(e)}
+                          style={{
+                            width: 80,
+                            height: 50,
+                            backgroundColor: COLORS.white,
+                            color: COLORS.black,
+                            fontSize: 20,
+                            fontWeight: '600',
+                            textAlign: 'center',
+                          }}
+                        />
+                        <TouchableOpacity
+                          onPress={() => incrementToCart(props.info)}>
+                          <ProductsModalPlusBtn>
+                            <ProductsModalExpression>+</ProductsModalExpression>
+                          </ProductsModalPlusBtn>
+                        </TouchableOpacity>
+                      </ProductsModalCountView>
+                    )}
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {data?.length > 0 ? (
+                  <View style={{marginTop: 20, gap: 5}}>
+                    <Text style={{marginLeft: 20}}>Упаковка</Text>
+
+                    <SelectList
+                      setSelected={setSelected}
+                      data={getData}
+                      save="value"
+                      search={false}
+                      boxStyles={{
+                        width: 360,
+                        alignSelf: 'center',
+                        borderColor: COLORS.primary,
+                        alignItems: 'center',
+                        borderRadius: 5,
+                      }}
+                      dropdownStyles={{
+                        width: 360,
+                        backgroundColor: COLORS.white,
+                        alignSelf: 'center',
+                        marginTop: 0,
+                        borderWidth: 0,
+                        borderRadius: 5,
+                      }}
+                      // dropdownItemStyles={{
+                      //   borderBottomWidth: 2,
+                      //   borderBottomColor: COLORS.brightgray,
+                      // }}
+                      inputStyles={{color: COLORS.gray, fontSize: 14}}
+                      placeholder="Выберите значение"
+                      onSelect={() => addToCart(props.info)}
+                    />
+                  </View>
+                ) : (
                   <TouchableOpacity
                     onPress={() => {
+                      props.setInfo(props.info);
                       addToCart(props.info);
                     }}>
                     <ProductsModalBtn>
@@ -238,60 +378,8 @@ const Modal = (props: Props) => {
                       </ProductsModalBtnText>
                     </ProductsModalBtn>
                   </TouchableOpacity>
-                ) : (
-                  <ProductsModalCountView>
-                    <TouchableOpacity
-                      onPress={() => decreaseToCart(props.info)}>
-                      <ProductsModalMinusBtn>
-                        <ProductsModalExpression>-</ProductsModalExpression>
-                      </ProductsModalMinusBtn>
-                    </TouchableOpacity>
-
-                    {/* !!! Change quantity !!! */}
-                    <TextInput
-                      onEndEditing={(e: any) => {
-                        handleQuantity(
-                          e,
-                          props.info,
-                          props.supplier,
-                          props.shop,
-                        );
-                      }}
-                      onChangeText={value => onChangeQuantity(value)}
-                      value={quantity}
-                      keyboardType="number-pad"
-                      onBlur={(e: any) => handleChange(e)}
-                      style={{
-                        width: 80,
-                        height: 50,
-                        backgroundColor: COLORS.white,
-                        color: COLORS.black,
-                        fontSize: 20,
-                        fontWeight: '600',
-                        textAlign: 'center',
-                      }}
-                    />
-                    <TouchableOpacity
-                      onPress={() => incrementToCart(props.info)}>
-                      <ProductsModalPlusBtn>
-                        <ProductsModalExpression>+</ProductsModalExpression>
-                      </ProductsModalPlusBtn>
-                    </TouchableOpacity>
-                  </ProductsModalCountView>
                 )}
               </>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  props.setInfo(props.info);
-                  addToCart(props.info);
-                }}>
-                <ProductsModalBtn>
-                  <ProductsModalBtnText>
-                    {props.info?.price} ₽
-                  </ProductsModalBtnText>
-                </ProductsModalBtn>
-              </TouchableOpacity>
             )}
 
             <ProductModalInfoContainer>

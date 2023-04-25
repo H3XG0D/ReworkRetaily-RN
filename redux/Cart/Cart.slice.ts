@@ -35,8 +35,8 @@ export const cartSlice = createSlice({
             order.supplier.code === action.payload.supplier.code &&
             order.shop.code === action.payload.shop.code,
         );
-
         let product = {...action.payload.product};
+
         product.quantity = action.payload.product.quantum;
         order!.products.push(product);
       } else {
@@ -68,26 +68,49 @@ export const cartSlice = createSlice({
         if (
           order!.products.some(
             product => product.code === action.payload.product.code,
+            // &&
+            // action.payload.product.quantity + action.payload.product.step <=
+            //   action.payload.product.balance
           )
         ) {
-          order!.products!.find(
-            product => product.code === action.payload.product.code,
-          )!.quantity += action.payload.product.step;
+          if (
+            order!.products!.some(
+              product =>
+                product.code === action.payload.product.code &&
+                product.quantity + product.step <=
+                  action.payload.product.balance,
+            )
+          ) {
+            order!.products!.find(
+              product => product.code === action.payload.product.code,
+            )!.quantity += action.payload.product.step;
+          }
         } else {
           let product = {...action.payload.product};
           product.quantity = action.payload.product.quantum;
 
-          order!.products.push(product);
+          if (
+            order!.products!.some(
+              product =>
+                product.code === action.payload.product.code &&
+                product.quantity + product.step <=
+                  action.payload.product.balance,
+            )
+          ) {
+            order!.products.push(product);
+          }
         }
       } else {
         let product = {...action.payload.product};
         product.quantity = action.payload.product.quantum;
 
-        state.push({
-          supplier: action.payload.supplier,
-          shop: action.payload.shop,
-          products: [product],
-        });
+        if (product.quantity + product.step <= action.payload.product.balance) {
+          state.push({
+            supplier: action.payload.supplier,
+            shop: action.payload.shop,
+            products: [product],
+          });
+        }
       }
     },
 

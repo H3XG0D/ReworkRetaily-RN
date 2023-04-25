@@ -29,7 +29,6 @@ import {
   ISupplier,
 } from '../../../../../../../redux/types';
 import {
-  CartEditProduct,
   CartOrder,
   addProductToCart,
   decreaseProductToCart,

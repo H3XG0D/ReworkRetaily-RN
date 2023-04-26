@@ -85,14 +85,14 @@ const Products = (props: Props): ReactElement => {
   const productData = [
     {
       property: code_product,
-      code: allCode_values[0],
+      code: allCode_values,
     },
   ];
 
   const secondProductData = [
     {
       property: code_product,
-      code: allCode_values[1],
+      code: allCode_values,
     },
   ];
 

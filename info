@@ -1,9 +1,9 @@
-//   const map_product_properties = props.info?.properties2.map(
-//     ({name, ...data}: any) => data,
-//   );
+// const map_product_properties = props.info?.properties2.map(
+//   ({name, ...data}: any) => data,
+// );
 
-//   const data = map_product_properties?.find((i: any) => i?.values)?.values;
-//   const getData = data?.map((i: any) => i.name);
+// const data = map_product_properties?.find((i: any) => i?.values)?.values;
+// const getData = data?.map((i: any) => i.name);
 
 // data?.length > 0
 // props.info?.properties2.length > 0

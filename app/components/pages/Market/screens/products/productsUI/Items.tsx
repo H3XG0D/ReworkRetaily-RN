@@ -14,11 +14,8 @@ import {
   getCartSelector,
   increaseProductToCart,
 } from '../../../../../../../redux/Cart/Cart.slice';
-import {
-  IOrderProduct,
-  IShop,
-  ISupplier,
-} from '../../../../../../../redux/types';
+
+import {IProduct, IShop, ISupplier} from '../../../../../../../redux/types';
 
 import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
 
@@ -35,7 +32,6 @@ interface Props {
   supplier: ISupplier;
   shop: IShop;
   showModal: () => void;
-  getProductCategory: () => void;
 }
 
 const Items = (props: Props) => {
@@ -74,32 +70,89 @@ const Items = (props: Props) => {
   //   },
   // ];
 
-  const addToCart = (product: IOrderProduct) => {
+  const addToCart = (product: IProduct) => {
     dispatch(
       addProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
+        balance:
+          props.category && props.category.balance
+            ? props.category.balance
+            : product.balance,
+        price:
+          props.category && props.category.price
+            ? props.category.price
+            : product.price,
+        quantum:
+          props.category && props.category.quantum
+            ? props.category.quantum
+            : product.quantum,
+        step:
+          props.category && props.category.step
+            ? props.category.step
+            : product.step,
+        ei:
+          props.category && props.category.ei ? props.category.ei : product.ei,
+        product_properties: props.category,
       }),
     );
   };
 
-  const incrementToCart = (product: IOrderProduct) => {
+  const incrementToCart = (product: IProduct) => {
     dispatch(
       increaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
+        balance:
+          props.category && props.category.balance
+            ? props.category.balance
+            : product.balance,
+        price:
+          props.category && props.category.price
+            ? props.category.price
+            : product.price,
+        quantum:
+          props.category && props.category.quantum
+            ? props.category.quantum
+            : product.quantum,
+        step:
+          props.category && props.category.step
+            ? props.category.step
+            : product.step,
+        ei:
+          props.category && props.category.ei ? props.category.ei : product.ei,
+        product_properties: props.category,
       }),
     );
   };
 
-  const decreaseToCart = (product: IOrderProduct) => {
+  const decreaseToCart = (product: IProduct) => {
     dispatch(
       decreaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
+        balance:
+          props.category && props.category.balance
+            ? props.category.balance
+            : product.balance,
+        price:
+          props.category && props.category.price
+            ? props.category.price
+            : product.price,
+        quantum:
+          props.category && props.category.quantum
+            ? props.category.quantum
+            : product.quantum,
+        step:
+          props.category && props.category.step
+            ? props.category.step
+            : product.step,
+        ei:
+          props.category && props.category.ei ? props.category.ei : product.ei,
+        product_properties: props.category,
       }),
     );
   };

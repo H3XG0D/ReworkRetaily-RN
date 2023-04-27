@@ -292,7 +292,6 @@ export const getProductPrice = (
   supplier: string,
   product_properites: {},
 ) => {
-  debugger;
   return instance
     .post('clientv7', {
       cmd: cmd,

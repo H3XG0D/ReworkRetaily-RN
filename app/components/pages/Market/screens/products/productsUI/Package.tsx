@@ -1,5 +1,5 @@
-import {View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import React from 'react';
+import {View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 
 import ReactNativeModal from 'react-native-modal';
 
@@ -10,33 +10,32 @@ import {faClose} from '@fortawesome/free-solid-svg-icons';
 interface Props {
   isModalVisible: any;
   info: any;
+  setInfo: any;
+
+  selected: any;
+  setSelected: any;
+
+  supplier: any;
+  shop: any;
+
+  category: any;
+  setCategory: any;
+  data: any;
 
   showModal: () => void;
   getProductCategory: () => void;
+  addToCart: (item: any) => void;
 }
 
-const persons = [
-  {
-    id: '1',
-    name: 'Sivtsev Ivan',
-  },
-  {
-    id: '2',
-    name: 'Danya',
-  },
-  {
-    id: '3',
-    name: 'Lox',
-  },
-];
-
 const Package = (props: Props) => {
-  const [selectedId, setSelectedId] = React.useState<string>();
-
   const myItemSeparator = () => {
     return (
       <View
-        style={{height: 1, backgroundColor: 'grey', marginHorizontal: 10}}
+        style={{
+          height: 1,
+          backgroundColor: 'grey',
+          marginHorizontal: 10,
+        }}
       />
     );
   };
@@ -44,17 +43,10 @@ const Package = (props: Props) => {
   const myListEmpty = () => {
     return (
       <View style={{alignItems: 'center'}}>
-        <Text style={{padding: 20, fontSize: 15}}>No data found</Text>
+        <Text style={{padding: 20, fontSize: 15}}>Ошибка загрузки</Text>
       </View>
     );
   };
-
-  const map_product_properties = props.info?.properties2.map(
-    ({name, ...data}: any) => data,
-  );
-
-  const data = map_product_properties?.find((i: any) => i?.values)?.values;
-  const getData = data?.map((i: any) => i.name);
 
   return (
     <View>
@@ -88,10 +80,17 @@ const Package = (props: Props) => {
           <ScrollView>
             <View>
               <FlatList
-                data={getData}
+                data={props.data}
                 renderItem={({item}) => (
-                  <Text style={{padding: 20, fontSize: 15, marginTop: 5}}>
-                    {item}
+                  <Text
+                    style={{padding: 20, fontSize: 15, marginTop: 5}}
+                    onPress={() => {
+                      // props.setInfo(props.category);
+                      // props.addToCart(item);
+                      props.setSelected(item);
+                      props.getProductCategory();
+                    }}>
+                    {item.name}
                   </Text>
                 )}
                 ListHeaderComponent={() => (
@@ -104,7 +103,7 @@ const Package = (props: Props) => {
                     Выберите один из вариантов
                   </Text>
                 )}
-                keyExtractor={item => item.name}
+                keyExtractor={item => item.code}
                 ItemSeparatorComponent={myItemSeparator}
                 ListEmptyComponent={myListEmpty}
               />

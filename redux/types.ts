@@ -10,6 +10,19 @@ export interface IOrderProduct {
   quantum: number;
   step: number;
   code: string;
+  name: string;
+  price: number;
+  balance: number | null;
+  ei: string | null;
+  product_properties: IOrderProductProperty2[];
+}
+
+export interface IProduct {
+  product: string;
+  quantity: number;
+  quantum: number;
+  step: number;
+  code: string;
   category: string;
   category_sub: string | undefined;
   name: string;
@@ -58,5 +71,16 @@ export interface IProductProperty1 {
 export interface IProductProperty2 {
   code: string;
   name: string;
-  value: string | null;
+  values: IProductProperty2Value[];
+}
+
+export interface IProductProperty2Value {
+  code: string;
+  value: any;
+}
+
+export interface IOrderProductProperty2 {
+  code: string;
+  name: string;
+  property: string;
 }

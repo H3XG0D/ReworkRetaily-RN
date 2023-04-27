@@ -14,7 +14,9 @@ import ReactNativeModal from 'react-native-modal';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faClose} from '@fortawesome/free-solid-svg-icons';
+
 import {COLORS, siteUrl} from '../../../../../../constants';
+import {getProductPrice} from '../../../../../../api/api';
 
 import {
   getAppSelectore,
@@ -22,7 +24,9 @@ import {
 } from '../../../../../../../redux/store/store.hooks';
 
 import {
-  IOrderProduct,
+  IOrderProductProperty2,
+  IProduct,
+  IProductProperty2,
   IShop,
   ISupplier,
 } from '../../../../../../../redux/types';
@@ -35,54 +39,95 @@ import {
   increaseProductToCart,
   updateCartQuantity,
 } from '../../../../../../../redux/Cart/Cart.slice';
+
 import Package from './Package';
 
 interface Props {
   isModalVisible: any;
-  info: any;
+
+  info: IProduct;
   setInfo: any;
+
   supplier: any;
   shop: any;
+
   category: any;
   setCategory: any;
 
-  getProductCategory: () => void;
   getProductSecondCategory: () => void;
   showModal: () => void;
 }
+
 const Modal = (props: Props): ReactElement => {
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
-  const addToCart = (product: IOrderProduct) => {
+
+  const [category, setCategory] = React.useState<any>(undefined);
+
+  const [selected, setSelected] = React.useState<IOrderProductProperty2[]>([]);
+  const [quantity, onChangeQuantity] = React.useState<string>('');
+
+  const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
+
+  console.log(selected);
+
+  const addToCart = (product: IProduct) => {
     dispatch(
       addProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
+        balance:
+          category && category.balance ? category.balance : product.balance,
+        price: category && category.price ? category.price : product.price,
+        quantum:
+          category && category.quantum ? category.quantum : product.quantum,
+        step: category && category.step ? category.step : product.step,
+        ei: category && category.ei ? category.ei : product.ei,
+        product_properties: category,
       }),
     );
   };
-  const incrementToCart = (product: IOrderProduct) => {
+
+  const incrementToCart = (product: IProduct) => {
     dispatch(
       increaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
+        balance:
+          category && category.balance ? category.balance : product.balance,
+        price: category && category.price ? category.price : product.price,
+        quantum:
+          category && category.quantum ? category.quantum : product.quantum,
+        step: category && category.step ? category.step : product.step,
+        ei: category && category.ei ? category.ei : product.ei,
+        product_properties: category,
       }),
     );
   };
-  const decreaseToCart = (product: IOrderProduct) => {
+
+  const decreaseToCart = (product: IProduct) => {
     dispatch(
       decreaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
         product: product,
+        balance:
+          category && category.balance ? category.balance : product.balance,
+        price: category && category.price ? category.price : product.price,
+        quantum:
+          category && category.quantum ? category.quantum : product.quantum,
+        step: category && category.step ? category.step : product.step,
+        ei: category && category.ei ? category.ei : product.ei,
+        product_properties: category,
       }),
     );
   };
+
   const handleQuantity = (
     e: any,
-    product: IOrderProduct,
+    product: IProduct,
     supplier: ISupplier,
     shop: IShop,
   ) => {
@@ -92,12 +137,45 @@ const Modal = (props: Props): ReactElement => {
         supplier: supplier,
         shop: shop,
         product: product,
+        balance:
+          category && category.balance ? category.balance : product.balance,
+        price: category && category.price ? category.price : product.price,
+        quantum:
+          category && category.quantum ? category.quantum : product.quantum,
+        step: category && category.step ? category.step : product.step,
+        ei: category && category.ei ? category.ei : product.ei,
+        product_properties: category,
       }),
     );
   };
 
-  const [quantity, onChangeQuantity] = React.useState<string>('');
-  const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
+  const getData =
+    props.info?.properties2 && props.info?.properties2.length > 0
+      ? props.info?.properties2.find(i => i.code)?.code
+      : undefined;
+
+  const getCode =
+    props.info?.properties2 && props.info?.properties2.length > 0
+      ? props.info?.properties2.map(i => i.values.map(t => t.code)[0])
+      : undefined;
+
+  const productData = [
+    {
+      property: getData,
+      code: String(getCode),
+    },
+  ];
+
+  const getProductCategory = async () => {
+    const productCategory = await getProductPrice(
+      'getProductPrice',
+      String(props.info?.code),
+      String(props.shop?.code),
+      String(props.supplier?.code),
+      productData,
+    );
+    setCategory(productCategory);
+  };
 
   const showModal = () => {
     setModalVisible(!isModalVisible);
@@ -112,17 +190,11 @@ const Modal = (props: Props): ReactElement => {
     ?.products.find(p => p.code === props.info?.code)?.quantity;
 
   const oldQuantum = React.useRef('');
+
   const handleChange = (e: any) => {
     oldQuantum.current = quantity;
     onChangeQuantity(String(value));
   };
-
-  const map_product_properties = props.info?.properties2.map(
-    ({name, ...data}: any) => data,
-  );
-
-  const data = map_product_properties?.find((i: any) => i?.values)?.values;
-  const getData = data?.map((i: any) => i.name);
 
   React.useEffect(() => {
     onChangeQuantity(String(value));
@@ -208,7 +280,15 @@ const Modal = (props: Props): ReactElement => {
                   </>
                 ) : (
                   <>
-                    {props.info?.properties2.length > 0 ? undefined : (
+                    {props.info?.properties2?.length > 0 ? (
+                      <>
+                        {category !== undefined ? (
+                          <ProductsModalCost style={{color: COLORS.black}}>
+                            {props.info?.price} ₽
+                          </ProductsModalCost>
+                        ) : undefined}
+                      </>
+                    ) : (
                       <>
                         <ProductsModalCost style={{color: COLORS.black}}>
                           {props.info?.price} ₽
@@ -233,37 +313,52 @@ const Modal = (props: Props): ReactElement => {
                 ) : null}
               </View>
             </ProductsModalHeader>
-            {cartProduct?.some(
-              (f: CartOrder) =>
-                f.supplier.code === props.supplier.code &&
-                f.shop.code === props.shop.code &&
-                f.products.some(p => p.code === props.info?.code),
-            ) ? (
-              <>
-                {data?.length > 0 ? (
-                  <Text>Hello</Text>
-                ) : (
-                  <>
-                    {props.info?.quantum <= 0 ? (
-                      <TouchableOpacity
-                        onPress={() => {
-                          addToCart(props.info);
-                        }}>
-                        <ProductsModalBtn>
-                          <ProductsModalBtnText>
-                            {props.info?.price} ₽
-                          </ProductsModalBtnText>
-                        </ProductsModalBtn>
-                      </TouchableOpacity>
-                    ) : (
+
+            {props.info?.properties2 && props.info?.properties2.length > 0
+              ? props.info?.properties2.map((prop: IProductProperty2) => (
+                  <View style={{marginTop: 20}}>
+                    <Text style={{marginLeft: 20}}>{prop.name}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        showModal();
+                      }}>
+                      <ModalChooseView>
+                        <View>
+                          <ModalChooseText>{selected?.name}</ModalChooseText>
+                        </View>
+                        <View style={{marginRight: 10}}>
+                          <MaterialCommunityIcons
+                            name="chevron-down"
+                            color={COLORS.black}
+                            size={26}
+                          />
+                        </View>
+                      </ModalChooseView>
+                    </TouchableOpacity>
+                    <Package
+                      category={category}
+                      setCategory={setCategory}
+                      showModal={showModal}
+                      isModalVisible={isModalVisible}
+                      info={props.info}
+                      selected={selected}
+                      setSelected={setSelected}
+                      supplier={props.supplier}
+                      shop={props.shop}
+                      setInfo={props.setInfo}
+                      getProductCategory={getProductCategory}
+                      addToCart={addToCart}
+                      data={prop.values}
+                    />
+
+                    {category !== undefined ? (
                       <ProductsModalCountView>
                         <TouchableOpacity
-                          onPress={() => decreaseToCart(props.info)}>
+                          onPress={() => decreaseToCart(category)}>
                           <ProductsModalMinusBtn>
                             <ProductsModalExpression>-</ProductsModalExpression>
                           </ProductsModalMinusBtn>
                         </TouchableOpacity>
-                        {/* !!! Change quantity !!! */}
                         <TextInput
                           onEndEditing={(e: any) => {
                             handleQuantity(
@@ -274,7 +369,7 @@ const Modal = (props: Props): ReactElement => {
                             );
                           }}
                           onChangeText={value => onChangeQuantity(value)}
-                          value={quantity}
+                          value={String(category.quantum)}
                           keyboardType="number-pad"
                           onBlur={(e: any) => handleChange(e)}
                           style={{
@@ -288,46 +383,62 @@ const Modal = (props: Props): ReactElement => {
                           }}
                         />
                         <TouchableOpacity
-                          onPress={() => incrementToCart(props.info)}>
+                          onPress={() => {
+                            incrementToCart(category);
+                            addToCart(category);
+                          }}>
                           <ProductsModalPlusBtn>
                             <ProductsModalExpression>+</ProductsModalExpression>
                           </ProductsModalPlusBtn>
                         </TouchableOpacity>
                       </ProductsModalCountView>
-                    )}
-                  </>
-                )}
-              </>
+                    ) : undefined}
+                  </View>
+                ))
+              : undefined}
+
+            {cartProduct?.some(
+              (f: CartOrder) =>
+                f.supplier.code === props.supplier.code &&
+                f.shop.code === props.shop.code &&
+                f.products.some(p => p.code === props.info?.code),
+            ) ? (
+              <ProductsModalCountView>
+                <TouchableOpacity onPress={() => decreaseToCart(props.info)}>
+                  <ProductsModalMinusBtn>
+                    <ProductsModalExpression>-</ProductsModalExpression>
+                  </ProductsModalMinusBtn>
+                </TouchableOpacity>
+                {/* !!! Change quantity !!! */}
+                <TextInput
+                  onEndEditing={(e: any) => {
+                    handleQuantity(e, props.info, props.supplier, props.shop);
+                  }}
+                  onChangeText={value => onChangeQuantity(value)}
+                  value={quantity}
+                  keyboardType="number-pad"
+                  onBlur={(e: any) => handleChange(e)}
+                  style={{
+                    width: 80,
+                    height: 50,
+                    backgroundColor: COLORS.white,
+                    color: COLORS.black,
+                    fontSize: 20,
+                    fontWeight: '600',
+                    textAlign: 'center',
+                  }}
+                />
+                <TouchableOpacity onPress={() => incrementToCart(props.info)}>
+                  <ProductsModalPlusBtn>
+                    <ProductsModalExpression>+</ProductsModalExpression>
+                  </ProductsModalPlusBtn>
+                </TouchableOpacity>
+              </ProductsModalCountView>
             ) : (
               <>
-                {data?.length > 0 ? (
-                  <View style={{marginTop: 20}}>
-                    <Text style={{marginLeft: 20}}>Упаковка</Text>
-                    <TouchableOpacity onPress={() => showModal()}>
-                      <ModalChooseView>
-                        <View>
-                          <ModalChooseText>Выберите значение</ModalChooseText>
-                        </View>
-                        <View>
-                          <MaterialCommunityIcons
-                            name="chevron-down"
-                            color={COLORS.black}
-                            size={26}
-                          />
-                        </View>
-                      </ModalChooseView>
-                    </TouchableOpacity>
-                    <Package
-                      showModal={showModal}
-                      isModalVisible={isModalVisible}
-                      info={props.info}
-                      getProductCategory={props.getProductCategory}
-                    />
-                  </View>
-                ) : (
+                {props?.info?.properties2?.length > 0 ? undefined : (
                   <TouchableOpacity
                     onPress={() => {
-                      props.setInfo(props.info);
                       addToCart(props.info);
                     }}>
                     <ProductsModalBtn>
@@ -339,6 +450,7 @@ const Modal = (props: Props): ReactElement => {
                 )}
               </>
             )}
+
             <ProductModalInfoContainer>
               {props.info?.properties1 && props.info?.properties1.length > 0
                 ? props.info.properties1.map((prop: any) => {
@@ -485,13 +597,12 @@ const ModalChooseView = styled(View)`
   background-color: ${COLORS.white};
 
   flex-direction: row;
-  gap: 150;
 
   border-radius: 5;
   border-width: 1;
   border-color: ${COLORS.primary};
 
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   align-self: center;
 
@@ -501,4 +612,5 @@ const ModalChooseView = styled(View)`
 
 const ModalChooseText = styled(Text)`
   color: ${COLORS.gray};
+  margin-left: 15px;
 `;

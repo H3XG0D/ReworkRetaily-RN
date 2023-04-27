@@ -1,8 +1,8 @@
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
-import styled from 'styled-components';
 import React, {ReactElement} from 'react';
+import styled from 'styled-components';
 
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RetaiyRootTypeParamList} from '../../../../../Navigation/routes';
 
@@ -24,7 +24,12 @@ import {
 import RetailyLayout from '../../../../layout/RetailyLayout';
 
 import {COLORS, siteUrl} from '../../../../../constants';
-import {IOrderProduct, IShop, ISupplier} from '../../../../../../redux/types';
+import {
+  IOrderProduct,
+  IProduct,
+  IShop,
+  ISupplier,
+} from '../../../../../../redux/types';
 
 import Modal from './RequestUI/Modal';
 
@@ -42,13 +47,21 @@ const Request = (): ReactElement => {
   const incrementToCart = (
     supplier: ISupplier,
     shop: IShop,
-    productInc: IOrderProduct,
+    productInc: IProduct,
   ) => {
     dispatch(
       increaseProductToCart({
         supplier: supplier,
         shop: shop,
         product: productInc,
+        balance:
+          category && category.balance ? category.balance : product.balance,
+        price: category && category.price ? category.price : product.price,
+        quantum:
+          category && category.quantum ? category.quantum : product.quantum,
+        step: category && category.step ? category.step : product.step,
+        ei: category && category.ei ? category.ei : product.ei,
+        product_properties: category,
       }),
     );
   };
@@ -129,7 +142,6 @@ const Request = (): ReactElement => {
 
                   <RequestShop>{cart.shop.name}</RequestShop>
 
-                  {/* Create some map function for implementing all object in the same view */}
                   {cart.products.map((item, index) => (
                     <RequestView key={cart.shop.code}>
                       <RequestItems>

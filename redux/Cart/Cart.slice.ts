@@ -1,6 +1,7 @@
+import {IOrderProduct, IOrderProductProperty2} from './../types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-import {IOrderProduct, IShop, ISupplier} from '../types';
+import {IProduct, IShop, ISupplier} from '../types';
 import type {RootState} from '../store/store';
 
 export interface CartOrder {
@@ -12,7 +13,15 @@ export interface CartOrder {
 export interface CartEditProduct {
   supplier: ISupplier;
   shop: IShop;
-  product: IOrderProduct;
+  product: IProduct;
+
+  balance: number | null;
+  price: number;
+  ei: string | null;
+  quantum: number;
+  step: number;
+  product_properties: IOrderProductProperty2[];
+
   value?: any;
 }
 
@@ -35,13 +44,39 @@ export const cartSlice = createSlice({
             order.supplier.code === action.payload.supplier.code &&
             order.shop.code === action.payload.shop.code,
         );
-        let product = {...action.payload.product};
+
+        let product: IOrderProduct = {
+          product: action.payload.product.code,
+          quantity: 0,
+          quantum: action.payload.quantum,
+          step: action.payload.step,
+          code: action.payload.product.code,
+          name: action.payload.product.name,
+          // Принять данные с модалки
+          price: action.payload.price,
+          balance: action.payload.balance,
+          ei: action.payload.ei,
+          product_properties: action.payload.product_properties,
+        };
 
         product.quantity = action.payload.product.quantum;
         order!.products.push(product);
       } else {
-        let product = {...action.payload.product};
-        product.quantity = action.payload.product.quantum;
+        let product: IOrderProduct = {
+          product: action.payload.product.code,
+          quantity: 0,
+          quantum: action.payload.quantum,
+          step: action.payload.step,
+          code: action.payload.product.code,
+          name: action.payload.product.name,
+          // Принять данные с модалки
+          price: action.payload.price,
+          balance: action.payload.balance,
+          ei: action.payload.ei,
+          product_properties: action.payload.product_properties,
+        };
+
+        product.quantity = action.payload.product?.quantum;
 
         state.push({
           supplier: action.payload.supplier,
@@ -49,6 +84,7 @@ export const cartSlice = createSlice({
           products: [product],
         });
       }
+      debugger;
     },
 
     increaseProductToCart: (state, action: PayloadAction<CartEditProduct>) => {
@@ -74,17 +110,30 @@ export const cartSlice = createSlice({
             order!.products!.some(
               product =>
                 product.code === action.payload.product.code &&
-                (action.payload.product.balance === null ||
-                  product.quantity + product.step <=
-                    action.payload.product.balance),
+                (action.payload.balance === null ||
+                  product.quantity + action.payload.step <=
+                    action.payload.balance),
             )
           ) {
             order!.products!.find(
               product => product.code === action.payload.product.code,
-            )!.quantity += action.payload.product.step;
+            )!.quantity += action.payload.step;
           }
         } else {
-          let product = {...action.payload.product};
+          let product: IOrderProduct = {
+            product: action.payload.product.code,
+            quantity: 0,
+            quantum: action.payload.quantum,
+            step: action.payload.step,
+            code: action.payload.product.code,
+            name: action.payload.product.name,
+            // Принять данные с модалки
+            price: action.payload.price,
+            balance: action.payload.balance,
+            ei: action.payload.ei,
+            product_properties: action.payload.product_properties,
+          };
+
           product.quantity = action.payload.product.quantum;
 
           if (
@@ -100,7 +149,20 @@ export const cartSlice = createSlice({
           }
         }
       } else {
-        let product = {...action.payload.product};
+        let product: IOrderProduct = {
+          product: action.payload.product.code,
+          quantity: 0,
+          quantum: action.payload.quantum,
+          step: action.payload.step,
+          code: action.payload.product.code,
+          name: action.payload.product.name,
+          // Принять данные с модалки
+          price: action.payload.price,
+          balance: action.payload.balance,
+          ei: action.payload.ei,
+          product_properties: action.payload.product_properties,
+        };
+
         product.quantity = action.payload.product.quantum;
 
         if (
@@ -197,13 +259,39 @@ export const cartSlice = createSlice({
             )!.quantity = new_quantity;
           }
         } else {
-          let product = {...action.payload.product};
+          let product: IOrderProduct = {
+            product: action.payload.product.code,
+            quantity: 0,
+            quantum: action.payload.quantum,
+            step: action.payload.step,
+            code: action.payload.product.code,
+            name: action.payload.product.name,
+            // Принять данные с модалки
+            price: action.payload.price,
+            balance: action.payload.balance,
+            ei: action.payload.ei,
+            product_properties: action.payload.product_properties,
+          };
+
           product.quantity = new_quantity;
 
           order!.products.push(product);
         }
       } else {
-        let product = {...action.payload.product};
+        let product: IOrderProduct = {
+          product: action.payload.product.code,
+          quantity: 0,
+          quantum: action.payload.quantum,
+          step: action.payload.step,
+          code: action.payload.product.code,
+          name: action.payload.product.name,
+          // Принять данные с модалки
+          price: action.payload.price,
+          balance: action.payload.balance,
+          ei: action.payload.ei,
+          product_properties: action.payload.product_properties,
+        };
+
         product.quantity = new_quantity;
 
         state.push({

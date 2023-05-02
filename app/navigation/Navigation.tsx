@@ -14,6 +14,7 @@ import ForgetCode from '../components/pages/Login/screens/Forget/forget-code/For
 import Code from '../components/pages/Registration/screens/code/Code';
 import ResetPassword from '../components/pages/Login/screens/Forget/reset-password/ResetPassword';
 import Loader from '../components/UI/Loader';
+import MyRequestOrder from '../components/pages/Market/screens/Main/MyRequestUI/MyRequestOrder';
 
 const Stack = createNativeStackNavigator<RetaiyRootTypeParamList>();
 
@@ -31,6 +32,10 @@ const Navigation: React.FC = () => {
         <Stack.Screen
           name="ResetPassword"
           component={ResetPassword}></Stack.Screen>
+
+        <Stack.Screen
+          name="MyRequestOrder"
+          component={MyRequestOrder}></Stack.Screen>
 
         <Stack.Screen
           name="Registration"

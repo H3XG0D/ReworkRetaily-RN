@@ -25,7 +25,7 @@ import RetailyLayout from '../../../../layout/RetailyLayout';
 
 import {COLORS, siteUrl} from '../../../../../constants';
 import {
-  IOrderProduct,
+  IOrderProductProperty2,
   IProduct,
   IShop,
   ISupplier,
@@ -44,6 +44,8 @@ const Request = (): ReactElement => {
   const [info, setInfo] = React.useState<any>(undefined);
   const [cart, setCart] = React.useState<any>(undefined);
 
+  const [selected, setSelected] = React.useState<IOrderProductProperty2[]>([]);
+
   const incrementToCart = (
     supplier: ISupplier,
     shop: IShop,
@@ -54,14 +56,14 @@ const Request = (): ReactElement => {
         supplier: supplier,
         shop: shop,
         product: productInc,
-        balance:
-          category && category.balance ? category.balance : product.balance,
-        price: category && category.price ? category.price : product.price,
-        quantum:
-          category && category.quantum ? category.quantum : product.quantum,
-        step: category && category.step ? category.step : product.step,
-        ei: category && category.ei ? category.ei : product.ei,
-        product_properties: category,
+        // code: selected && selected.code ? selected.code : product.code,
+        balance: productInc.balance,
+        price: productInc.price,
+        quantum: productInc.quantum,
+        step: productInc.step,
+        ei: productInc.ei,
+        product_properties: productInc.description,
+        description_short: productInc.description_short,
       }),
     );
   };
@@ -69,13 +71,21 @@ const Request = (): ReactElement => {
   const decreaseToCart = (
     supplier: ISupplier,
     shop: IShop,
-    productDec: IOrderProduct,
+    productDec: IProduct,
   ) => {
     dispatch(
       decreaseProductToCart({
         supplier: supplier,
         shop: shop,
         product: productDec,
+        // code: selected && selected.code ? selected.code : product.code,
+        balance: productDec.balance,
+        price: productDec.price,
+        quantum: productDec.quantum,
+        step: productDec.step,
+        ei: productDec.ei,
+        product_properties: productDec.description,
+        description_short: productDec.description_short,
       }),
     );
   };
@@ -120,7 +130,6 @@ const Request = (): ReactElement => {
             )!
             .products.find(p => p.code === i.code)!.quantity;
     });
-
     return sum.toFixed(2);
   };
 
@@ -239,13 +248,12 @@ const Request = (): ReactElement => {
                     </PaymentButtonView>
                   </TouchableOpacity>
                 </View>
-              ) : (
-                <RequestView>
-                  <Text style={{textAlign: 'center', fontSize: 30}}>
-                    Ваша корзина пуста
-                  </Text>
-                </RequestView>
-              )}
+              ) : // <RequestView>
+              //   <Text style={{textAlign: 'center', fontSize: 30}}>
+              //     Ваша корзина пуста
+              //   </Text>
+              // </RequestView>
+              undefined}
             </View>
           ))}
           <Modal

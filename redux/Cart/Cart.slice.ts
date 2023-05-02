@@ -21,7 +21,7 @@ export interface CartEditProduct {
   quantum: number;
   step: number;
   product_properties: IOrderProductProperty2[];
-
+  description_short: string | undefined;
   value?: any;
 }
 
@@ -55,8 +55,10 @@ export const cartSlice = createSlice({
           // Принять данные с модалки
           price: action.payload.price,
           balance: action.payload.balance,
+          images: action.payload.product.images,
           ei: action.payload.ei,
           product_properties: action.payload.product_properties,
+          description_short: action.payload.description_short,
         };
 
         product.quantity = action.payload.product.quantum;
@@ -72,8 +74,10 @@ export const cartSlice = createSlice({
           // Принять данные с модалки
           price: action.payload.price,
           balance: action.payload.balance,
+          images: action.payload.product.images,
           ei: action.payload.ei,
           product_properties: action.payload.product_properties,
+          description_short: action.payload.description_short,
         };
 
         product.quantity = action.payload.product?.quantum;
@@ -84,7 +88,6 @@ export const cartSlice = createSlice({
           products: [product],
         });
       }
-      debugger;
     },
 
     increaseProductToCart: (state, action: PayloadAction<CartEditProduct>) => {
@@ -131,7 +134,9 @@ export const cartSlice = createSlice({
             price: action.payload.price,
             balance: action.payload.balance,
             ei: action.payload.ei,
+            images: action.payload.product.images,
             product_properties: action.payload.product_properties,
+            description_short: action.payload.description_short,
           };
 
           product.quantity = action.payload.product.quantum;
@@ -159,8 +164,10 @@ export const cartSlice = createSlice({
           // Принять данные с модалки
           price: action.payload.price,
           balance: action.payload.balance,
+          images: action.payload.product.images,
           ei: action.payload.ei,
           product_properties: action.payload.product_properties,
+          description_short: action.payload.description_short,
         };
 
         product.quantity = action.payload.product.quantum;
@@ -269,8 +276,10 @@ export const cartSlice = createSlice({
             // Принять данные с модалки
             price: action.payload.price,
             balance: action.payload.balance,
+            images: action.payload.product.images,
             ei: action.payload.ei,
             product_properties: action.payload.product_properties,
+            description_short: action.payload.description_short,
           };
 
           product.quantity = new_quantity;
@@ -288,8 +297,10 @@ export const cartSlice = createSlice({
           // Принять данные с модалки
           price: action.payload.price,
           balance: action.payload.balance,
+          images: action.payload.product.images,
           ei: action.payload.ei,
           product_properties: action.payload.product_properties,
+          description_short: action.payload.description_short,
         };
 
         product.quantity = new_quantity;

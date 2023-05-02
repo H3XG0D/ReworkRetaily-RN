@@ -10,7 +10,6 @@ export type RetaiyRootTypeParamList = {
   Details: any;
   Registration: any;
   Market: any;
-
   // * Loader screen:
   Loader: any;
 };
@@ -18,7 +17,7 @@ export type RetaiyRootTypeParamList = {
 export type BottomRootTypeParamList = {
   // * Main BottomNavigator Retaily Screens
   MarketStack: MarketRootParamList;
-  Request: any;
+  Request: MyRequestTypeRootParamList;
   MyRequest: any;
   UserProfile: any;
 };
@@ -30,4 +29,9 @@ export type MarketRootParamList = {
   ParentMeat: any;
   Categories: any;
   ProductsContainer: any;
+};
+
+export type MyRequestTypeRootParamList = {
+  MyRequest: any;
+  MyRequestOrder: any;
 };

@@ -1,6 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomRootTypeParamList} from '../routes';
-import {RetailyBottomScreen} from './BottomStack';
+import {MyRequestBottomScreen, RetailyBottomScreen} from './BottomStack';
 import {COLORS} from '../../constants';
 
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -52,8 +52,9 @@ export const BottomNavigation: React.FC = () => {
         }}></Tab.Screen>
       <Tab.Screen
         name="MyRequest"
-        component={MyRequest}
+        component={MyRequestBottomScreen}
         options={{
+          headerShown: false,
           tabBarLabel: 'Мои заявки',
           tabBarActiveTintColor: COLORS.primary,
           tabBarIcon: tabinfo => {

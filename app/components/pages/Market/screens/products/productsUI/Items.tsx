@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 
 import {COLORS, siteUrl} from '../../../../../../constants';
@@ -15,7 +16,12 @@ import {
   increaseProductToCart,
 } from '../../../../../../../redux/Cart/Cart.slice';
 
-import {IProduct, IShop, ISupplier} from '../../../../../../../redux/types';
+import {
+  IOrderProductProperty2,
+  IProduct,
+  IShop,
+  ISupplier,
+} from '../../../../../../../redux/types';
 
 import ProductsSkeleton from '../../../Skeletons/ProductsSkeleton';
 
@@ -37,6 +43,7 @@ interface Props {
 const Items = (props: Props) => {
   const dispatch = useAppDispatch();
   const cartProduct = getAppSelectore(getCartSelector);
+  const [selected, setSelected] = React.useState<IOrderProductProperty2[]>([]);
 
   // const [category, setCategory] = React.useState<any>(undefined);
 
@@ -76,6 +83,7 @@ const Items = (props: Props) => {
         supplier: props.supplier,
         shop: props.shop,
         product: product,
+        // code: selected && selected.code ? selected.code : product.code,
         balance:
           props.category && props.category.balance
             ? props.category.balance
@@ -95,6 +103,7 @@ const Items = (props: Props) => {
         ei:
           props.category && props.category.ei ? props.category.ei : product.ei,
         product_properties: props.category,
+        description_short: product.description_short,
       }),
     );
   };
@@ -104,6 +113,7 @@ const Items = (props: Props) => {
       increaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
+        // code: selected && selected.code ? selected.code : product.code,
         product: product,
         balance:
           props.category && props.category.balance
@@ -124,6 +134,7 @@ const Items = (props: Props) => {
         ei:
           props.category && props.category.ei ? props.category.ei : product.ei,
         product_properties: props.category,
+        description_short: product.description_short,
       }),
     );
   };
@@ -133,6 +144,7 @@ const Items = (props: Props) => {
       decreaseProductToCart({
         supplier: props.supplier,
         shop: props.shop,
+        // code: selected && selected.code ? selected.code : product.code,
         product: product,
         balance:
           props.category && props.category.balance
@@ -153,6 +165,7 @@ const Items = (props: Props) => {
         ei:
           props.category && props.category.ei ? props.category.ei : product.ei,
         product_properties: props.category,
+        description_short: product.description_short,
       }),
     );
   };

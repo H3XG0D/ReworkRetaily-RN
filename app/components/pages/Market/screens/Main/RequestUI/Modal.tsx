@@ -27,11 +27,7 @@ import {
   updateCartQuantity,
 } from '../../../../../../../redux/Cart/Cart.slice';
 
-import {
-  IOrderProduct,
-  IShop,
-  ISupplier,
-} from '../../../../../../../redux/types';
+import {IProduct, IShop, ISupplier} from '../../../../../../../redux/types';
 
 interface IModal {
   isModalVisible: any;
@@ -51,13 +47,21 @@ const Modal = (props: IModal) => {
   const incrementToCart = (
     supplier: ISupplier,
     shop: IShop,
-    productInc: IOrderProduct,
+    productInc: IProduct,
   ) => {
     dispatch(
       increaseProductToCart({
         supplier: supplier,
         shop: shop,
         product: productInc,
+        // code: selected && selected.code ? selected.code : product.code,
+        balance: productInc.balance,
+        price: productInc.price,
+        quantum: productInc.quantum,
+        step: productInc.step,
+        ei: productInc.ei,
+        product_properties: productInc.description,
+        description_short: productInc.description_short,
       }),
     );
   };
@@ -65,29 +69,45 @@ const Modal = (props: IModal) => {
   const decreaseToCart = (
     supplier: ISupplier,
     shop: IShop,
-    productDec: IOrderProduct,
+    productDec: IProduct,
   ) => {
     dispatch(
       decreaseProductToCart({
         supplier: supplier,
         shop: shop,
         product: productDec,
+        // code: selected && selected.code ? selected.code : product.code,
+        balance: productDec.balance,
+        price: productDec.price,
+        quantum: productDec.quantum,
+        step: productDec.step,
+        ei: productDec.ei,
+        product_properties: productDec.description,
+        description_short: productDec.description_short,
       }),
     );
   };
 
   const handleQuantity = (
-    product: IOrderProduct,
+    product: IProduct,
     supplier: ISupplier,
     shop: IShop,
     e: any,
   ) => {
     dispatch(
       updateCartQuantity({
-        product: product,
+        value: e.nativeEvent.text,
         supplier: supplier,
         shop: shop,
-        value: e.nativeEvent.text,
+        product: product,
+        // code: selected && selected.code ? selected.code : product.code,
+        balance: product.balance,
+        price: product.price,
+        quantum: product.quantum,
+        step: product.step,
+        ei: product.ei,
+        product_properties: product.description,
+        description_short: product.description_short,
       }),
     );
   };

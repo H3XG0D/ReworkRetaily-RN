@@ -22,6 +22,9 @@ interface Props {
   setCategory: any;
   data: any;
 
+  load: any;
+  setLoad: any;
+
   showModal: () => void;
   getProductCategory: () => void;
   addToCart: (item: any) => void;

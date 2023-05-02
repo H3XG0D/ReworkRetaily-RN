@@ -14,6 +14,7 @@ import {IProduct, IShop, ISupplier} from '../../../../../../redux/types';
 interface Props {
   supplier: ISupplier;
   shop: IShop;
+
   category: any;
 }
 
@@ -61,15 +62,15 @@ const Products = (props: Props): ReactElement => {
   return (
     <View>
       <Items
-        info={info}
-        products={products}
-        buy={buy}
-        loadSkeleton={loadSkeleton}
         supplier={props.supplier}
         shop={props.shop}
-        setInfo={setInfo}
-        showModal={showModal}
+        products={products}
+        info={info}
         category={category}
+        buy={buy}
+        showModal={showModal}
+        loadSkeleton={loadSkeleton}
+        setInfo={setInfo}
         setCategory={setCategory}
       />
 

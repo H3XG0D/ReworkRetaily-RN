@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,8 +26,8 @@ import {
 
 import {
   IOrderProductProperty2,
-  IProduct,
   IProductProperty2,
+  IProduct,
   IShop,
   ISupplier,
 } from '../../../../../../../redux/types';
@@ -63,18 +64,18 @@ const Modal = (props: Props): ReactElement => {
   const cartProduct = getAppSelectore(getCartSelector);
 
   const [category, setCategory] = React.useState<any>(undefined);
+  const [load, setLoad] = React.useState<boolean>(false);
 
   const [selected, setSelected] = React.useState<IOrderProductProperty2[]>([]);
   const [quantity, onChangeQuantity] = React.useState<string>('');
 
   const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
 
-  console.log(selected);
-
   const addToCart = (product: IProduct) => {
     dispatch(
       addProductToCart({
         supplier: props.supplier,
+        // code: selected && selected.code ? selected.code : product.code,
         shop: props.shop,
         product: product,
         balance:
@@ -85,6 +86,7 @@ const Modal = (props: Props): ReactElement => {
         step: category && category.step ? category.step : product.step,
         ei: category && category.ei ? category.ei : product.ei,
         product_properties: category,
+        description_short: product.description_short,
       }),
     );
   };
@@ -95,6 +97,7 @@ const Modal = (props: Props): ReactElement => {
         supplier: props.supplier,
         shop: props.shop,
         product: product,
+        // code: selected && selected.code ? selected.code : product.code,
         balance:
           category && category.balance ? category.balance : product.balance,
         price: category && category.price ? category.price : product.price,
@@ -103,6 +106,7 @@ const Modal = (props: Props): ReactElement => {
         step: category && category.step ? category.step : product.step,
         ei: category && category.ei ? category.ei : product.ei,
         product_properties: category,
+        description_short: product.description_short,
       }),
     );
   };
@@ -111,6 +115,7 @@ const Modal = (props: Props): ReactElement => {
     dispatch(
       decreaseProductToCart({
         supplier: props.supplier,
+        // code: selected && selected.code ? selected.code : product.code,
         shop: props.shop,
         product: product,
         balance:
@@ -121,6 +126,7 @@ const Modal = (props: Props): ReactElement => {
         step: category && category.step ? category.step : product.step,
         ei: category && category.ei ? category.ei : product.ei,
         product_properties: category,
+        description_short: product.description_short,
       }),
     );
   };
@@ -137,6 +143,7 @@ const Modal = (props: Props): ReactElement => {
         supplier: supplier,
         shop: shop,
         product: product,
+        // code: selected && selected.code ? selected.code : product.code,
         balance:
           category && category.balance ? category.balance : product.balance,
         price: category && category.price ? category.price : product.price,
@@ -145,6 +152,7 @@ const Modal = (props: Props): ReactElement => {
         step: category && category.step ? category.step : product.step,
         ei: category && category.ei ? category.ei : product.ei,
         product_properties: category,
+        description_short: product.description_short,
       }),
     );
   };
@@ -167,6 +175,7 @@ const Modal = (props: Props): ReactElement => {
   ];
 
   const getProductCategory = async () => {
+    setLoad(true);
     const productCategory = await getProductPrice(
       'getProductPrice',
       String(props.info?.code),
@@ -175,6 +184,7 @@ const Modal = (props: Props): ReactElement => {
       productData,
     );
     setCategory(productCategory);
+    setLoad(false);
   };
 
   const showModal = () => {
@@ -349,49 +359,71 @@ const Modal = (props: Props): ReactElement => {
                       getProductCategory={getProductCategory}
                       addToCart={addToCart}
                       data={prop.values}
+                      load={load}
+                      setLoad={setLoad}
                     />
 
                     {category !== undefined ? (
-                      <ProductsModalCountView>
-                        <TouchableOpacity
-                          onPress={() => decreaseToCart(category)}>
-                          <ProductsModalMinusBtn>
-                            <ProductsModalExpression>-</ProductsModalExpression>
-                          </ProductsModalMinusBtn>
-                        </TouchableOpacity>
-                        <TextInput
-                          onEndEditing={(e: any) => {
-                            handleQuantity(
-                              e,
-                              props.info,
-                              props.supplier,
-                              props.shop,
-                            );
-                          }}
-                          onChangeText={value => onChangeQuantity(value)}
-                          value={String(category.quantum)}
-                          keyboardType="number-pad"
-                          onBlur={(e: any) => handleChange(e)}
-                          style={{
-                            width: 80,
-                            height: 50,
-                            backgroundColor: COLORS.white,
-                            color: COLORS.black,
-                            fontSize: 20,
-                            fontWeight: '600',
-                            textAlign: 'center',
-                          }}
+                      load ? (
+                        <ActivityIndicator
+                          size="large"
+                          color="black"
+                          style={{alignSelf: 'center', marginTop: 20}}
                         />
-                        <TouchableOpacity
-                          onPress={() => {
-                            incrementToCart(category);
-                            addToCart(category);
-                          }}>
-                          <ProductsModalPlusBtn>
-                            <ProductsModalExpression>+</ProductsModalExpression>
-                          </ProductsModalPlusBtn>
-                        </TouchableOpacity>
-                      </ProductsModalCountView>
+                      ) : (
+                        <View>
+                          <ProductsModalCountView>
+                            <TouchableOpacity
+                              onPress={() => decreaseToCart(props.info)}>
+                              <ProductsModalMinusBtn>
+                                <ProductsModalExpression>
+                                  -
+                                </ProductsModalExpression>
+                              </ProductsModalMinusBtn>
+                            </TouchableOpacity>
+                            {/* !!! Change quantity !!! */}
+                            <TextInput
+                              onEndEditing={(e: any) => {
+                                handleQuantity(
+                                  e,
+                                  props.info,
+                                  props.supplier,
+                                  props.shop,
+                                );
+                              }}
+                              onChangeText={value => onChangeQuantity(value)}
+                              value={String(category.quantum)}
+                              keyboardType="number-pad"
+                              onBlur={(e: any) => handleChange(e)}
+                              style={{
+                                width: 80,
+                                height: 50,
+                                backgroundColor: COLORS.white,
+                                color: COLORS.black,
+                                fontSize: 20,
+                                fontWeight: '600',
+                                textAlign: 'center',
+                              }}
+                            />
+                            <TouchableOpacity
+                              onPress={() => {
+                                incrementToCart(props.info); // category
+                                // addToCart(props.info);
+                              }}>
+                              <ProductsModalPlusBtn>
+                                <ProductsModalExpression>
+                                  +
+                                </ProductsModalExpression>
+                              </ProductsModalPlusBtn>
+                            </TouchableOpacity>
+                          </ProductsModalCountView>
+                          <View style={{marginTop: 15}}>
+                            <Text style={{alignSelf: 'center'}}>
+                              В наличии {category.balance}
+                            </Text>
+                          </View>
+                        </View>
+                      )
                     ) : undefined}
                   </View>
                 ))

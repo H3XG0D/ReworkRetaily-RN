@@ -24,49 +24,49 @@ const MyRequest = () => {
 
   const info = [
     {
-      id: '№201790',
+      id: 'Заявка №201790',
       date: 'ср, 2 мая 2023 г., 13:52',
       supplier: 'Якутский хлебокомбинат',
       price: '15048 ₽',
       status: 'Отменён заказчиком',
     },
     {
-      id: '№201763',
+      id: 'Заявка №201763',
       date: 'пт, 26 апр. 2023 г., 16:23',
       supplier: 'Якутский Гормолзавод',
       price: '20753 ₽',
       status: 'Новый',
     },
     {
-      id: '№201763',
+      id: 'Заявка №201763',
       date: 'пт, 26 апр. 2023 г., 16:23',
       supplier: 'Якутский Гормолзавод',
       price: '20753 ₽',
       status: 'Новый',
     },
     {
-      id: '№201763',
+      id: 'Заявка №201763',
       date: 'пт, 26 апр. 2023 г., 16:23',
       supplier: 'Якутский Гормолзавод',
       price: '20753 ₽',
       status: 'Новый',
     },
     {
-      id: '№201763',
+      id: 'Заявка №201763',
       date: 'пт, 26 апр. 2023 г., 16:23',
       supplier: 'Якутский Гормолзавод',
       price: '20753 ₽',
       status: 'Отменён заказчиком',
     },
     {
-      id: '№201763',
+      id: 'Заявка №201763',
       date: 'пт, 26 апр. 2023 г., 16:23',
       supplier: 'Якутский Гормолзавод',
       price: '20753 ₽',
       status: 'Отменён заказчиком',
     },
     {
-      id: '№201763',
+      id: 'Заявка №201763',
       date: 'пт, 26 апр. 2023 г., 16:23',
       supplier: 'Якутский Гормолзавод',
       price: '20753 ₽',
@@ -100,7 +100,7 @@ const MyRequest = () => {
         data={info}
         renderItem={({item}: any) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('MyRequestOrder')}>
+            onPress={() => navigation.navigate('MyRequestOrder', {item})}>
             <View>
               <View style={{flexDirection: 'row', paddingTop: 15}}>
                 <View style={{paddingLeft: 20, gap: 5}}>
@@ -109,7 +109,7 @@ const MyRequest = () => {
                       fontSize: 13,
                       fontWeight: '600',
                     }}>
-                    Заявка {item.id}
+                    {item.id}
                   </Text>
                   <Text>{item.date}</Text>
                   <Text>{item.supplier}</Text>

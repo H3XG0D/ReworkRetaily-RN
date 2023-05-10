@@ -46,11 +46,10 @@ const Request = (): ReactElement => {
     React.useState<boolean>(false);
 
   const [info, setInfo] = React.useState<any>(undefined);
-  const [cart, setCart] = React.useState<any>(undefined);
 
-  const [selected, setSelected] = React.useState<IOrderProductProperty2[]>([]);
-  const supplier = cartProduct.map((cart: CartOrder) => cart.supplier.name);
-  const shop = cartProduct.map((cart: CartOrder) => cart.shop.name);
+  const [cart, setCart] = React.useState<any>(undefined);
+  const [supplier, setSupplier] = React.useState<any>(undefined);
+  const [shop, setShop] = React.useState<any>(undefined);
 
   const incrementToCart = (
     supplier: ISupplier,
@@ -249,7 +248,13 @@ const Request = (): ReactElement => {
                     </RequestView>
                   ))}
 
-                  <TouchableOpacity onPress={() => showOrderModal()}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      showOrderModal();
+                      setCart(getSum(cart));
+                      setSupplier(cart.supplier.name);
+                      setShop(cart.shop.name);
+                    }}>
                     <PaymentButtonView>
                       <PaymentButtonText>Оформить заявку</PaymentButtonText>
                       <PaymentButtonText>{getSum(cart)} ₽</PaymentButtonText>

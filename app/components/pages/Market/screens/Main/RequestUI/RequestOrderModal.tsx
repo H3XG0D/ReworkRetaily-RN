@@ -61,7 +61,7 @@ const RequestOrderModal = (props: IModal) => {
               </OrderInfoText>
 
               <OrderInfoText>
-                <OrderInfoData>300 ₽</OrderInfoData>
+                Общая сумма: <OrderInfoData>{props.cart} ₽</OrderInfoData>
               </OrderInfoText>
 
               <OrderInfoText>

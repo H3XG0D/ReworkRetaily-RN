@@ -46,7 +46,7 @@ export const cartSlice = createSlice({
         );
 
         let product: IOrderProduct = {
-          product: action.payload.product.code,
+          product: action.payload.product?.code,
           quantity: 0,
           quantum: action.payload.quantum,
           step: action.payload.step,
@@ -54,9 +54,9 @@ export const cartSlice = createSlice({
           name: action.payload.product.name,
           // Принять данные с модалки
           price: action.payload.price,
-          balance: action.payload.balance,
+          balance: action.payload?.balance,
           images: action.payload.product.images,
-          ei: action.payload.ei,
+          ei: action.payload?.ei,
           product_properties: action.payload.product_properties,
           description_short: action.payload.description_short,
         };
@@ -65,7 +65,7 @@ export const cartSlice = createSlice({
         order!.products.push(product);
       } else {
         let product: IOrderProduct = {
-          product: action.payload.product.code,
+          product: action.payload.product?.code,
           quantity: 0,
           quantum: action.payload.quantum,
           step: action.payload.step,
@@ -73,9 +73,9 @@ export const cartSlice = createSlice({
           name: action.payload.product.name,
           // Принять данные с модалки
           price: action.payload.price,
-          balance: action.payload.balance,
+          balance: action.payload?.balance,
           images: action.payload.product.images,
-          ei: action.payload.ei,
+          ei: action.payload?.ei,
           product_properties: action.payload.product_properties,
           description_short: action.payload.description_short,
         };
@@ -124,7 +124,7 @@ export const cartSlice = createSlice({
           }
         } else {
           let product: IOrderProduct = {
-            product: action.payload.product.code,
+            product: action.payload.product?.code,
             quantity: 0,
             quantum: action.payload.quantum,
             step: action.payload.step,
@@ -155,7 +155,7 @@ export const cartSlice = createSlice({
         }
       } else {
         let product: IOrderProduct = {
-          product: action.payload.product.code,
+          product: action.payload.product?.code,
           quantity: 0,
           quantum: action.payload.quantum,
           step: action.payload.step,
@@ -267,7 +267,7 @@ export const cartSlice = createSlice({
           }
         } else {
           let product: IOrderProduct = {
-            product: action.payload.product.code,
+            product: action.payload.product?.code,
             quantity: 0,
             quantum: action.payload.quantum,
             step: action.payload.step,
@@ -288,7 +288,7 @@ export const cartSlice = createSlice({
         }
       } else {
         let product: IOrderProduct = {
-          product: action.payload.product.code,
+          product: action.payload.product?.code,
           quantity: 0,
           quantum: action.payload.quantum,
           step: action.payload.step,

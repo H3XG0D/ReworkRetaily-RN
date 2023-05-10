@@ -32,6 +32,7 @@ import {
 } from '../../../../../../redux/types';
 
 import Modal from './RequestUI/Modal';
+import RequestOrderModal from './RequestUI/RequestOrderModal';
 
 const Request = (): ReactElement => {
   const navigation =
@@ -41,10 +42,15 @@ const Request = (): ReactElement => {
   const cartProduct = getAppSelectore(getCartSelector);
 
   const [isModalVisible, setModalVisible] = React.useState<boolean>(false);
+  const [isOrderModalVisible, setOrderModalVisible] =
+    React.useState<boolean>(false);
+
   const [info, setInfo] = React.useState<any>(undefined);
   const [cart, setCart] = React.useState<any>(undefined);
 
   const [selected, setSelected] = React.useState<IOrderProductProperty2[]>([]);
+  const supplier = cartProduct.map((cart: CartOrder) => cart.supplier.name);
+  const shop = cartProduct.map((cart: CartOrder) => cart.shop.name);
 
   const incrementToCart = (
     supplier: ISupplier,
@@ -98,21 +104,13 @@ const Request = (): ReactElement => {
     setModalVisible(!isModalVisible);
   };
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: 'Корзина',
-      headerTitleAlign: 'left',
-      headerLeft: () => <Text></Text>,
-      headerTitleStyle: {fontSize: 27, fontWeight: '700'},
-      animation: 'none',
-    });
-  }, [navigation]);
+  const showOrderModal = () => {
+    setOrderModalVisible(!isOrderModalVisible);
+  };
 
-  // Create function for sum result price
   const getSum = (cart: CartOrder) => {
     let sum = 0;
-
-    cart.products.forEach(i => {
+    cart?.products.forEach(i => {
       sum =
         sum +
         cartProduct!
@@ -132,6 +130,16 @@ const Request = (): ReactElement => {
     });
     return sum.toFixed(2);
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Корзина',
+      headerTitleAlign: 'left',
+      headerLeft: () => <Text></Text>,
+      headerTitleStyle: {fontSize: 27, fontWeight: '700'},
+      animation: 'none',
+    });
+  }, [navigation]);
 
   return (
     <RetailyLayout>
@@ -241,7 +249,7 @@ const Request = (): ReactElement => {
                     </RequestView>
                   ))}
 
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => showOrderModal()}>
                     <PaymentButtonView>
                       <PaymentButtonText>Оформить заявку</PaymentButtonText>
                       <PaymentButtonText>{getSum(cart)} ₽</PaymentButtonText>
@@ -261,6 +269,13 @@ const Request = (): ReactElement => {
             info={info}
             showModal={showModal}
             setInfo={setInfo}
+            cart={cart}
+          />
+          <RequestOrderModal
+            shop={shop}
+            supplier={supplier}
+            showOrderModal={showOrderModal}
+            isOrderModalVisible={isOrderModalVisible}
             cart={cart}
           />
         </View>

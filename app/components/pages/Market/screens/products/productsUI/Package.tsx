@@ -18,15 +18,16 @@ interface Props {
   supplier: any;
   shop: any;
 
-  category: any;
-  setCategory: any;
+  selProductInfo: any;
+  setSelProductInfo: any;
   data: any;
 
   load: any;
   setLoad: any;
 
   showModal: () => void;
-  getProductCategory: () => void;
+  incrementToCart: (item: any) => void;
+  getProductCategory: (item: any) => void;
   addToCart: (item: any) => void;
 }
 
@@ -91,7 +92,8 @@ const Package = (props: Props) => {
                       // props.setInfo(props.category);
                       // props.addToCart(item);
                       props.setSelected(item);
-                      props.getProductCategory();
+                      props.getProductCategory(item);
+                      props.addToCart(props.info);
                     }}>
                     {item.name}
                   </Text>

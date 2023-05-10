@@ -197,17 +197,17 @@ const Modal = (props: IModal) => {
                                     f.shop.code === props.cart?.shop?.code,
                                 )!
                                 .products.find(
-                                  p => p.code === props.info!.code,
+                                  p => p.code === props.info?.code,
                                 )!.price *
                               cartProduct!
                                 .find(
                                   (f: CartOrder) =>
                                     f.supplier.code ===
-                                      props.cart.supplier?.code &&
+                                      props.cart?.supplier?.code &&
                                     f.shop.code === props.cart?.shop?.code,
                                 )!
                                 .products.find(
-                                  p => p.code === props.info!.code,
+                                  p => p.code === props.info?.code,
                                 )!.quantity
                             ).toFixed(2)
                           : null}{' '}

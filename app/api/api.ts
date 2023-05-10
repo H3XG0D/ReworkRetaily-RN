@@ -307,3 +307,54 @@ export const getProductPrice = (
       return console.log(err);
     });
 };
+
+export const getOrders = (cmd: string, rowCount: number, rowSkip: number) => {
+  return instance
+    .post('clientv7/order', {
+      cmd: cmd,
+      rowCount: rowCount,
+      rowSkip: rowSkip,
+    })
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      return console.log(err);
+    });
+};
+
+export const checkProducts = (
+  cmd: string,
+  products: [],
+  shop: string,
+  supplier: string,
+) => {
+  return instance
+    .post('clientv7', {
+      cmd: cmd,
+      products: products,
+      shop: shop,
+      supplier: supplier,
+    })
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      return console.log(err);
+    });
+};
+
+export const repeatOrder = (cmd: string, order: string, shop: string) => {
+  return instance
+    .post('clientv7/order', {
+      cmd: cmd,
+      order: order,
+      shop: shop,
+    })
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      return console.log(err);
+    });
+};

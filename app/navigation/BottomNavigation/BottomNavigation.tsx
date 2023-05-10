@@ -7,7 +7,6 @@ import {COLORS} from '../../constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Request from '../../components/pages/Market/screens/Main/Request';
-import MyRequest from '../../components/pages/Market/screens/Main/MyRequest';
 import UserProfile from '../../components/pages/Market/screens/Main/UserProfile';
 
 const Tab = createBottomTabNavigator<BottomRootTypeParamList>();

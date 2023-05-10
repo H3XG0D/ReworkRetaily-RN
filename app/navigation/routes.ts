@@ -17,8 +17,8 @@ export type RetaiyRootTypeParamList = {
 export type BottomRootTypeParamList = {
   // * Main BottomNavigator Retaily Screens
   MarketStack: MarketRootParamList;
-  Request: MyRequestTypeRootParamList;
-  MyRequest: any;
+  MyRequest: MyRequestTypeRootParamList;
+  Request: any;
   UserProfile: any;
 };
 
